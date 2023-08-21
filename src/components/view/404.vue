@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center">
+    <div class="text-center mt-36">
       <navbar/>   
       <img src="/404.svg" alt="404" class="header__logo mx-auto" width="450" height="450">
       <p class="text-3xl font-bold mb-4">404 Not Found</p>

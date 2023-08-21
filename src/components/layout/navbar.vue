@@ -1,5 +1,5 @@
 <template>
-  <header class="flex justify-center w-full py-2 px-4 lg:py-4 lg:px-6 bg-primary-700 border-b border-neutral-200">
+  <header class="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-2 px-4 lg:py-4 lg:px-6 bg-primary-700 border-b border-neutral-200">
     <div class="flex flex-wrap lg:flex-nowrap items-center flex-row justify-start h-full max-w-[1536px] w-full">
       <!-- Logo -->
       <a

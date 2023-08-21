@@ -1,29 +1,6 @@
 <script setup>
-import { SfButton, SfIconPackage, SfIconWarehouse, SfIconPublishedWithChanges } from '@storefront-ui/vue';
-
-const cardDetails = [
-  {
-    icon: SfIconPackage,
-    title: 'Free shipping',
-    description: 'Learn about our commitments to ethics, our team, our communities and more.',
-    buttonText: 'Read more',
-    isDisabled: false,
-  },
-  {
-    icon: SfIconWarehouse,
-    title: 'Click & Collect',
-    description: 'Learn about our commitments to ethics, our team, our communities and more.',
-    buttonText: 'Read more',
-    isDisabled: false,
-  },
-  {
-    icon: SfIconPublishedWithChanges,
-    title: 'Free 30-Day returns',
-    description: 'Learn about our commitments to ethics, our team, our communities and more.',
-    buttonText: 'Read more',
-    isDisabled: true,
-  },
-];
+import { SfButton } from '@storefront-ui/vue';
+import { Icon } from '@iconify/vue';
 </script>
 
 <template>
@@ -59,8 +36,129 @@ const cardDetails = [
     </div>
   </div>
   <!-- Second Section -->
-  <div>
-    
+  <div class="mt-10 mb-10 flex justify-center">
+    <h1>提供サービス</h1>
+  </div>
+  <div class="mt-12 mb-14 flex flex-wrap gap-4 lg:gap-6 lg:flex-nowrap justify-center">
+    <!-- Section 1 -->
+    <div class="flex flex-col w-full max-w-[325px] sm:w-[375px] lg:w-[496px] items-center">
+    <div class="w-24 h-24 rounded-full border-2 shadow-md flex items-center justify-center">
+      <Icon size="2xl" icon="mdi:minecraft" color="#1cdb24" width="36" height="36" :class="{ 'text-disabled-900': false }" />
+    </div>
+      <div class="p-4 flex flex-col items-center">
+        <p :class="['font-medium typography-text-base', { 'text-disabled-900': false }]">Minecraft開発</p>
+        <p
+          :class="[
+            'mt-1 mb-4 font-normal typography-text-sm text-neutral-700 text-center',
+            { 'text-disabled-700': false },
+          ]"
+        >
+          データパックやコマンド、小規模なプラグイン開発
+        </p>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+      </div>
+    </div>
+    <!-- Section 2 -->
+    <div class="flex flex-col w-full max-w-[325px] sm:w-[375px] lg:w-[496px] items-center">
+    <div class="w-24 h-24 rounded-full border-2 shadow-md flex items-center justify-center">
+      <Icon size="2xl" icon="logos:discord-icon" width="36" height="36" :class="{ 'text-disabled-900': false }" />
+    </div>
+      <div class="p-4 flex flex-col items-center">
+        <p :class="['font-medium typography-text-base', { 'text-disabled-900': false }]">Bot開発</p>
+        <p
+          :class="[
+            'mt-1 mb-4 font-normal typography-text-sm text-neutral-700 text-center',
+            { 'text-disabled-700': false },
+          ]"
+        >
+          SNSサービス、Discord用のコミュニティ向けBotの開発
+        </p>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+      </div>
+    </div>
+    <!-- Section 3 -->
+    <div class="flex flex-col w-full max-w-[325px] sm:w-[375px] lg:w-[496px] items-center">
+    <div class="w-24 h-24 rounded-full border-2 shadow-md flex items-center justify-center">
+      <Icon size="2xl" icon="logos:web-dev-icon" width="36" height="36" :class="{ 'text-disabled-900': false }" />
+    </div>
+      <div class="p-4 flex flex-col items-center">
+        <p :class="['font-medium typography-text-base', { 'text-disabled-900': false }]">Webサイト制作</p>
+        <p
+          :class="[
+            'mt-1 mb-4 font-normal typography-text-sm text-neutral-700 text-center',
+            { 'text-disabled-700': false },
+          ]"
+        >
+          小規模なビジネス・個人向けのWebサイト制作
+        </p>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+      </div>
+    </div>
+    <!-- Section 4 -->
+    <div class="flex flex-col w-full max-w-[325px] sm:w-[375px] lg:w-[496px] items-center">
+    <div class="w-24 h-24 rounded-full border-2 shadow-md flex items-center justify-center">
+      <Icon size="2xl" icon="mdi:server" color="#0b5394" width="36" height="36" :class="{ 'text-disabled-900': false }" />
+    </div>
+      <div class="p-4 flex flex-col items-center">
+        <p :class="['font-medium typography-text-base', { 'text-disabled-900': false }]">サーバー運用</p>
+        <p
+          :class="[
+            'mt-1 mb-4 font-normal typography-text-sm text-neutral-700 text-center',
+            { 'text-disabled-700': false },
+          ]"
+        >
+          Minecraftなどのゲームサーバーの構築・運用
+        </p>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+      </div>
+    </div>
+  </div>
+  <!-- Minecraft Section -->
+  <div class="flex flex-col items-center justify-center bg-yellow-200 md:flex-row md:justify-center">
+    <div class="w-full md:w-1/2">
+      <img src="/mc_section.svg" alt="Minecraft Section" class="w-full h-auto">
+    </div>
+    <div class="w-full md:w-1/2 px-4 md:px-8">
+      <h2 class="text-2xl font-bold mb-4">Minecraft Develop</h2>
+      <p class="text-lg text-neutral-700 mb-4">
+        Minecraftでデータパックやコマンド、Skriptによる小規模なプラグインなどの開発をしています。<br>
+        一部データパックや配布マップはGithub、ブログにて公開されています。<br>
+        データパックの依頼も受け付けています。詳しくはContactページをご覧ください。
+      </p>
+      <SfButton size="md" variant="secondary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
+    </div>
+    <div class="h-8 md:hidden"></div>
+  </div>
+  <!-- Discord Bot Section -->
+  <div class="flex flex-col items-center justify-center bg-blue-200 md:flex-row md:justify-center">
+    <div class="w-full md:w-1/2">
+      <img src="/discord_section.svg" alt="Discord Section" class="w-full h-auto">
+    </div>
+    <div class="w-full md:w-1/2 px-4 md:px-8">
+      <h2 class="text-2xl font-bold mb-4">Discord Bot Develop</h2>
+      <p class="text-lg text-neutral-700 mb-4">
+        SNSツール、Discordで使えるコミュニティ向けのBotを開発しています。<br>
+        メンバーを管理したり、音楽を再生したり、ゲームのプロフィールを見たり...必要な機能を一つのBotに。<br>
+        開発秘話はブログにて公開中! Botは現在誠意を込めて開発中です。
+      </p>
+      <SfButton size="md" variant="secondary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
+    </div>
+    <div class="h-8 md:hidden"></div>
+  </div>
+  <!-- WebPage Section -->
+  <div class="flex flex-col items-center justify-center bg-green-200 md:flex-row md:justify-center">
+    <div class="w-full md:w-1/2">
+      <img src="/web_section.svg" alt="Web Section" class="w-full h-auto">
+    </div>
+    <div class="w-full md:w-1/2 px-4 md:px-8">
+      <h2 class="text-2xl font-bold mb-4">Website Develop</h2>
+      <p class="text-lg text-neutral-700 mb-4">
+        Vue3 + Vite + Tailwind や通常の HTML + CSS + JavaScriptをはじめとするWebサイトやサービスの制作を行っています。<br>
+        リリース済みのサービスなどはServicesページにてご覧いただけます。<br>
+      </p>
+      <SfButton size="md" variant="secondary" :disabled="false" tag="router-link" to="services">Learn More</SfButton>
+    </div>
+    <div class="h-8 md:hidden"></div>
   </div>
   <!-- Footer Section -->
   <basefooter />
@@ -74,6 +172,11 @@ export default {
   components: {
     navbar,
     basefooter,
+  },
+  methods: {
+    redirectToExternalSite() {
+      window.open('https://crysta1221.github.io', '_blank');
+    }
   }
 }
 </script>
