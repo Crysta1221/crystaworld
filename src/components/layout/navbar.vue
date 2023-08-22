@@ -50,6 +50,11 @@
         </SfButton>
       </header>
       <div class="mt-4">
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/">
+          <template #prefix><Icon icon="mdi:home" width="32" height="32" /></template>
+          <span class="break-words ml-4">Home</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
         <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/about">
           <template #prefix><Icon icon="mdi:account-group" width="32" height="32" /></template>
           <span class="break-words ml-4">About</span>
