@@ -20,9 +20,59 @@
         class="text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 lg:hidden order-first lg:order-1 mr-4"
         square
         variant="tertiary"
+        @click="open = true"
       >
         <SfIconMenu />
       </SfButton>
+      <transition
+        enter-active-class="transition duration-500 ease-in-out"
+        leave-active-class="transition duration-500 ease-in-out"
+        enter-from-class="-translate-x-full"
+        enter-to-class="translate-x-0"
+        leave-from-class="translate-x-0"
+        leave-to-class="-translate-x-full"
+      >
+      <SfDrawer
+        ref="drawerRef"
+        v-model="open"
+        :placement="placement"
+        :class="[
+          'bg-neutral-50',
+          'border',
+          'border-gray-300',
+          { 'max-w-[370px]': placement === 'left' || placement === 'right' },
+        ]"
+      >
+      <header class="flex items-center justify-between px-10 py-6 bg-primary-700">
+        <div class="flex items-center text-white">Crysta World Menu</div>
+        <SfButton square variant="tertiary" class="text-white ml-8" @click="open = false">
+          <SfIconClose />
+        </SfButton>
+      </header>
+      <div class="mt-4">
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/about">
+          <template #prefix><Icon icon="mdi:account-group" width="32" height="32" /></template>
+          <span class="break-words ml-4">About</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/services">
+          <template #prefix><Icon icon="mdi:service-toolbox" width="32" height="32" /></template>
+          <span class="break-words ml-4">Services</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/info">
+          <template #prefix><Icon icon="mdi:information" width="32" height="32" /></template>
+          <span class="break-words ml-4">Info</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/contact">
+          <template #prefix><Icon icon="mdi:account-box-outline" width="32" height="32" /></template>
+          <span class="break-words ml-4">Contact</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
+      </div>
+      </SfDrawer>
+    </transition>
       <!-- Right Menu -->
       <nav class="flex-1 flex justify-end lg:order-last lg:ml-4">
         <div class="flex flex-row flex-nowrap">
@@ -99,11 +149,23 @@ import { ref } from 'vue';
 import {
   SfButton,
   SfIconMenu,
+  SfDrawer, 
+  SfDrawerPlacement,
+  useTrapFocus,
+  SfIconClose,
+  SfListItem,
+  SfIconChevronRight
   } from '@storefront-ui/vue';
 
 import { Icon } from '@iconify/vue';  
 const inputValue = ref('');
 
+
+const placement = ref<`${SfDrawerPlacement}`>('left');
+const open = ref(false);
+const drawerRef = ref();
+
+useTrapFocus(drawerRef, { activeState: open });
 </script>
 
   
