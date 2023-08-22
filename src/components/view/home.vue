@@ -29,8 +29,8 @@ import { Icon } from '@iconify/vue';
           ゲームに役立つサービスを作成・提供するグループです
         </p>
         <div class="flex flex-col md:flex-row gap-4 mt-6">
-          <SfButton size="lg"> グループ概要 </SfButton>
-          <SfButton size="lg" variant="secondary" class="bg-white"> サービス一覧 </SfButton>
+          <SfButton size="lg" tag="router-link" to="about"> グループ概要 </SfButton>
+          <SfButton size="lg" variant="secondary" class="bg-white" tag="router-link" to="services"> サービス一覧 </SfButton>
         </div>
       </div>
     </div>
@@ -129,13 +129,13 @@ import { Icon } from '@iconify/vue';
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
-  <!-- Discord Bot Section -->
+  <!-- Discord Section -->
   <div class="flex flex-col items-center justify-center bg-blue-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
-      <img src="/discord_section.svg" alt="Discord Section" class="w-full h-auto">
+      <img src="/discord_section.svg" alt="Web Section" class="w-full h-auto">
     </div>
     <div class="w-full md:w-1/2 px-4 md:px-8">
-      <h2 class="text-2xl font-bold mb-4">Discord Bot Development</h2>
+      <h2 class="text-2xl font-bold mb-4">Discord Bot Develop</h2>
       <p class="text-lg text-neutral-700 mb-4">
         SNSツール、Discordで使えるコミュニティ向けのBotを開発しています。<br>
         メンバーを管理したり、音楽を再生したり、ゲームのプロフィールを見たり...必要な機能を一つのBotに。<br>
@@ -156,7 +156,22 @@ import { Icon } from '@iconify/vue';
         Vue3 + Vite + Tailwind や通常の HTML + CSS + JavaScriptをはじめとするWebサイトやサービスの制作を行っています。<br>
         リリース済みのサービスなどはServicesページにてご覧いただけます。<br>
       </p>
-      <SfButton size="md" variant="secondary" :disabled="false" tag="router-link" to="services">Learn More</SfButton>
+      <SfButton size="md" variant="secondary" :disabled="false" tag="router-link" to="services">サービス一覧</SfButton>
+    </div>
+    <div class="h-8 md:hidden"></div>
+  </div>
+  <!-- Server Section -->
+  <div class="flex flex-col items-center justify-center bg-violet-200 md:flex-row md:justify-center">
+    <div class="w-full md:w-1/2">
+      <img src="/server_section.svg" alt="Web Section" class="w-full h-auto">
+    </div>
+    <div class="w-full md:w-1/2 px-4 md:px-8">
+      <h2 class="text-2xl font-bold mb-4">Server Management</h2>
+      <p class="text-lg text-neutral-700 mb-4">
+        Minecraftのサーバーホストを行っています。プラグインサーバーやMODサーバーなど様々なサーバーの提供が可能です。<br>
+        サーバーの構築を自動で行うツールも現在開発しています。(ブログにて進捗を公開予定!)
+      </p>
+      <SfButton size="md" variant="secondary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
