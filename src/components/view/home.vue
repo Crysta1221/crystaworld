@@ -114,12 +114,12 @@ import { Icon } from '@iconify/vue';
     </div>
   </div>
   <!-- Minecraft Section -->
-  <div class="flex flex-col items-center justify-center bg-yellow-200 md:flex-row md:justify-center">
+  <div class="flex flex-col items-center justify-center bg-green-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/mc_section.svg" alt="Minecraft Section" class="w-full h-auto">
     </div>
     <div class="w-full md:w-1/2 px-4 md:px-8">
-      <h2 class="text-2xl font-bold mb-4">Minecraft Develop</h2>
+      <h2 class="text-2xl font-bold mb-4">Minecraft Development</h2>
       <p class="text-lg text-neutral-700 mb-4">
         Minecraftでデータパックやコマンド、Skriptによる小規模なプラグインなどの開発をしています。<br>
         一部データパックや配布マップはGithub、ブログにて公開されています。<br>
@@ -135,7 +135,7 @@ import { Icon } from '@iconify/vue';
       <img src="/discord_section.svg" alt="Discord Section" class="w-full h-auto">
     </div>
     <div class="w-full md:w-1/2 px-4 md:px-8">
-      <h2 class="text-2xl font-bold mb-4">Discord Bot Develop</h2>
+      <h2 class="text-2xl font-bold mb-4">Discord Bot Development</h2>
       <p class="text-lg text-neutral-700 mb-4">
         SNSツール、Discordで使えるコミュニティ向けのBotを開発しています。<br>
         メンバーを管理したり、音楽を再生したり、ゲームのプロフィールを見たり...必要な機能を一つのBotに。<br>
@@ -146,12 +146,12 @@ import { Icon } from '@iconify/vue';
     <div class="h-8 md:hidden"></div>
   </div>
   <!-- WebPage Section -->
-  <div class="flex flex-col items-center justify-center bg-green-200 md:flex-row md:justify-center">
+  <div class="flex flex-col items-center justify-center bg-orange-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/web_section.svg" alt="Web Section" class="w-full h-auto">
     </div>
     <div class="w-full md:w-1/2 px-4 md:px-8">
-      <h2 class="text-2xl font-bold mb-4">Website Develop</h2>
+      <h2 class="text-2xl font-bold mb-4">Website Development</h2>
       <p class="text-lg text-neutral-700 mb-4">
         Vue3 + Vite + Tailwind や通常の HTML + CSS + JavaScriptをはじめとするWebサイトやサービスの制作を行っています。<br>
         リリース済みのサービスなどはServicesページにてご覧いただけます。<br>
