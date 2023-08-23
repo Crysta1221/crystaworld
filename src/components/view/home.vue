@@ -55,7 +55,7 @@ import { Icon } from '@iconify/vue';
         >
           データパックやコマンド、小規模なプラグイン開発
         </p>
-        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto" @click="McSec">Learn More</SfButton>
       </div>
     </div>
     <!-- Section 2 -->
@@ -73,7 +73,7 @@ import { Icon } from '@iconify/vue';
         >
           SNSサービス、Discord用のコミュニティ向けBotの開発
         </p>
-        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto" @click="BotSec">Learn More</SfButton>
       </div>
     </div>
     <!-- Section 3 -->
@@ -91,7 +91,7 @@ import { Icon } from '@iconify/vue';
         >
           小規模なビジネス・個人向けのWebサイト制作
         </p>
-        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto" @click="WebSec">Learn More</SfButton>
       </div>
     </div>
     <!-- Section 4 -->
@@ -109,12 +109,12 @@ import { Icon } from '@iconify/vue';
         >
           Minecraftなどのゲームサーバーの構築・運用
         </p>
-        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto">Learn More</SfButton>
+        <SfButton size="sm" variant="secondary" :disabled="false" class="mt-auto" @click="SrvSec">Learn More</SfButton>
       </div>
     </div>
   </div>
   <!-- Minecraft Section -->
-  <div class="flex flex-col items-center justify-center bg-green-200 md:flex-row md:justify-center">
+  <div id="minecraft-section" class="flex flex-col items-center justify-center bg-green-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/mc_section.svg" alt="Minecraft Section" class="w-full h-auto">
     </div>
@@ -130,7 +130,7 @@ import { Icon } from '@iconify/vue';
     <div class="h-8 md:hidden"></div>
   </div>
   <!-- Discord Section -->
-  <div class="flex flex-col items-center justify-center bg-blue-200 md:flex-row md:justify-center">
+  <div id="bot-section" class="flex flex-col items-center justify-center bg-blue-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/discord_section.svg" alt="Web Section" class="w-full h-auto">
     </div>
@@ -146,7 +146,7 @@ import { Icon } from '@iconify/vue';
     <div class="h-8 md:hidden"></div>
   </div>
   <!-- WebPage Section -->
-  <div class="flex flex-col items-center justify-center bg-orange-200 md:flex-row md:justify-center">
+  <div id="web-section" class="flex flex-col items-center justify-center bg-orange-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/web_section.svg" alt="Web Section" class="w-full h-auto">
     </div>
@@ -161,7 +161,7 @@ import { Icon } from '@iconify/vue';
     <div class="h-8 md:hidden"></div>
   </div>
   <!-- Server Section -->
-  <div class="flex flex-col items-center justify-center bg-violet-200 md:flex-row md:justify-center">
+  <div id="srv-section" class="flex flex-col items-center justify-center bg-violet-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/server_section.svg" alt="Web Section" class="w-full h-auto">
     </div>
@@ -191,7 +191,23 @@ export default {
   methods: {
     redirectToExternalSite() {
       window.open('https://crysta1221.github.io', '_blank');
-    }
+    },
+    McSec(){
+      const minecraftSection = document.getElementById('minecraft-section');
+      minecraftSection.scrollIntoView({ behavior: 'smooth' });
+    },
+    BotSec(){
+      const minecraftSection = document.getElementById('bot-section');
+      minecraftSection.scrollIntoView({ behavior: 'smooth' });
+    },
+    WebSec(){
+      const minecraftSection = document.getElementById('web-section');
+      minecraftSection.scrollIntoView({ behavior: 'smooth' });
+    },
+    SrvSec(){
+      const minecraftSection = document.getElementById('srv-section');
+      minecraftSection.scrollIntoView({ behavior: 'smooth' });
+    },
   }
 }
 </script>

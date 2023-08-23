@@ -7,6 +7,7 @@ import Info from "../components/view/info.vue"
 import Contact from "../components/view/contact.vue"
 import Privacy from "../components/view/privacy.vue"
 import Terms from "../components/view/terms.vue"
+import Donate from "../components/view/donate.vue"
 import notfound from "../components/view/404.vue"
 
 
@@ -45,6 +46,11 @@ const routes = [
     path: "/terms",
     name: "Terms",
     component: Terms,
+  },
+  {
+    path: "/donate",
+    name: "Donate",
+    component: Donate,
   },
   {
     path: "/:catchAll(.*)",

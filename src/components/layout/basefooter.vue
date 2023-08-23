@@ -61,6 +61,10 @@ const bottomLinks = [
     label: 'Privacy policy',
     link: '/policy',
   },
+  {
+    label: 'Donate',
+    link: '/donate',
+  },
 ];
 
 </script>

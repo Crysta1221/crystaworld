@@ -11,22 +11,22 @@ import { SfButton } from '@storefront-ui/vue';
           src="/background.svg"
           class="absolute w-full md:h-[80%] sm:h-[40%] z-[-1] md:object-cover"
         />
-    </picture>
+      </picture>
       <div class="md:flex md:flex-row-reverse md:justify-center max-w[1536px] mx-auto md:min-h-[600px]">
         <div class="flex flex-col md:basis-2/4 md:items-stretch md:overflow-hidden">
         </div>
         <div class="p-4 md:p-10 md:max-w-[768px] md:flex md:flex-col md:justify-center md:items-start md:basis-2/4">
-        <h1 class="typography-display-2 md:typography-display-1 md:leading-[67.5px] font-bold mt-2 mb-4">
-            利用規約
+        <h1 class="typography-display-2 md:typography-display-1 md:leading-[67.5px] font-bold mt-2 mb-4 p-8">
+            寄付
         </h1>
-        <p class="typography-text-base md:typography-text-lg">
-            2023年8月14日 最終更新
-        </p>
       </div>
       </div>
     </div>
-    <div class="prose max-w-none text-left ml-10 -mt-96 md:-mt-20 lg:-mt-24 mr-10">
-      <Term />
+    <div class="prose max-w-none text-center ml-10 -mt-96 md:-mt-20 lg:-mt-24 mr-10">
+      <Donate/>
+    </div>
+    <div class="text-center mb-4 flex justify-center">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfnOqjgzpn10_cHPNL5ie1YnMRMbq9mmjeR2rIYnHAfn7IOcg/viewform?embedded=true" width="800" height="850" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
     </div>
     <basefooter />
   </template>
@@ -34,7 +34,7 @@ import { SfButton } from '@storefront-ui/vue';
 <script>
 import navbar from "@/components/layout/navbar.vue";
 import basefooter from "@/components/layout/basefooter.vue";
-import Term from "../../markdown/terms.md";
+import Donate from "../../markdown/donate.md";
 export default {
   components: {
     navbar,

@@ -4,11 +4,11 @@ import { SfButton } from '@storefront-ui/vue';
 
 <template>
     <navbar />
-    <div class="relative min-h-[600px]">
+    <div class="relative min-h-[600px] mt-12">
       <picture>
-        <source srcset="/bg.png" media="(min-width: 768px)" style="@media (min-width:767px) {height: 80%;}"/>
+        <source srcset="/background.svg" media="(min-width: 768px)" style="@media (min-width:767px) {height: 80%;}"/>
         <img
-          src="/bg.png"
+          src="/background.svg"
           class="absolute w-full md:h-[80%] sm:h-[40%] z-[-1] md:object-cover"
         />
       </picture>
