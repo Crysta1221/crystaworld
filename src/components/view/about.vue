@@ -3,25 +3,28 @@ import { SfButton } from '@storefront-ui/vue';
 </script>
 
 <template>
-    <navbar />
-    <basefooter />
+  <navbar />
+  
+  <basefooter />
   </template>
 
 <script>
 import navbar from "@/components/layout/navbar.vue";
 import basefooter from "@/components/layout/basefooter.vue";
+import { Icon } from '@iconify/vue';
 
 export default {
   components: {
     navbar,
     basefooter,
+    Icon,
   }
 }
 </script>
 
 <style scoped>
 h1{
-    font-size:32px;
+    font-size:30px;
 }
 h2{
     font-size:24px;

@@ -23,7 +23,7 @@ import { Icon } from '@iconify/vue';
       </div>
       <div class="p-4 md:p-10 md:max-w-[768px] md:flex md:flex-col md:justify-center md:items-start md:basis-2/4">
         <h1 class="typography-display-2 md:typography-display-1 md:leading-[67.5px] font-bold mt-2 mb-4">
-          Crysta World
+          あったらをカタチに。
         </h1>
         <p class="typography-text-base md:typography-text-lg head-3">
           ゲームに役立つサービスを作成・提供するグループです
