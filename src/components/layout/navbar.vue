@@ -55,19 +55,19 @@
           <span class="break-words ml-4">Home</span>
           <template #suffix><SfIconChevronRight /></template>
         </SfListItem>
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/product">
+          <template #prefix><Icon icon="mdi:service-toolbox" width="32" height="32" /></template>
+          <span class="break-words ml-4">Product</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
+        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/download">
+          <template #prefix><Icon icon="mdi:information" width="32" height="32" /></template>
+          <span class="break-words ml-4">Download</span>
+          <template #suffix><SfIconChevronRight /></template>
+        </SfListItem>
         <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/about">
           <template #prefix><Icon icon="mdi:account-group" width="32" height="32" /></template>
           <span class="break-words ml-4">About</span>
-          <template #suffix><SfIconChevronRight /></template>
-        </SfListItem>
-        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/services">
-          <template #prefix><Icon icon="mdi:service-toolbox" width="32" height="32" /></template>
-          <span class="break-words ml-4">Services</span>
-          <template #suffix><SfIconChevronRight /></template>
-        </SfListItem>
-        <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/info">
-          <template #prefix><Icon icon="mdi:information" width="32" height="32" /></template>
-          <span class="break-words ml-4">Info</span>
           <template #suffix><SfIconChevronRight /></template>
         </SfListItem>
         <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/contact">
@@ -86,30 +86,30 @@
           class="hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 lg:mr-4"
           type="button"
           variant="tertiary"
-          tag="router-link" to="/about"
+          tag="router-link" to="/product"
           active-class="bg-primary-900"
           >
-            <span class="hidden lg:flex whitespace-nowrap">About</span>
-          </SfButton>
-
-          <SfButton
-          class="hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 lg:mr-4"
-          type="button"
-          variant="tertiary"
-          tag="router-link" to="/services"
-          active-class="bg-primary-900"
-          >
-            <span class="hidden lg:flex whitespace-nowrap">Services</span>
+            <span class="hidden lg:flex whitespace-nowrap">Product</span>
           </SfButton>
           
           <SfButton
           class="hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 lg:mr-4"
           type="button"
           variant="tertiary"
-          tag="router-link" to="/info"
+          tag="router-link" to="/download"
           active-class="bg-primary-900"
           >
-            <span class="hidden lg:flex whitespace-nowrap">Info</span>
+            <span class="hidden lg:flex whitespace-nowrap">Download</span>
+          </SfButton>
+
+          <SfButton
+          class="hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 lg:mr-4"
+          type="button"
+          variant="tertiary"
+          tag="router-link" to="/about"
+          active-class="bg-primary-900"
+          >
+            <span class="hidden lg:flex whitespace-nowrap">About</span>
           </SfButton>
           <SfButton
           class="hidden lg:flex text-white hover:text-white active:text-white hover:bg-primary-800 active:bg-primary-900 lg:mr-4"

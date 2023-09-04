@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../components/view/home.vue";  // 追記
 import About from "../components/view/about.vue"
-import Works from "../components/view/works.vue"
-import Info from "../components/view/info.vue"
+import Product from "../components/view/product.vue"
+import Download from "../components/view/download.vue"
 import Contact from "../components/view/contact.vue"
 import Privacy from "../components/view/privacy.vue"
 import Terms from "../components/view/terms.vue"
@@ -23,14 +23,14 @@ const routes = [
     component: About,
   },
   {
-    path: "/services",
-    name: "Service",
-    component: Works,
+    path: "/product",
+    name: "Product",
+    component: Product,
   },
   {
-    path: "/info",
-    name: "Info",
-    component: Info,
+    path: "/download",
+    name: "Download",
+    component: Download,
   },
   {
     path: "/contact",

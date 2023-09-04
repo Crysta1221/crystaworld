@@ -28,7 +28,13 @@ import { ref } from 'vue';
     <div class="prose max-w-none text-center ml-10 -mt-96 md:-mt-20 lg:-mt-24 mr-10">
       <Donate/>
     </div>
-    <div class="container mx-auto mb-24">
+    <div class="flex justify-center mt-2">
+      <a href="https://paypal.me/softcrystal1" target="_blank" class="flex items-center text-blue-700 hover:text-blue-900 active:text-blue-900">
+        <span class="mr-2">Paypalでの寄付はこちら</span>
+        <Icon icon="mdi:open-in-new" width="22" height="22"/>
+      </a>
+    </div>
+    <div class="container mx-auto mt-8 mb-24">
       <form @submit.prevent="request">
       <div class="mb-4">
         <label for="name" class="block font-bold mb-2">お名前 <font color="red">*</font></label>
