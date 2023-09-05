@@ -96,6 +96,44 @@ import { SfButton } from '@storefront-ui/vue';
       </div>
     </div>
     </div>
+    <div class="flex justify-center">
+      <section class="">
+        <div class="container max-w-5xl px-4 py-12 mx-auto">
+          <div class="grid gap-4 mx-4 sm:grid-cols-12">
+            <div class="col-span-12 sm:col-span-3">
+              <div class="text-center sm:text-left mb-14 before:block before:w-24 before:h-3 before:mb-5 before:rounded-md before:mx-auto sm:before:mx-0 before:dark:bg-emerald-400">
+                <h3 class="text-3xl font-semibold">Experience</h3>
+                <span class="text-sm font-bold tracking-wider uppercase dark:text-gray-400">2018-2023</span>
+              </div>
+            </div>
+            <div class="relative col-span-12 px-4 space-y-6 sm:col-span-9">
+              <div class="col-span-12 space-y-12 relative px-4 sm:col-span-8 sm:space-y-8 sm:before:absolute sm:before:top-2 sm:before:bottom-0 sm:before:w-0.5 sm:before:-left-3 before:dark:bg-gray-700">
+                <div class="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-emerald-400">
+                  <h3 class="text-xl font-semibold tracking-wide">CrystaWorld 誕生</h3>
+                  <time class="text-xs tracking-wide uppercase dark:text-gray-400">Oct 2018</time>
+                  <p class="mt-3">当初はWindows向けのツール配布のために作成されました。</p>
+                </div>
+                <div class="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-emerald-400">
+                  <h3 class="text-xl font-semibold tracking-wide">フロントエンド開発移行</h3>
+                  <time class="text-xs tracking-wide uppercase dark:text-gray-400">Mar 2019</time>
+                  <p class="mt-3">プログラミング言語が古く新しいOSに対応できなくなったためWeb開発に移行しました。</p>
+                </div>
+                <div class="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-emerald-400">
+                  <h3 class="text-xl font-semibold tracking-wide">Crysta Worldのブログをリリース</h3>
+                  <time class="text-xs tracking-wide uppercase dark:text-gray-400">Sep 2022</time>
+                  <p class="mt-3">hugoによる静的サイトジェネレータを用いてブログをリリースしました。<br><a style="text-decoration:underline;" href="https://crysta1221.github.io" target="_blank">https://crysta1221.github.io</a></p>
+                </div>
+                <div class="flex flex-col sm:relative sm:before:absolute sm:before:top-2 sm:before:w-4 sm:before:h-4 sm:before:rounded-full sm:before:left-[-35px] sm:before:z-[1] before:dark:bg-emerald-400">
+                  <h3 class="text-xl font-semibold tracking-wide">Crysta Worldのウェブサイトをリリース</h3>
+                  <time class="text-xs tracking-wide uppercase dark:text-gray-400">Sep 2023</time>
+                  <p class="mt-3">今までGoogle Siteで構築していたウェブサイトをVue3+Vite+Tailwind CSSで再構築しました。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>         
+    </div>
   </div>
   <basefooter />
   </template>

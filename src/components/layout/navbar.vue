@@ -61,7 +61,7 @@
           <template #suffix><SfIconChevronRight /></template>
         </SfListItem>
         <SfListItem class="border-b border-gray-300" size="lg" tag="router-link" to="/download">
-          <template #prefix><Icon icon="mdi:information" width="32" height="32" /></template>
+          <template #prefix><Icon icon="mdi:download" width="32" height="32" /></template>
           <span class="break-words ml-4">Download</span>
           <template #suffix><SfIconChevronRight /></template>
         </SfListItem>
