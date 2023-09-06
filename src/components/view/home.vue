@@ -114,7 +114,7 @@ import { Icon } from '@iconify/vue';
     </div>
   </div>
   <!-- Minecraft Section -->
-  <div id="minecraft-section" class="flex flex-col items-center justify-center bg-green-200 md:flex-row md:justify-center">
+  <div id="minecraft-section" class="flex flex-col items-center justify-center bg-emerald-100 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/mc_section.svg" alt="Minecraft Section" class="w-full h-auto">
     </div>
