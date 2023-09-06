@@ -114,7 +114,7 @@ import { Icon } from '@iconify/vue';
     </div>
   </div>
   <!-- Minecraft Section -->
-  <div id="minecraft-section" class="flex flex-col items-center justify-center bg-emerald-100 md:flex-row md:justify-center">
+  <div id="minecraft-section" class="flex flex-col items-center justify-center bg-emerald-200 md:flex-row md:justify-center">
     <div class="w-full md:w-1/2">
       <img src="/mc_section.svg" alt="Minecraft Section" class="w-full h-auto">
     </div>
@@ -125,7 +125,7 @@ import { Icon } from '@iconify/vue';
         一部データパックや配布マップはGithub、ブログにて公開されています。<br>
         データパックの依頼も受け付けています。詳しくはContactページをご覧ください。
       </p>
-      <SfButton size="md" variant="secondary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
+      <SfButton size="md" variant="primary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
@@ -141,7 +141,7 @@ import { Icon } from '@iconify/vue';
         メンバーを管理したり、音楽を再生したり、ゲームのプロフィールを見たり...必要な機能を一つのBotに。<br>
         開発秘話はブログにて公開中! Botは現在誠意を込めて開発中です。
       </p>
-      <SfButton size="md" variant="secondary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
+      <SfButton size="md" variant="primary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
@@ -156,7 +156,7 @@ import { Icon } from '@iconify/vue';
         Vue3 + Vite + Tailwind や通常の HTML + CSS + JavaScriptをはじめとするWebサイトやサービスの制作を行っています。<br>
         リリース済みのサービスなどはServicesページにてご覧いただけます。<br>
       </p>
-      <SfButton size="md" variant="secondary" :disabled="false" tag="router-link" to="services">サービス一覧</SfButton>
+      <SfButton size="md" variant="primary" :disabled="false" tag="router-link" to="services">サービス一覧</SfButton>
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
@@ -171,7 +171,7 @@ import { Icon } from '@iconify/vue';
         Minecraftのサーバーホストを行っています。プラグインサーバーやMODサーバーなど様々なサーバーの提供が可能です。<br>
         サーバーの構築を自動で行うツールも現在開発しています。(ブログにて進捗を公開予定!)
       </p>
-      <SfButton size="md" variant="secondary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
+      <SfButton size="md" variant="primary" :disabled="false" @click="redirectToExternalSite">ブログへ</SfButton>
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
