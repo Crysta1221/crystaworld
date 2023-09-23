@@ -156,7 +156,7 @@ import { Icon } from '@iconify/vue';
         Vue3 + Vite + Tailwind や通常の HTML + CSS + JavaScriptをはじめとするWebサイトやサービスの制作を行っています。<br>
         リリース済みのサービスなどはServicesページにてご覧いただけます。<br>
       </p>
-      <SfButton size="md" variant="primary" :disabled="false" tag="router-link" to="services">サービス一覧</SfButton>
+      <SfButton size="md" variant="primary" :disabled="false" tag="router-link" to="product">サービス一覧</SfButton>
     </div>
     <div class="h-8 md:hidden"></div>
   </div>
