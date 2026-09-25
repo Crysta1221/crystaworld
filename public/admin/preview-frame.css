@@ -1,0 +1,14 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #24273a;
+}
+
+iframe {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  border: 0;
+  background: #24273a;
+}

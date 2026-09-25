@@ -163,6 +163,16 @@
     font-family: var(--font-sans);
     font-weight: 500;
   }
+  html,
+  body,
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 /* Staggered entrance animation for page transitions */

@@ -64,12 +64,13 @@ function useVisibleHeadingIds(ids: string[]): string[] {
 export interface ArticleTocProps {
   headings: readonly MarkdownHeadingItem[];
   className?: string;
+  onNavigate?: () => void;
 }
 
 /**
  * Organic curved-path Table of Contents navigation matching commapedia.
  */
-export function ArticleToc({ headings, className }: ArticleTocProps) {
+export function ArticleToc({ headings, className, onNavigate }: ArticleTocProps) {
   const items = useMemo(
     () => headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3),
     [headings],
@@ -221,7 +222,10 @@ export function ArticleToc({ headings, className }: ArticleTocProps) {
                 to="."
                 hash={item.id}
                 data-toc-id={item.id}
-                onClick={() => scrollToDocumentHash(item.id)}
+                onClick={() => {
+                  scrollToDocumentHash(item.id);
+                  onNavigate?.();
+                }}
                 aria-current={visibleIds[0] === item.id ? "location" : undefined}
                 className={cn(
                   "py-1.5 text-sm text-muted-foreground no-underline transition-colors wrap-anywhere hover:text-foreground",
