@@ -1,0 +1,2 @@
+# Place shared, cross-feature components here.
+# Each component should live in its own file and be re-exported from an index file as needed.
