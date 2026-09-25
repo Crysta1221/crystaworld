@@ -1,0 +1,5 @@
+# Copy to .dev.vars for `wrangler dev`. Do not commit .dev.vars.
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+# Comma-separated hostnames allowed to finish OAuth. Leave empty to allow any origin.
+ALLOWED_DOMAINS=localhost
