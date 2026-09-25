@@ -4,6 +4,7 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
+import { cmsAdminMiddleware } from "./src/middleware/cms-admin";
 
 const config = defineConfig({
   fmt: {
@@ -30,6 +31,19 @@ const config = defineConfig({
     viteReact(),
     // Self-host the Google Fonts declared in index.html at build time.
     webfontDownload(),
+    {
+      name: "cms-admin",
+      configureServer(server) {
+        return () => {
+          server.middlewares.stack.unshift({ route: "", handle: cmsAdminMiddleware() });
+        };
+      },
+      configurePreviewServer(server) {
+        return () => {
+          server.middlewares.stack.unshift({ route: "", handle: cmsAdminMiddleware() });
+        };
+      },
+    },
   ]),
 });
 
