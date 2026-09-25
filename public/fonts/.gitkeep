@@ -1,0 +1,5 @@
+# Natadecoco Gothic (Latin-only free font) is self-hosted here.
+# Source: https://kashika-lab.co.jp/natadecoco-gothic/ (Natadecoco-gothic_f.zip)
+# License: royalty-free for commercial use, including webfont server upload.
+# Only selling or redistributing the font data itself is prohibited; see the ReadMe in the zip.
+# Referenced via @font-face in src/app/styles.css as "Natadecoco Gothic".
