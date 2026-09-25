@@ -13,7 +13,7 @@ const NAV_ITEMS: readonly TabsPillItem[] = [
   { label: "Home", href: "/" },
   { label: "Works", href: "/works" },
   { label: "Blogs", href: "/blogs" },
-  { label: "Tips", href: "/tips" },
+  { label: "Memos", href: "/memos" },
 ] as const;
 
 const MENU_EASE = "ease-[cubic-bezier(0.65,0,0.35,1)]";

@@ -1,4 +1,5 @@
 import { handleCmsAuth, isCmsAuthPath } from "./cms-auth.ts";
+import { withOgTags } from "./og.ts";
 
 type SiteEnv = {
   ASSETS: { fetch: (request: Request) => Promise<Response> };
@@ -19,6 +20,6 @@ export default {
       url.pathname = "/admin/index.html";
       return env.ASSETS.fetch(new Request(url, request));
     }
-    return env.ASSETS.fetch(request);
+    return withOgTags(request, env.ASSETS, await env.ASSETS.fetch(request));
   },
 };

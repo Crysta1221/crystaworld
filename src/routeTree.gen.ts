@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogsRouteImport } from './routes/blogs'
-import { Route as TipsRouteImport } from './routes/tips'
+import { Route as CmsPreviewRouteImport } from './routes/cms-preview'
+import { Route as MemosRouteImport } from './routes/memos'
 import { Route as WorksRouteImport } from './routes/works'
+import { Route as BlogsBlogIdRouteImport } from './routes/blogs_.$blogId'
+import { Route as MemosMemoIdRouteImport } from './routes/memos_.$memoId'
 import { Route as WorksWorkIdRouteImport } from './routes/works_.$workId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -25,14 +28,29 @@ const BlogsRoute = BlogsRouteImport.update({
   path: '/blogs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TipsRoute = TipsRouteImport.update({
-  id: '/tips',
-  path: '/tips',
+const CmsPreviewRoute = CmsPreviewRouteImport.update({
+  id: '/cms-preview',
+  path: '/cms-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemosRoute = MemosRouteImport.update({
+  id: '/memos',
+  path: '/memos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorksRoute = WorksRouteImport.update({
   id: '/works',
   path: '/works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogsBlogIdRoute = BlogsBlogIdRouteImport.update({
+  id: '/blogs_/$blogId',
+  path: '/blogs/$blogId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MemosMemoIdRoute = MemosMemoIdRouteImport.update({
+  id: '/memos_/$memoId',
+  path: '/memos/$memoId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WorksWorkIdRoute = WorksWorkIdRouteImport.update({
@@ -44,38 +62,75 @@ const WorksWorkIdRoute = WorksWorkIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/blogs': typeof BlogsRoute
-  '/tips': typeof TipsRoute
+  '/cms-preview': typeof CmsPreviewRoute
+  '/memos': typeof MemosRoute
   '/works': typeof WorksRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
+  '/memos/$memoId': typeof MemosMemoIdRoute
   '/works/$workId': typeof WorksWorkIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/blogs': typeof BlogsRoute
-  '/tips': typeof TipsRoute
+  '/cms-preview': typeof CmsPreviewRoute
+  '/memos': typeof MemosRoute
   '/works': typeof WorksRoute
+  '/blogs/$blogId': typeof BlogsBlogIdRoute
+  '/memos/$memoId': typeof MemosMemoIdRoute
   '/works/$workId': typeof WorksWorkIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/blogs': typeof BlogsRoute
-  '/tips': typeof TipsRoute
+  '/cms-preview': typeof CmsPreviewRoute
+  '/memos': typeof MemosRoute
   '/works': typeof WorksRoute
+  '/blogs_/$blogId': typeof BlogsBlogIdRoute
+  '/memos_/$memoId': typeof MemosMemoIdRoute
   '/works_/$workId': typeof WorksWorkIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/blogs' | '/tips' | '/works' | '/works/$workId'
+  fullPaths:
+    | '/'
+    | '/blogs'
+    | '/cms-preview'
+    | '/memos'
+    | '/works'
+    | '/blogs/$blogId'
+    | '/memos/$memoId'
+    | '/works/$workId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blogs' | '/tips' | '/works' | '/works/$workId'
-  id: '__root__' | '/' | '/blogs' | '/tips' | '/works' | '/works_/$workId'
+  to:
+    | '/'
+    | '/blogs'
+    | '/cms-preview'
+    | '/memos'
+    | '/works'
+    | '/blogs/$blogId'
+    | '/memos/$memoId'
+    | '/works/$workId'
+  id:
+    | '__root__'
+    | '/'
+    | '/blogs'
+    | '/cms-preview'
+    | '/memos'
+    | '/works'
+    | '/blogs_/$blogId'
+    | '/memos_/$memoId'
+    | '/works_/$workId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BlogsRoute: typeof BlogsRoute
-  TipsRoute: typeof TipsRoute
+  CmsPreviewRoute: typeof CmsPreviewRoute
+  MemosRoute: typeof MemosRoute
   WorksRoute: typeof WorksRoute
+  BlogsBlogIdRoute: typeof BlogsBlogIdRoute
+  MemosMemoIdRoute: typeof MemosMemoIdRoute
   WorksWorkIdRoute: typeof WorksWorkIdRoute
 }
 
@@ -95,11 +150,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tips': {
-      id: '/tips'
-      path: '/tips'
-      fullPath: '/tips'
-      preLoaderRoute: typeof TipsRouteImport
+    '/cms-preview': {
+      id: '/cms-preview'
+      path: '/cms-preview'
+      fullPath: '/cms-preview'
+      preLoaderRoute: typeof CmsPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/memos': {
+      id: '/memos'
+      path: '/memos'
+      fullPath: '/memos'
+      preLoaderRoute: typeof MemosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/works': {
@@ -107,6 +169,20 @@ declare module '@tanstack/react-router' {
       path: '/works'
       fullPath: '/works'
       preLoaderRoute: typeof WorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blogs_/$blogId': {
+      id: '/blogs_/$blogId'
+      path: '/blogs/$blogId'
+      fullPath: '/blogs/$blogId'
+      preLoaderRoute: typeof BlogsBlogIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/memos_/$memoId': {
+      id: '/memos_/$memoId'
+      path: '/memos/$memoId'
+      fullPath: '/memos/$memoId'
+      preLoaderRoute: typeof MemosMemoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/works_/$workId': {
@@ -122,8 +198,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BlogsRoute: BlogsRoute,
-  TipsRoute: TipsRoute,
+  CmsPreviewRoute: CmsPreviewRoute,
+  MemosRoute: MemosRoute,
   WorksRoute: WorksRoute,
+  BlogsBlogIdRoute: BlogsBlogIdRoute,
+  MemosMemoIdRoute: MemosMemoIdRoute,
   WorksWorkIdRoute: WorksWorkIdRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,10 +1,11 @@
-import { parseMarkdownFile } from "@/shared/lib/markdown";
+import { parseMarkdownFile, splitList } from "@/shared/lib/markdown";
 
 export type BlogPost = {
   id: string;
   title: string;
   /** `YYYY-MM`. Blogs are Japanese only. */
   date: string;
+  tags: readonly string[];
   body: string;
 };
 
@@ -20,6 +21,10 @@ const REQUIRED_FIELDS = ["title", "date"] as const;
  * Blog posts are Japanese Markdown files under src/contents/blogs.
  */
 export const BLOGS = loadBlogs();
+
+export function getBlog(id: string): BlogPost | undefined {
+  return BLOGS.find((post) => post.id === id);
+}
 
 function loadBlogs(): readonly BlogPost[] {
   return Object.entries(sources)
@@ -38,6 +43,7 @@ function toPost(path: string, source: string): BlogPost {
     id,
     title: meta.title ?? id,
     date: meta.date ?? "",
+    tags: splitList(meta.tags ?? ""),
     body,
   };
 }

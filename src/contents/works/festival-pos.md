@@ -3,8 +3,24 @@ title: 文化祭 屋台POSシステム
 category: Web Development
 date: 2025-10
 image: /works/festival-pos.png
-images: /works/festival-pos.png, /works/festival-pos-2.png, /works/festival-pos-3.png
-tags: Next.js 15, React 19, TypeScript, Tailwind CSS v4, shadcn/ui, Jotai, NextAuth.js, Valibot, Google Sheets, Bun, Biome, Vercel, GitHub Actions
+images:
+  - /works/festival-pos.png
+  - /works/festival-pos-2.png
+  - /works/festival-pos-3.png
+tags:
+  - Bun
+  - React
+  - Next.js
+  - Tailwind CSS
+  - TypeScript
+  - shadcn/ui
+  - Jotai
+  - NextAuth.js
+  - Valibot
+  - Biome
+  - Google Sheets
+  - Vercel
+  - GitHub Actions
 url: https://qiita.com/Crysta1221/items/892f213731065819422c
 ---
 

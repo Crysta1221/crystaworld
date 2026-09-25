@@ -15,6 +15,48 @@ media_folder: public
 public_folder: /
 
 collections:
+  - name: categories
+    label: Categories
+    label_singular: Category
+    folder: src/contents/categories
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    fields:
+      - label: Name
+        name: name
+        widget: string
+
+  - name: tags
+    label: Tags
+    label_singular: Tag
+    folder: src/contents/tags
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    fields:
+      - label: Name
+        name: name
+        widget: string
+      - label: Icon
+        name: icon
+        widget: image
+        required: false
+        hint: Saved under public/. Pick an existing file or upload a new one.
+      - label: Monochrome
+        name: mask
+        widget: boolean
+        required: false
+        default: false
+        hint: Turn on when the icon is a single-color mark.
+      - label: Wide
+        name: wide
+        widget: boolean
+        required: false
+        default: false
+
   - name: blogs
     label: Blogs
     label_singular: Blog
@@ -31,6 +73,48 @@ collections:
         name: date
         widget: string
         pattern: ["^\\d{4}-\\d{2}$", "Use YYYY-MM"]
+      - label: Tags
+        name: tags
+        widget: relation
+        collection: tags
+        multiple: true
+        required: false
+        value_field: name
+        display_fields: [name]
+        search_fields: [name]
+        options_length: 100
+        hint: Register a name and icon in the Tags collection. Icons are stored in public/.
+      - label: Body
+        name: body
+        widget: markdown
+
+  - name: memos
+    label: Memos
+    label_singular: Memo
+    folder: src/contents/memos
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Date
+        name: date
+        widget: string
+        pattern: ["^\\d{4}-\\d{2}$", "Use YYYY-MM"]
+      - label: Tags
+        name: tags
+        widget: relation
+        collection: tags
+        multiple: true
+        required: false
+        value_field: name
+        display_fields: [name]
+        search_fields: [name]
+        options_length: 100
+        hint: Register a name and icon in the Tags collection. Icons are stored in public/.
       - label: Body
         name: body
         widget: markdown
@@ -49,7 +133,13 @@ collections:
         widget: string
       - label: Category
         name: category
-        widget: string
+        widget: relation
+        collection: categories
+        value_field: name
+        display_fields: [name]
+        search_fields: [name]
+        options_length: 100
+        hint: Add or remove categories from the Categories collection.
       - label: Date
         name: date
         widget: string
@@ -59,12 +149,20 @@ collections:
         widget: image
       - label: Images
         name: images
-        widget: string
-        hint: Comma-separated paths, for example /works/a.png, /works/b.png
+        widget: image
+        multiple: true
+        required: false
+        hint: Gallery images, separate from the cover. Reorder them here.
       - label: Tags
         name: tags
-        widget: string
-        hint: Comma-separated names, matching the site parser
+        widget: relation
+        collection: tags
+        multiple: true
+        value_field: name
+        display_fields: [name]
+        search_fields: [name]
+        options_length: 100
+        hint: Register a name and icon in the Tags collection. Icons are stored in public/.
       - label: URL
         name: url
         widget: string

@@ -3,8 +3,17 @@ title: 畳サーバー 報告プラグイン
 category: Game Plugin
 date: 2025-08
 image: /works/tatami-report.png
-images: /works/tatami-report.png, /works/tatami-report-2.png, /works/tatami-report-3.png
-tags: Minecraft, Kotlin, Paper API, Discord, Webhook, Velocity
+images:
+  - /works/tatami-report.png
+  - /works/tatami-report-2.png
+  - /works/tatami-report-3.png
+tags:
+  - Minecraft
+  - Kotlin
+  - Paper API
+  - Discord
+  - Webhook
+  - Velocity
 url: https://tatamiserver.com/
 ---
 

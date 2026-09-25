@@ -5,6 +5,7 @@ import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
 import { cmsAdminMiddleware } from "./src/middleware/cms-admin";
+import { ogImages } from "./src/og/plugin";
 
 const config = defineConfig({
   fmt: {
@@ -31,6 +32,7 @@ const config = defineConfig({
     viteReact(),
     // Self-host the Google Fonts declared in index.html at build time.
     webfontDownload(),
+    ogImages(),
     {
       name: "cms-admin",
       configureServer(server) {

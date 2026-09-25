@@ -1,6 +1,10 @@
 ---
 title: Crystaworld へようこそ
 date: 2026-09
+tags:
+  - React
+  - TypeScript
+  - Tailwind CSS
 ---
 
 ポートフォリオサイト「Crystaworld」の技術スタックと、Markdown 表現のサンプル記事です。
@@ -39,7 +43,7 @@ interface SiteConfig {
 export const siteConfig = {
   name: "Crystaworld",
   url: "https://crysta.dev",
-  features: ["Works", "Blogs", "Tips"],
+  features: ["Works", "Blogs", "Memos"],
 } as const satisfies SiteConfig;
 ```
 

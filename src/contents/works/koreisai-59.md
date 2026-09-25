@@ -3,8 +3,16 @@ title: 第59回 工嶺祭
 category: Web Development
 date: 2024-10
 image: /works/koreisai.png
-images: /works/koreisai.png, /works/koreisai-timetable-1.png, /works/koreisai-timetable-2.png
-tags: React, Next.js, TypeScript, Tailwind CSS, Framer Motion
+images:
+  - /works/koreisai.png
+  - /works/koreisai-timetable-1.png
+  - /works/koreisai-timetable-2.png
+tags:
+  - React
+  - Next.js
+  - TypeScript
+  - Tailwind CSS
+  - Framer Motion
 url: https://koreisai.tech/
 ---
 

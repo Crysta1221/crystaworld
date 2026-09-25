@@ -1,4 +1,5 @@
 import { Outlet, createRootRoute, useLocation } from "@tanstack/react-router";
+import { SiteFooter } from "@/shared/components/footer";
 import { SiteHeader } from "@/shared/components/header";
 import { AppContainer } from "@/shared/components/layout";
 
@@ -11,16 +12,29 @@ export const Route = createRootRoute({
 function RootLayout() {
   const pathname = useLocation({ select: (location) => location.pathname });
 
-  return (
-    <>
-      <SiteHeader />
-      <main className="pt-20">
+  if (pathname === "/cms-preview") {
+    return (
+      <div className="min-h-dvh bg-background">
         <AppContainer>
-          <div key={pathname}>
-            <Outlet />
-          </div>
+          <Outlet />
         </AppContainer>
-      </main>
-    </>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex w-full flex-1 flex-col">
+      <div className="flex min-h-dvh flex-col">
+        <SiteHeader />
+        <main className="flex-1 pt-20">
+          <AppContainer>
+            <div key={pathname}>
+              <Outlet />
+            </div>
+          </AppContainer>
+        </main>
+      </div>
+      <SiteFooter />
+    </div>
   );
 }
