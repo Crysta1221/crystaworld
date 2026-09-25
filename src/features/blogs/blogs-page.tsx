@@ -1,4 +1,5 @@
 import { PageHero } from "@/shared/components/page-hero";
+import { PostIndex } from "@/shared/components/post-index/post-index";
 
 import { BlogCard } from "./blog-card";
 import { BLOGS } from "./catalog";
@@ -13,19 +14,11 @@ export function BlogsPage() {
         <PageHero pattern="blueprint" title="BLOGS" />
       </div>
       <div className="py-6 sm:py-8">
-        {BLOGS.length === 0 ? (
-          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            記事はまだありません。
-          </p>
-        ) : (
-          <ul className="grid list-none items-stretch gap-3 sm:grid-cols-2">
-            {BLOGS.map((post) => (
-              <li key={post.id} className="min-w-0">
-                <BlogCard post={post} />
-              </li>
-            ))}
-          </ul>
-        )}
+        <PostIndex
+          posts={BLOGS}
+          emptyMessage="記事はまだありません。"
+          renderPost={(post) => <BlogCard post={post} />}
+        />
       </div>
     </div>
   );
