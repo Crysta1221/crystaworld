@@ -196,8 +196,8 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .slide-enter,
-  .slide-enter-content > * {
+  .is-transition .slide-enter,
+  .is-transition .slide-enter-content > * {
     animation: slide-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(var(--start, 0ms) + var(--stagger, 0) * var(--delay, 45ms));
   }
