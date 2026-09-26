@@ -24,7 +24,9 @@ export default {
     if (url.pathname === "/api/link-preview") return linkPreviewResponse(request);
     if (isCmsAuthPath(url.pathname)) return handleCmsAuth(request, env);
     if (url.pathname === "/admin" || url.pathname === "/admin/") {
-      url.pathname = "/admin/index.html";
+      // Ask assets for the directory. Fetching /admin/index.html makes the
+      // asset layer redirect back to /admin/, which loops with this Worker.
+      url.pathname = "/admin/";
       return env.ASSETS.fetch(new Request(url, request));
     }
     return withOgTags(request, env.ASSETS, await env.ASSETS.fetch(request));
