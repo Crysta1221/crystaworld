@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Dialog } from "@base-ui/react/dialog";
-import { CaretDownIcon, XIcon } from "@phosphor-icons/react";
+import { XIcon } from "@phosphor-icons/react";
 
 import { Button } from "@/shared/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import {
   Combobox,
   ComboboxChip,
@@ -149,23 +150,27 @@ export function PostFilterDialog({ open, onOpenChange, tags, value, onApply }: P
               <label htmlFor="post-filter-sort" className="block text-sm font-bold">
                 並び順
               </label>
-              <div className="relative">
-                <select
+              <Select
+                items={SORTS}
+                value={sort}
+                onValueChange={(next) => {
+                  if (isSortKey(next)) setSort(next);
+                }}
+              >
+                <SelectTrigger
                   id="post-filter-sort"
-                  value={sort}
-                  onChange={(event) => {
-                    if (isSortKey(event.target.value)) setSort(event.target.value);
-                  }}
-                  className={`${FIELD} appearance-none pe-10`}
+                  className="h-11 w-full rounded-xl border-transparent bg-muted px-3 shadow-none data-[size=default]:h-11"
                 >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent alignItemWithTrigger={false}>
                   {SORTS.map((item) => (
-                    <option key={item.value} value={item.value}>
+                    <SelectItem key={item.value} value={item.value}>
                       {item.label}
-                    </option>
+                    </SelectItem>
                   ))}
-                </select>
-                <CaretDownIcon className="pointer-events-none absolute inset-e-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              </div>
+                </SelectContent>
+              </Select>
             </section>
           </div>
 
