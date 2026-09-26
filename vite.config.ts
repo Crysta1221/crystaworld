@@ -5,6 +5,7 @@ import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
 import { cmsAdminMiddleware } from "./workers/dev/cms-admin";
+import { linkPreviewMiddleware } from "./workers/dev/link-preview";
 import { zenMaruSubsetPlugin } from "./scripts/subset-fonts.ts";
 import { ogImages } from "./workers/og/plugin";
 
@@ -39,12 +40,18 @@ const config = defineConfig({
       name: "cms-admin",
       configureServer(server) {
         return () => {
-          server.middlewares.stack.unshift({ route: "", handle: cmsAdminMiddleware() });
+          server.middlewares.stack.unshift(
+            { route: "", handle: cmsAdminMiddleware() },
+            { route: "", handle: linkPreviewMiddleware() },
+          );
         };
       },
       configurePreviewServer(server) {
         return () => {
-          server.middlewares.stack.unshift({ route: "", handle: cmsAdminMiddleware() });
+          server.middlewares.stack.unshift(
+            { route: "", handle: cmsAdminMiddleware() },
+            { route: "", handle: linkPreviewMiddleware() },
+          );
         };
       },
     },

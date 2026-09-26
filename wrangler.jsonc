@@ -7,6 +7,14 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/admin", "/admin/", "/auth", "/callback", "/oauth/authorize", "/oauth/redirect"]
+    "run_worker_first": [
+      "/admin",
+      "/admin/",
+      "/auth",
+      "/callback",
+      "/oauth/authorize",
+      "/oauth/redirect",
+      "/api/link-preview"
+    ]
   }
 }

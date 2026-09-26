@@ -4,6 +4,11 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { Link, useRouterState } from "@tanstack/react-router";
 
+import { remarkLinkCard } from "@/shared/lib/markdown/remark-link-card";
+import { remarkUnwrapImages } from "@/shared/lib/markdown/remark-unwrap-images";
+import { MarkdownImage } from "./markdown-image";
+import { MarkdownAnchor, MarkdownParagraph } from "./markdown-link";
+
 import {
   Caution,
   Description,
@@ -19,10 +24,10 @@ import { hashFromHref, isSameDocumentHref } from "@/shared/lib/markdown/hash-hre
 import { scrollToDocumentHash } from "@/shared/lib/markdown/scroll-to-hash";
 import { cn } from "@/shared/lib/utils";
 
-function MarkdownAnchor({
+function MarkdownLink({
   href,
   children,
-  node: _node,
+  node,
   ...props
 }: React.ComponentProps<"a"> & { node?: unknown }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
@@ -37,16 +42,10 @@ function MarkdownAnchor({
     );
   }
 
-  const isExternal = href?.startsWith("http");
   return (
-    <a
-      href={href}
-      {...props}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
-    >
+    <MarkdownAnchor href={href} node={node} {...props}>
       {children}
-    </a>
+    </MarkdownAnchor>
   );
 }
 
@@ -145,7 +144,8 @@ function liftLeadingStrong(nodes: React.ReactNode[]): { title?: string; nodes: R
 }
 
 const markdownComponents: Components & Record<string, React.ComponentType<any>> = {
-  a: MarkdownAnchor,
+  a: MarkdownLink,
+  p: MarkdownParagraph,
   h1: (props) => <MarkdownHeading as="h1" {...props} />,
   h2: (props) => <MarkdownHeading as="h2" {...props} />,
   h3: (props) => <MarkdownHeading as="h3" {...props} />,
@@ -159,9 +159,7 @@ const markdownComponents: Components & Record<string, React.ComponentType<any>> 
       </div>
     );
   },
-  img({ alt, ...props }) {
-    return <img alt={alt ?? ""} className="my-6 rounded-none shadow-xs" {...props} />;
-  },
+  img: MarkdownImage,
   Note,
   note: Note,
   Warn: WarningAlert,
@@ -193,7 +191,7 @@ export function MarkdownArticle({ markdown, className }: MarkdownArticleProps) {
   return (
     <div className={cn("wiki-prose", className)}>
       <Markdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkUnwrapImages, remarkLinkCard]}
         rehypePlugins={[rehypeSlug]}
         components={markdownComponents}
       >
