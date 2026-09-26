@@ -5,7 +5,7 @@ import { formatYearMonth } from "@/features/locale";
 type PostMediaCardProps = {
   imageSrc: string;
   title: string;
-  /** `YYYY-MM`. */
+  /** `YYYY-MM` or `YYYY-MM-DD`. */
   date: string;
   tags: readonly string[];
   body: string;

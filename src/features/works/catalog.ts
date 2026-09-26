@@ -9,7 +9,7 @@ export type Work = {
   id: string;
   title: string;
   category: string;
-  /** `YYYY-MM`. Works are Japanese only, so the page formats this in Japanese. */
+  /** `YYYY-MM` or `YYYY-MM-DD`. Works are Japanese only, so the page formats this in Japanese. */
   date: string;
   image: string;
   images: readonly string[];

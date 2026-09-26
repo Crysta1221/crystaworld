@@ -88,8 +88,9 @@ collections:
         widget: string
       - label: Date
         name: date
-        widget: string
-        pattern: ["^\\d{4}-\\d{2}$", "Use YYYY-MM"]
+        widget: datetime
+        type: date
+        input_timezone: Asia/Tokyo
       - label: Tags
         name: tags
         widget: relation
@@ -119,8 +120,9 @@ collections:
         widget: string
       - label: Date
         name: date
-        widget: string
-        pattern: ["^\\d{4}-\\d{2}$", "Use YYYY-MM"]
+        widget: datetime
+        type: date
+        input_timezone: Asia/Tokyo
       - label: Tags
         name: tags
         widget: relation
@@ -159,8 +161,9 @@ collections:
         hint: Add or remove categories from the Categories collection.
       - label: Date
         name: date
-        widget: string
-        pattern: ["^\\d{4}-\\d{2}$", "Use YYYY-MM"]
+        widget: datetime
+        type: date
+        input_timezone: Asia/Tokyo
       - label: Cover
         name: image
         widget: image

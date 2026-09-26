@@ -37,18 +37,19 @@ export function getStoredLocale(storageKey: string): Locale {
   }
 }
 
-// `2026-09` becomes `2026年9月` in Japanese and `2026 Sep` in English.
+// `2026-09` becomes `2026年9月`. `2026-09-26` becomes `2026年9月26日`.
 export function formatYearMonth(value: string, locale: Locale): string {
-  const match = /^(\d{4})-(\d{2})$/.exec(value);
+  const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(value);
   if (!match) return value;
 
   const year = match[1];
   const month = Number(match[2]);
+  const day = match[3] ? Number(match[3]) : undefined;
   const monthName = EN_MONTHS[month - 1];
-  if (!year || !monthName) return value;
+  if (!year || !monthName || (day !== undefined && (day < 1 || day > 31))) return value;
 
-  if (locale === "ja") return `${year}年${month}月`;
-  return `${year} ${monthName}`;
+  if (locale === "ja") return day ? `${year}年${month}月${day}日` : `${year}年${month}月`;
+  return day ? `${year} ${monthName} ${day}` : `${year} ${monthName}`;
 }
 
 export function applyLocale(locale: Locale): void {

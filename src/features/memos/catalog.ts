@@ -3,7 +3,7 @@ import { parseMarkdownFile, splitList } from "@/shared/lib/markdown";
 export type MemoPost = {
   id: string;
   title: string;
-  /** `YYYY-MM`. Memos are Japanese only. */
+  /** `YYYY-MM` or `YYYY-MM-DD`. Memos are Japanese only. */
   date: string;
   tags: readonly string[];
   body: string;

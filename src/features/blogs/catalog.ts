@@ -3,7 +3,7 @@ import { parseMarkdownFile, splitList } from "@/shared/lib/markdown";
 export type BlogPost = {
   id: string;
   title: string;
-  /** `YYYY-MM`. Blogs are Japanese only. */
+  /** `YYYY-MM` or `YYYY-MM-DD`. Blogs are Japanese only. */
   date: string;
   tags: readonly string[];
   body: string;
