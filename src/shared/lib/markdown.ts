@@ -1,5 +1,7 @@
 export type MarkdownFile = {
   meta: Record<string, string>;
+  /** One-level lists of objects, such as CMS link buttons. */
+  records: Record<string, readonly Record<string, string>[]>;
   body: string;
 };
 
@@ -14,22 +16,27 @@ export function parseMarkdownFile(
   const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/.exec(source.trim());
   if (!match) throw new Error(`Missing frontmatter in ${path}`);
 
-  const meta = parseFrontmatter(match[1] ?? "");
+  const { meta, records } = parseFrontmatter(match[1] ?? "");
 
   for (const key of required) {
     if (!meta[key]) throw new Error(`Missing ${key} in ${path}`);
   }
 
-  return { meta, body: (match[2] ?? "").trim() };
+  return { meta, records, body: (match[2] ?? "").trim() };
 }
 
 /**
- * Reads flat frontmatter. Scalars stay strings. YAML lists and flow lists
+ * Reads flat frontmatter. Scalars stay strings. String lists and flow lists
  * become comma-separated strings so older files and CMS saves share one shape.
+ * A list of `key: value` maps is kept on `records` instead.
  */
-function parseFrontmatter(block: string): Record<string, string> {
+function parseFrontmatter(block: string): {
+  meta: Record<string, string>;
+  records: Record<string, Record<string, string>[]>;
+} {
   const lines = block.split(/\r?\n/);
   const meta: Record<string, string> = {};
+  const records: Record<string, Record<string, string>[]> = {};
 
   for (let index = 0; index < lines.length; index += 1) {
     const field = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(lines[index] ?? "");
@@ -42,16 +49,59 @@ function parseFrontmatter(block: string): Record<string, string> {
       continue;
     }
 
-    const items: string[] = [];
-    while (index + 1 < lines.length && /^\s+-\s+/.test(lines[index + 1] ?? "")) {
-      index += 1;
-      const item = /^\s+-\s+(.*)$/.exec(lines[index] ?? "")?.[1] ?? "";
-      items.push(unquote(item.trim()));
+    const list = readList(lines, index);
+    index = list.nextIndex;
+    if (list.records.length > 0) {
+      records[key] = list.records;
+      continue;
     }
-    meta[key] = items.join(", ");
+    meta[key] = list.items.join(", ");
   }
 
-  return meta;
+  return { meta, records };
+}
+
+function readList(
+  lines: readonly string[],
+  keyIndex: number,
+): { items: string[]; records: Record<string, string>[]; nextIndex: number } {
+  const items: string[] = [];
+  const records: Record<string, string>[] = [];
+  let index = keyIndex;
+
+  while (index + 1 < lines.length) {
+    const item = /^(\s+)-\s+(.*)$/.exec(lines[index + 1] ?? "");
+    if (!item?.[1]) break;
+
+    index += 1;
+    const dashIndent = item[1].length;
+    const content = (item[2] ?? "").trim();
+    const entry = parseKeyValue(content);
+
+    if (!entry) {
+      items.push(unquote(content));
+      continue;
+    }
+
+    const record: Record<string, string> = { [entry.key]: entry.value };
+    while (index + 1 < lines.length) {
+      const next = lines[index + 1] ?? "";
+      if (next.trim() === "" || /^\s*-\s+/.test(next)) break;
+      const nested = /^(\s+)([A-Za-z0-9_-]+):\s*(.*)$/.exec(next);
+      if (!nested?.[1] || !nested[2] || nested[1].length <= dashIndent) break;
+      index += 1;
+      record[nested[2]] = unquote((nested[3] ?? "").trim());
+    }
+    records.push(record);
+  }
+
+  return { items, records, nextIndex: index };
+}
+
+function parseKeyValue(value: string): { key: string; value: string } | undefined {
+  const match = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(value);
+  if (!match?.[1]) return undefined;
+  return { key: match[1], value: unquote((match[2] ?? "").trim()) };
 }
 
 function parseScalar(value: string): string {

@@ -96,7 +96,9 @@ function AlertContainer({
           >
             <IconComponent className="size-4" weight="fill" />
           </span>
-          <div className={cn("text-sm leading-5 font-semibold", titleClass)}>{titleNode}</div>
+          <div className={cn("min-w-0 text-sm leading-5 font-semibold text-balance", titleClass)}>
+            {titleNode}
+          </div>
         </div>
         {bodyNodes.length > 0 ? (
           <div className="mt-1.5 space-y-2 pl-9 text-sm text-foreground/85">{bodyNodes}</div>

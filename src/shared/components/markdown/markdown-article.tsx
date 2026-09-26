@@ -50,12 +50,14 @@ function MarkdownAnchor({
   );
 }
 
+const CALLOUT_MARKER = /^\[!(NOTE|TIP|IMPORTANT|WARNING|WARN|CAUTION)\][^\S\n]*([^\n]*)/i;
+
 function MarkdownBlockquote({
   children,
   className,
   ...props
 }: React.ComponentProps<"blockquote">) {
-  // Check for GitHub alert syntax: > [!NOTE], > [!TIP], etc.
+  // GitHub alert syntax: > [!NOTE] or > [!NOTE] Custom title.
   const cleanChildren = React.Children.toArray(children).filter(
     (child) => typeof child !== "string" || child.trim() !== "",
   );
@@ -66,28 +68,18 @@ function MarkdownBlockquote({
       (child) => typeof child !== "string" || child.trim() !== "",
     );
     const firstText = typeof pChildren[0] === "string" ? pChildren[0] : "";
-    const alertMatch = /^\[!(NOTE|TIP|IMPORTANT|WARNING|WARN|CAUTION)\]\s*/i.exec(firstText.trimStart());
+    const alertMatch = CALLOUT_MARKER.exec(firstText.trimStart());
 
     if (alertMatch) {
-      const type = alertMatch[1]?.toUpperCase();
-      const remainingText = firstText.trimStart().slice(alertMatch[0].length);
+      const type = alertMatch[1]?.toUpperCase() ?? "";
+      const inlineTitle = alertMatch[2]?.trim() ?? "";
+      const remainingText = firstText.trimStart().slice(alertMatch[0].length).replace(/^\r?\n/, "");
       const restPChildren = remainingText.length > 0 ? [remainingText, ...pChildren.slice(1)] : pChildren.slice(1);
-      const updatedFirstChild = React.cloneElement(firstChild, {}, ...restPChildren);
-      const content = [updatedFirstChild, ...cleanChildren.slice(1)];
-
-      switch (type) {
-        case "NOTE":
-          return <Note>{content}</Note>;
-        case "TIP":
-          return <Tip>{content}</Tip>;
-        case "IMPORTANT":
-          return <Important>{content}</Important>;
-        case "WARNING":
-        case "WARN":
-          return <WarningAlert>{content}</WarningAlert>;
-        case "CAUTION":
-          return <Caution>{content}</Caution>;
-      }
+      const lifted = inlineTitle ? { title: inlineTitle, nodes: restPChildren } : liftLeadingStrong(restPChildren);
+      const paragraph = lifted.nodes.length > 0 ? React.cloneElement(firstChild, {}, ...lifted.nodes) : null;
+      const content = [paragraph, ...cleanChildren.slice(1)].filter((node) => node != null);
+      const alert = renderCallout(type, lifted.title, content);
+      if (alert) return alert;
     }
   }
 
@@ -96,6 +88,60 @@ function MarkdownBlockquote({
       {children}
     </blockquote>
   );
+}
+
+function renderCallout(type: string, title: string | undefined, content: React.ReactNode) {
+  const alert = { title: title || undefined, children: content };
+  switch (type) {
+    case "NOTE":
+      return <Note {...alert} />;
+    case "TIP":
+      return <Tip {...alert} />;
+    case "IMPORTANT":
+      return <Important {...alert} />;
+    case "WARNING":
+    case "WARN":
+      return <WarningAlert {...alert} />;
+    case "CAUTION":
+      return <Caution {...alert} />;
+    default:
+      return null;
+  }
+}
+
+function isStrongElement(
+  node: React.ReactNode,
+): node is React.ReactElement<{ children?: React.ReactNode }> {
+  return React.isValidElement(node) && node.type === "strong";
+}
+
+function nodeText(node: React.ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (!React.isValidElement<{ children?: React.ReactNode }>(node)) return "";
+  return React.Children.toArray(node.props.children).map(nodeText).join("");
+}
+
+/** A bold first line stands in for the generic label, such as メモ. */
+function liftLeadingStrong(nodes: React.ReactNode[]): { title?: string; nodes: React.ReactNode[] } {
+  let index = 0;
+  while (index < nodes.length) {
+    const node = nodes[index];
+    if (typeof node !== "string" || node.trim() !== "") break;
+    index += 1;
+  }
+
+  const head = nodes[index];
+  if (!isStrongElement(head)) return { nodes };
+
+  const title = nodeText(head).trim();
+  if (!title) return { nodes };
+
+  const rest = nodes.slice(index + 1);
+  if (typeof rest[0] === "string") rest[0] = rest[0].replace(/^\s+/, "");
+  return {
+    title,
+    nodes: rest.filter((node) => typeof node !== "string" || node.length > 0),
+  };
 }
 
 const markdownComponents: Components & Record<string, React.ComponentType<any>> = {
