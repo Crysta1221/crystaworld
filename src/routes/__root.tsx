@@ -1,7 +1,10 @@
+import { useLayoutEffect } from "react";
 import { Outlet, createRootRoute, useLocation } from "@tanstack/react-router";
 import { SiteFooter } from "@/shared/components/footer";
 import { SiteHeader } from "@/shared/components/header";
 import { AppContainer } from "@/shared/components/layout";
+import { ScrollTopButton } from "@/shared/components/scroll-top-button";
+import { scrollWindowToTop } from "@/shared/lib/scroll-to-top";
 
 import "@/app/styles.css";
 
@@ -11,6 +14,13 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   const pathname = useLocation({ select: (location) => location.pathname });
+
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    scrollWindowToTop();
+  }, [pathname]);
 
   if (pathname === "/cms-preview") {
     return (
@@ -35,6 +45,7 @@ function RootLayout() {
         </main>
       </div>
       <SiteFooter />
+      <ScrollTopButton />
     </div>
   );
 }
