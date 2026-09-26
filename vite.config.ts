@@ -5,6 +5,7 @@ import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
 import { cmsAdminMiddleware } from "./workers/dev/cms-admin";
+import { zenMaruSubsetPlugin } from "./scripts/subset-fonts.ts";
 import { ogImages } from "./workers/og/plugin";
 
 const config = defineConfig({
@@ -31,7 +32,8 @@ const config = defineConfig({
     tailwindcss(),
     viteReact(),
     // Self-host the Google Fonts declared in index.html at build time.
-    webfontDownload(),
+    webfontDownload(undefined, { subsetsAllowed: ["latin"] }),
+    zenMaruSubsetPlugin(),
     ogImages(),
     {
       name: "cms-admin",
