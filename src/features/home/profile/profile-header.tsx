@@ -15,7 +15,8 @@ export function ProfileHeader() {
     >
       <div className="flex min-w-0 items-center gap-4 sm:gap-5">
         <img
-          src="/images/crysta-avatar.jpeg"
+          src="/images/crysta-avatar.webp"
+          decoding="async"
           alt="Crysta Avatar"
           width={80}
           height={80}

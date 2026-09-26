@@ -13,7 +13,7 @@ const FOOTER_LINKS = [
 const FOOTER_SOCIAL_IDS = ["x", "github"] as const;
 
 const CREDIT_LINK_CLASS =
-  "text-foreground/80 underline-offset-4 outline-none transition-colors hover:text-foreground hover:underline focus-visible:ring-[3px] focus-visible:ring-ring/50";
+  "text-foreground/80 underline underline-offset-4 outline-none transition-colors hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50";
 
 /**
  * Site footer. The menu lines up with the credit lines, and X / GitHub stay at the lower right.
@@ -33,8 +33,24 @@ export function SiteFooter() {
             aria-label="Crysta"
             className="inline-flex rounded-md outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
           >
-            <img src="/images/logo_kurofuti.png" alt="" className="h-10 w-auto dark:hidden" />
-            <img src="/images/logo_futi.png" alt="" className="hidden h-10 w-auto dark:block" />
+            <img
+              src="/images/logo_kurofuti.webp"
+              alt=""
+              width={87}
+              height={40}
+              loading="lazy"
+              decoding="async"
+              className="h-10 w-auto dark:hidden"
+            />
+            <img
+              src="/images/logo_futi.webp"
+              alt=""
+              width={87}
+              height={40}
+              loading="lazy"
+              decoding="async"
+              className="hidden h-10 w-auto dark:block"
+            />
           </Link>
 
           <div className="mt-4 flex items-start gap-16 sm:gap-24">
