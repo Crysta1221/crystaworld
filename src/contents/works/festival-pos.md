@@ -25,6 +25,8 @@ tags:
   - GitHub Actions
 links:
   - label: プロジェクトを見る
+    url: https://github.com/Crysta1221/nnct5s_pos_2025
+  - label: Qiita記事を見る
     url: https://qiita.com/Crysta1221/items/892f213731065819422c
 ---
 

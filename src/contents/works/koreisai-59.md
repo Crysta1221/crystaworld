@@ -23,7 +23,7 @@ links:
     url: https://qiita.com/Crysta1221/items/95d24b07c1f0a28e3ceb
 ---
 
-第59回工嶺祭（長野高専の文化祭）の外部向け公式特設Webサイトです。情報技術研究部（ジョーケン）内で新設された「デジタル部門」の3名によるチームで開発を行いました。私は主に、来場者の利便性を左右する中心的な機能である「タイムテーブル」の設計・UIデザイン・実装を担当しました。
+第59回工嶺祭（長野高専の文化祭）の外部向け公式特設Webサイトです。情報技術研究部（情技研）内で新設された「デジタル部門」の3名によるチームで開発を行いました。私は主に、来場者の利便性を左右する中心的な機能である「タイムテーブル」の設計・UIデザイン・実装を担当しました。
 
 > [!NOTE]
 > 同じドメインを翌年以降も継続して運用する仕様のため、2024年度の特設サイトは現在アーカイブとなっています。Wayback Machine等で当時のページが保存されている場合があります。
@@ -42,15 +42,15 @@ links:
 
 ## 技術スタック
 
-| 分野              | 採用技術                       |
-| :---------------- | :----------------------------- |
-| 言語              | TypeScript, JavaScript         |
-| フレームワーク    | React 18, Next.js 14           |
-| スタイリング & UI | Tailwind CSS, Headless UI      |
-| アニメーション    | Framer Motion                  |
-| アイコン          | Lucide Icons, Material Symbols |
-| 日時管理          | Day.js                         |
-| 開発管理・テスト  | Git, GitHub, Storybook         |
+| 分野 | 採用技術 |
+| --- | --- |
+| 言語 | TypeScript, JavaScript |
+| フレームワーク | React 18, Next.js 14 |
+| スタイリング & UI | Tailwind CSS, Headless UI |
+| アニメーション | Framer Motion |
+| アイコン | Lucide Icons, Material Symbols |
+| 日時管理 | Day.js |
+| 開発管理・テスト | Git, GitHub, Storybook |
 
 ## タイムテーブルの設計と実装
 
