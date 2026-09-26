@@ -40,7 +40,7 @@ export function SiteFooter() {
               height={40}
               loading="lazy"
               decoding="async"
-              className="h-10 w-auto dark:hidden"
+              className="h-10 w-[87px] dark:hidden"
             />
             <img
               src="/images/logo_futi.webp"
@@ -49,7 +49,7 @@ export function SiteFooter() {
               height={40}
               loading="lazy"
               decoding="async"
-              className="hidden h-10 w-auto dark:block"
+              className="hidden h-10 w-[87px] dark:block"
             />
           </Link>
 
