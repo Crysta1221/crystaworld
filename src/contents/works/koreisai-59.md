@@ -13,7 +13,9 @@ tags:
   - TypeScript
   - Tailwind CSS
   - Framer Motion
-url: https://koreisai.tech/
+links:
+  - label: プロジェクトを見る
+    url: https://koreisai.tech/
 ---
 
 第59回 工嶺祭の外部向けウェブサイトの開発を私を含め3人で行いました。主に、タイムテーブル部分の設計・デザイン・実装を行いました。ドメインを使いまわしている関係上、現在は2024年度のホームページを閲覧することはできませんが、Wayback Machine 等で見られる可能性があります。

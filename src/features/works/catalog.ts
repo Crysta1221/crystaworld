@@ -1,5 +1,10 @@
 import { parseMarkdownFile, splitList } from "@/shared/lib/markdown";
 
+export type WorkLink = {
+  label: string;
+  url: string;
+};
+
 export type Work = {
   id: string;
   title: string;
@@ -8,7 +13,7 @@ export type Work = {
   date: string;
   image: string;
   images: readonly string[];
-  url: string;
+  links: readonly WorkLink[];
   tags: readonly string[];
   body: string;
 };
@@ -42,7 +47,7 @@ function toWork(path: string, source: string): Work {
   const id = fileName.replace(/\.md$/, "");
   if (!id || id === fileName) throw new Error(`Unexpected work file name: ${path}`);
 
-  const { meta, body } = parseMarkdownFile(source, path, REQUIRED_FIELDS);
+  const { meta, records, body } = parseMarkdownFile(source, path, REQUIRED_FIELDS);
 
   return {
     id,
@@ -51,8 +56,30 @@ function toWork(path: string, source: string): Work {
     date: meta.date ?? "",
     image: meta.image ?? "",
     images: splitList(meta.images ?? meta.image ?? ""),
-    url: meta.url ?? "",
+    links: toLinks(records.links ?? [], meta.url ?? ""),
     tags: splitList(meta.tags ?? ""),
     body,
   };
+}
+
+function toLinks(records: readonly Record<string, string>[], fallbackUrl: string): WorkLink[] {
+  const links = records.flatMap((record) => toLink(record.label ?? "", record.url ?? ""));
+  if (links.length > 0) return links;
+  return toLink("プロジェクトを見る", fallbackUrl);
+}
+
+function toLink(label: string, url: string): WorkLink[] {
+  const trimmedLabel = label.trim();
+  const trimmedUrl = url.trim();
+  if (!trimmedLabel || !isPublicHttpUrl(trimmedUrl)) return [];
+  return [{ label: trimmedLabel, url: trimmedUrl }];
+}
+
+function isPublicHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
 }

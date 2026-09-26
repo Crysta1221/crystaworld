@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowUpRightIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { formatYearMonth } from "@/features/locale";
@@ -7,6 +7,7 @@ import { Button } from "@/shared/components/ui/button";
 
 import { getWork } from "./catalog";
 import { WorkGallery } from "./work-gallery";
+import { WorkLinks } from "./work-links";
 import { WorkTech } from "./work-tech";
 
 /**
@@ -49,20 +50,7 @@ export function WorkDetailPage({ workId }: { workId: string }) {
             <WorkGallery key={work.id} images={work.images} />
             <div className="space-y-8">
               <div className="space-y-4">
-                {work.url ? (
-                  <div className="flex justify-end">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="h-auto px-5 py-2"
-                      nativeButton={false}
-                      render={<a href={work.url} target="_blank" rel="noopener noreferrer" />}
-                    >
-                      プロジェクトを見る
-                      <ArrowUpRightIcon />
-                    </Button>
-                  </div>
-                ) : null}
+                <WorkLinks links={work.links} />
                 <section aria-labelledby="work-description-heading">
                   <h2
                     id="work-description-heading"

@@ -23,6 +23,26 @@ function asText(value) {
   return typeof value === "string" ? value : "";
 }
 
+function asLinks(value) {
+  const source = Array.isArray(value) ? value : [];
+  return source.flatMap((item) => {
+    if (!item || typeof item !== "object") return [];
+    const label = typeof item.label === "string" ? item.label.trim() : "";
+    const url = typeof item.url === "string" ? item.url.trim() : "";
+    if (!label || !isPublicHttpUrl(url)) return [];
+    return [{ label, url }];
+  });
+}
+
+function isPublicHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 function payloadFrom(entry, collection) {
   return {
     type: "crystaworld-cms-preview",
@@ -33,9 +53,15 @@ function payloadFrom(entry, collection) {
     image: asText(readField(entry, "image")),
     images: asList(readField(entry, "images")),
     tags: asList(readField(entry, "tags")),
-    url: asText(readField(entry, "url")),
+    links: readLinks(entry),
     body: asText(readField(entry, "body")),
   };
+}
+
+function readLinks(entry) {
+  const links = asLinks(readField(entry, "links"));
+  if (links.length > 0) return links;
+  return asLinks([{ label: "プロジェクトを見る", url: asText(readField(entry, "url")) }]);
 }
 
 function postPayload(frame, previewWindow) {

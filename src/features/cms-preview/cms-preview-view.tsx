@@ -1,11 +1,11 @@
 import { formatYearMonth } from "@/features/locale";
 import { MarkdownArticle } from "@/shared/components/markdown";
-import { Button } from "@/shared/components/ui/button";
-import { ArrowUpRightIcon } from "@phosphor-icons/react";
 
 import { BlogPostView } from "@/features/blogs/blog-post-view";
 import { WorkGallery } from "@/features/works/work-gallery";
+import { WorkLinks } from "@/features/works/work-links";
 import { WorkTech } from "@/features/works/work-tech";
+import type { WorkLink } from "@/features/works/catalog";
 
 export type CmsPreviewPayload = {
   type: "crystaworld-cms-preview";
@@ -16,7 +16,7 @@ export type CmsPreviewPayload = {
   image: string;
   images: string[];
   tags: string[];
-  url: string;
+  links: WorkLink[];
   body: string;
 };
 
@@ -71,20 +71,7 @@ export function CmsPreviewView({ payload }: { payload: CmsPreviewPayload }) {
         <WorkGallery images={images} />
         <div className="space-y-8">
           <div className="space-y-4">
-            {payload.url ? (
-              <div className="flex justify-end">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="h-auto px-5 py-2"
-                  nativeButton={false}
-                  render={<a href={payload.url} target="_blank" rel="noopener noreferrer" />}
-                >
-                  プロジェクトを見る
-                  <ArrowUpRightIcon />
-                </Button>
-              </div>
-            ) : null}
+            <WorkLinks links={payload.links ?? []} />
             <section aria-labelledby="work-description-heading">
               <h2
                 id="work-description-heading"

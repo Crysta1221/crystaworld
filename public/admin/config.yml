@@ -177,10 +177,19 @@ collections:
         search_fields: [name]
         options_length: 100
         hint: Register a name and icon in the Tech Tags collection. Icons are stored in public/.
-      - label: URL
-        name: url
-        widget: string
+      - label: Links
+        name: links
+        widget: list
         required: false
+        summary: "{{fields.label}}"
+        hint: Buttons shown above the description. Each one needs a label and a URL.
+        fields:
+          - label: Label
+            name: label
+            widget: string
+          - label: URL
+            name: url
+            widget: string
       - label: Body
         name: body
         widget: markdown
