@@ -14,13 +14,13 @@ export function WorkTech({ tags }: { tags: readonly string[] }) {
       >
         Tech
       </h2>
-      <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-5">
+      <ul className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(6.75rem,6.75rem))] gap-x-3 gap-y-5">
         {tags.map((name) => (
-          <li key={name} className="flex w-16 flex-col items-center gap-1.5 text-center">
+          <li key={name} className="flex min-w-0 flex-col items-center gap-1.5 text-center">
             <span className="flex size-11 items-center justify-center rounded-xl bg-muted">
               <TechMark tag={tagFor(name)} />
             </span>
-            <span className="text-xs leading-tight text-muted-foreground">{name}</span>
+            <span className="w-full text-xs leading-tight text-balance text-muted-foreground">{name}</span>
           </li>
         ))}
       </ul>
