@@ -2,6 +2,9 @@
 # Locally, open /admin/index.html and choose "Work with Local Repository".
 # That path writes files on disk and does not commit. Use Chrome or Edge.
 locale: ja
+app_title: CrystaWorld CMS
+logo:
+  src: /images/logo_futi.png
 
 backend:
   name: github
