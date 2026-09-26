@@ -92,7 +92,7 @@ function face(file: string, weight: 500 | 700, unicodeRange: string): string {
   src: url("/fonts/${file}") format("woff2");
   font-weight: ${weight};
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
   unicode-range: ${unicodeRange};
 }
 `;
