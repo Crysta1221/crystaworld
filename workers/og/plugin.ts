@@ -87,8 +87,12 @@ async function serveOg(
 }
 
 function pathnameOf(url: string): string {
-  const end = url.indexOf("?");
-  return end === -1 ? url : url.slice(0, end);
+  const path = url.split("?")[0] ?? url;
+  try {
+    return decodeURIComponent(path);
+  } catch {
+    return path;
+  }
 }
 
 function devOrigin(devServer: ViteDevServer | undefined): string {
