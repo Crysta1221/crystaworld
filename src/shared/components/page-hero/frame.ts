@@ -5,4 +5,3 @@
  */
 export const HERO_HEIGHT = 320;
 export const HERO_HEIGHT_COMPACT = 240;
-export const HERO_COMPACT_QUERY = "(max-width: 767px)";

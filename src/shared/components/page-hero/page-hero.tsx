@@ -3,8 +3,8 @@ import { useId } from "react";
 import { AppContainer } from "@/shared/components/layout";
 import { cn } from "@/shared/lib/utils";
 
+import { HERO_HEIGHT, HERO_HEIGHT_COMPACT } from "./frame";
 import { BlueprintGrid, DiamondField, HoneycombMatrix } from "./patterns/patterns";
-import { useHeroHeight } from "./use-hero-height";
 
 export type PageHeroPattern = "diamond" | "blueprint" | "honeycomb";
 
@@ -22,23 +22,26 @@ type PageHeroProps = {
 
 /**
  * Full-bleed page header for every route except Home.
- * Pulls up under the fixed site header. The title is not transformed.
+ * Phone and desktop bands are both in the HTML, so the height does not jump after hydration.
  */
 export function PageHero({ pattern, title, className }: PageHeroProps) {
   const titleId = useId();
   const Pattern = PATTERNS[pattern];
-  const height = useHeroHeight();
 
   return (
     <section
       aria-labelledby={titleId}
       className={cn(
-        "relative -mt-20 ml-[calc(50%-50dvw)] w-dvw overflow-hidden bg-background",
+        "relative -mt-20 ml-[calc(50%-50dvw)] h-60 w-dvw overflow-hidden bg-background md:h-80",
         className,
       )}
-      style={{ height }}
     >
-      <Pattern height={height} />
+      <div className="md:hidden">
+        <Pattern height={HERO_HEIGHT_COMPACT} />
+      </div>
+      <div className="hidden md:block">
+        <Pattern height={HERO_HEIGHT} />
+      </div>
       <div className="relative flex h-full items-end">
         <AppContainer className="pb-7">
           <h1
