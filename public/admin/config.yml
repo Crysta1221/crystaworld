@@ -10,9 +10,8 @@ backend:
   name: github
   repo: Crysta1221/crystaworld
   branch: main
-  # Same Worker as the site. After deploy, set this to the origin with no trailing slash.
-  # GitHub OAuth callback: {base_url}/callback
-  # base_url: https://crystaworld.example.workers.dev
+  # OAuth runs on this origin: {base_url}/auth and {base_url}/callback.
+  base_url: https://crystaworld.dev
 
 media_folder: public
 public_folder: /
