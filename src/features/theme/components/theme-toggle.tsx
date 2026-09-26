@@ -1,7 +1,5 @@
 import { useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import type GSAP from "gsap";
 
 import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 
@@ -9,7 +7,18 @@ import { resolveTheme } from "../lib/theme";
 import { useTheme } from "./theme-provider";
 import { cn } from "@/shared/lib/utils";
 
-gsap.registerPlugin(useGSAP, MotionPathPlugin);
+let gsapLoader: Promise<typeof GSAP> | undefined;
+
+/** Load GSAP on first intent so the home page does not pay for it up front. */
+function loadGsap(): Promise<typeof GSAP> {
+  gsapLoader ??= Promise.all([import("gsap"), import("gsap/MotionPathPlugin")]).then(
+    ([{ default: gsap }, { MotionPathPlugin }]) => {
+      gsap.registerPlugin(MotionPathPlugin);
+      return gsap;
+    },
+  );
+  return gsapLoader;
+}
 
 /**
  * Left→right sky arc (CSS y grows downward), kept inside the circular button.
@@ -54,110 +63,105 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
   const moonRef = useRef<HTMLSpanElement>(null);
   const animatingRef = useRef(false);
 
-  const isDark =
-    typeof window === "undefined" ? false : resolveTheme(theme) === "dark";
+  const isDark = typeof window === "undefined" ? false : resolveTheme(theme) === "dark";
 
-  const { contextSafe } = useGSAP(
-    () => {
-      const sun = sunRef.current;
-      const moon = moonRef.current;
-      if (!sun || !moon || animatingRef.current) return;
-
-      const dark = resolveTheme(theme) === "dark";
-      gsap.set(sun, restingPose(!dark));
-      gsap.set(moon, restingPose(dark));
-    },
-    { scope: rootRef, dependencies: [theme] },
-  );
-
-  const toggle = contextSafe(() => {
+  const toggle = () => {
     if (animatingRef.current) return;
-
     const sun = sunRef.current;
     const moon = moonRef.current;
     if (!sun || !moon) return;
 
-    const nextDark = !isDark;
-    const nextTheme = nextDark ? "dark" : "light";
-    const outgoing = isDark ? moon : sun;
-    const incoming = isDark ? sun : moon;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(outgoing, restingPose(false));
-      gsap.set(incoming, restingPose(true));
-      setTheme(nextTheme);
-      return;
-    }
-
     animatingRef.current = true;
+    const nextDark = !isDark;
+    void loadGsap()
+      .then((gsap) => {
+        const nextTheme = nextDark ? "dark" : "light";
+        const outgoing = isDark ? moon : sun;
+        const incoming = isDark ? sun : moon;
 
-    // Start just left of center, slightly below — then travel rightward up to zenith.
-    gsap.set(incoming, {
-      x: -ORBIT_X,
-      y: ORBIT_DIP,
-      opacity: 0,
-      scale: 0.85,
-      rotation: -20,
-      visibility: "visible",
-    });
-    gsap.set(outgoing, { rotation: 0 });
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          gsap.set(outgoing, restingPose(false));
+          gsap.set(incoming, restingPose(true));
+          animatingRef.current = false;
+          setTheme(nextTheme);
+          return;
+        }
 
-    const timeline = gsap.timeline({
-      defaults: { duration: ORBIT_DURATION, ease: "power2.inOut" },
-      onComplete: () => {
-        gsap.set(outgoing, restingPose(false));
-        gsap.set(incoming, restingPose(true));
+        animatingRef.current = true;
+
+        // Start just left of center, slightly below — then travel rightward up to zenith.
+        gsap.set(incoming, {
+          x: -ORBIT_X,
+          y: ORBIT_DIP,
+          opacity: 0,
+          scale: 0.85,
+          rotation: -20,
+          visibility: "visible",
+        });
+        gsap.set(outgoing, { rotation: 0 });
+
+        const timeline = gsap.timeline({
+          defaults: { duration: ORBIT_DURATION, ease: "power2.inOut" },
+          onComplete: () => {
+            gsap.set(outgoing, restingPose(false));
+            gsap.set(incoming, restingPose(true));
+            animatingRef.current = false;
+          },
+        });
+
+        // Shift page theme mid-arc so sky and body change together.
+        timeline.call(() => setTheme(nextTheme), undefined, ORBIT_DURATION * 0.4);
+
+        // Current body sets toward the right along the same sky arc.
+        timeline.to(
+          outgoing,
+          {
+            motionPath: {
+              path: [
+                { x: 0, y: 0 },
+                { x: ORBIT_X * 0.5, y: ORBIT_DIP * 0.35 },
+                { x: ORBIT_X, y: ORBIT_DIP },
+              ],
+              curviness: 1.1,
+            },
+            opacity: 0,
+            scale: 0.85,
+            rotation: 20,
+          },
+          0,
+        );
+
+        // Next body rises from the left into center (zenith).
+        timeline.to(
+          incoming,
+          {
+            motionPath: {
+              path: [
+                { x: -ORBIT_X, y: ORBIT_DIP },
+                { x: -ORBIT_X * 0.5, y: ORBIT_DIP * 0.35 },
+                { x: 0, y: 0 },
+              ],
+              curviness: 1.1,
+            },
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+          },
+          0,
+        );
+      })
+      .catch(() => {
         animatingRef.current = false;
-      },
-    });
-
-    // Shift page theme mid-arc so sky and body change together.
-    timeline.call(() => setTheme(nextTheme), undefined, ORBIT_DURATION * 0.4);
-
-    // Current body sets toward the right along the same sky arc.
-    timeline.to(
-      outgoing,
-      {
-        motionPath: {
-          path: [
-            { x: 0, y: 0 },
-            { x: ORBIT_X * 0.5, y: ORBIT_DIP * 0.35 },
-            { x: ORBIT_X, y: ORBIT_DIP },
-          ],
-          curviness: 1.1,
-        },
-        opacity: 0,
-        scale: 0.85,
-        rotation: 20,
-      },
-      0,
-    );
-
-    // Next body rises from the left into center (zenith).
-    timeline.to(
-      incoming,
-      {
-        motionPath: {
-          path: [
-            { x: -ORBIT_X, y: ORBIT_DIP },
-            { x: -ORBIT_X * 0.5, y: ORBIT_DIP * 0.35 },
-            { x: 0, y: 0 },
-          ],
-          curviness: 1.1,
-        },
-        opacity: 1,
-        scale: 1,
-        rotation: 0,
-      },
-      0,
-    );
-  });
+      });
+  };
 
   return (
     <button
       ref={rootRef}
       type="button"
       onClick={toggle}
+      onPointerEnter={() => void loadGsap()}
+      onFocus={() => void loadGsap()}
       aria-label="Toggle theme"
       aria-pressed={isDark}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
@@ -168,14 +172,14 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     >
       <span
         ref={sunRef}
-        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center dark:invisible dark:opacity-0"
         aria-hidden
       >
         <SunIcon className="size-[1.15rem]" />
       </span>
       <span
         ref={moonRef}
-        className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        className="pointer-events-none invisible absolute inset-0 flex items-center justify-center opacity-0 dark:visible dark:opacity-100"
         aria-hidden
       >
         <MoonIcon className="size-[1.15rem]" />
