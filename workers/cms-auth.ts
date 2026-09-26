@@ -72,10 +72,14 @@ const outputHTML = ({
 }): Response => {
   const state = error ? "error" : "success";
   const content = error ? { provider, error, errorCode } : { provider, token };
+  const handshake = serialize(`authorizing:${provider}`);
+  const result = serialize(`authorization:${provider}:${state}:${JSON.stringify(content)}`);
   const script = `
 (() => {
   const trustedPatterns = ${serialize(getDomainPatterns(env.ALLOWED_DOMAINS))};
   const hasToken = ${serialize(Boolean(token))};
+  const handshake = ${handshake};
+  const result = ${result};
   const isTrusted = (origin) => {
     try {
       const { hostname } = new URL(origin);
@@ -85,14 +89,11 @@ const outputHTML = ({
     }
   };
   window.addEventListener("message", ({ data, origin }) => {
-    if (data !== "authorizing:${provider}") return;
+    if (data !== handshake) return;
     if (hasToken && trustedPatterns.length && !isTrusted(origin)) return;
-    window.opener?.postMessage(
-      "authorization:${provider}:${state}:${JSON.stringify(content)}",
-      origin,
-    );
+    window.opener?.postMessage(result, origin);
   });
-  window.opener?.postMessage("authorizing:${provider}", "*");
+  window.opener?.postMessage(handshake, "*");
 })();
 `;
 
