@@ -2,13 +2,13 @@
 title: 文化祭 屋台POSシステム
 category: Web Development
 date: 2025-10
-image: /works/festival-pos.png
+image: /works/festival-pos.webp
 images:
-  - /works/festival-pos.png
-  - /works/festival-pos-login.png
-  - /works/festival-pos-2.png
-  - /works/festival-pos-3.png
-  - /works/festival-pos-arch.png
+  - /works/festival-pos.webp
+  - /works/festival-pos-login.webp
+  - /works/festival-pos-2.webp
+  - /works/festival-pos-3.webp
+  - /works/festival-pos-arch.webp
 tags:
   - Bun
   - React
@@ -34,7 +34,7 @@ links:
 
 ## システムアーキテクチャ & 技術スタック
 
-![システム構成図](/works/festival-pos-arch.png)
+![システム構成図](/works/festival-pos-arch.webp)
 
 自前のデータベースサーバーを持たず、無料で運用コストを抑えること、および事前予約がもともとGoogleフォームで集約されていたことから、データの保存先にはGoogleスプレッドシートを採用しました。フロントエンドとスプレッドシート間はGoogle Sheets APIを介してNext.jsのRoute Handlersから連携しています。
 
@@ -49,25 +49,25 @@ links:
 
 ### 1. 認証（ログイン画面）
 
-![ログイン画面](/works/festival-pos-login.png)
+![ログイン画面](/works/festival-pos-login.webp)
 
 POSシステムとして売上データや注文履歴を扱うため、データの安全性を担保すべくNextAuth.js（Credentialsプロバイダー + JWTセッション）による独自のログイン認証を実装しました。データベースを必要としない軽量な構成とし、ユーザーIDの検証にはValibotを用いて1〜100の有効な整数値のみを受け付けるようにバリデーションを行っています。タッチ操作を想定し、テンキーのような大きめの入力インターフェースを採用しました。
 
 ### 2. メニュー画面
 
-![メニュー画面](/works/festival-pos.png)
+![メニュー画面](/works/festival-pos.webp)
 
 ログイン後は、「POS起動（購買）」「注文管理」「売上管理」「予約情報」へワンタップで遷移できるダッシュボードを配置しました。現場での素早いオペレーションを支えるため、画面遷移のネストを極力浅くし、押しやすいよう大きめなボタンでレイアウトしています。
 
 ### 3. 購買管理・会計画面
 
-![購買管理画面](/works/festival-pos-2.png)
+![購買管理画面](/works/festival-pos-2.webp)
 
 左側に商品選択パネル、右側にカート（追加アイテム一覧）を配置したPOSインターフェースです。現金のほか、文化祭特有のグルメチケット（1枚100円、11枚綴り1,000円）の会計処理にも対応し、支払い方法を選択して即座に合計金額と内訳を計算できます。
 
 ### 4. 厨房向け注文管理画面
 
-![注文管理画面](/works/festival-pos-3.png)
+![注文管理画面](/works/festival-pos-3.webp)
 
 厨房スタッフがリアルタイムで調理状況を把握できるよう、未完了の注文一覧や各商品の必要個数（あんこ、カスタード、リンゴジャム等）、事前予約分の注文を一覧表示するモニタリング画面を提供しました。
 

@@ -2,9 +2,9 @@
 title: tauri-plugin-configurate
 category: Library / Plugin
 date: 2026-07
-image: /works/tauri-plugin-configurate.png
+image: /works/tauri-plugin-configurate.webp
 images:
-  - /works/tauri-plugin-configurate.png
+  - /works/tauri-plugin-configurate.webp
 tags:
   - Tauri
   - Rust

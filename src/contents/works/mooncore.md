@@ -2,9 +2,9 @@
 title: MoonCore
 category: Desktop Application
 date: 2026-09
-image: /works/mooncore.png
+image: /works/mooncore.webp
 images:
-  - /works/mooncore-dashboard.png
+  - /works/mooncore-dashboard.webp
 tags:
   - Tauri
   - Rust

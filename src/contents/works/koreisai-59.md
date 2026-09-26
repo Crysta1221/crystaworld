@@ -2,13 +2,13 @@
 title: 第59回 工嶺祭
 category: Web Development
 date: 2024-10
-image: /works/koreisai.png
+image: /works/koreisai.webp
 images:
-  - /works/koreisai.png
-  - /works/koreisai-timetable-1.png
-  - /works/koreisai-timetable-2.png
-  - /works/koreisai-theme.png
-  - /works/koreisai-timebar.png
+  - /works/koreisai.webp
+  - /works/koreisai-timetable-1.webp
+  - /works/koreisai-timetable-2.webp
+  - /works/koreisai-theme.webp
+  - /works/koreisai-timebar.webp
   - /works/koreisai-scroll-demo.gif
 tags:
   - React
@@ -58,7 +58,7 @@ links:
 
 ### 1. レイアウト方式とデータモデリング
 
-![プロトタイプ](/works/koreisai-prototype.png)
+![プロトタイプ](/works/koreisai-prototype.webp)
 
 時間軸（縦）と会場列（横）をFlexboxで並べ、各企画カードは開始・終了時刻から算出した位置へ動的に `absolute` 配置するアプローチを採用しました。データ構造は、日付ごとに複数の会場があり、会場ごとにイベントが連なる3階層の型定義で安全に管理しています。
 
@@ -109,13 +109,13 @@ useEffect(() => {
 
 ### 3. テーマ「Infinite」に調和したUIデザイン
 
-![テーマに合わせたデザイン](/works/koreisai-theme.png)
+![テーマに合わせたデザイン](/works/koreisai-theme.webp)
 
 第59回のテーマである「Infinite（無限）」と、宇宙をモチーフにしたキービジュアルの世界観を引き立てるため、カードの背景には微細な半透明のグラデーションを施し、ダークモードを基調とした洗練されたデザインに仕上げました。
 
 ### 4. 現在時刻バー（リアルタイムインジケーター）
 
-![現在時刻バー](/works/koreisai-timebar.png)
+![現在時刻バー](/works/koreisai-timebar.webp)
 
 「いま何が行われているか」を一目で把握できるよう、Day.jsで取得した現在時刻と開催時間（9:00〜17:30）を比較し、リアルタイムに位置が更新される赤いインジケーターバーを実装しました。開催時間外（9:00前および17:30以降）はバーが画面外へ飛び出さないよう、開始・終了位置に固定するクリッピング処理を施しています。
 
@@ -127,7 +127,7 @@ useEffect(() => {
 
 ### 6. 開催中・次回企画の自動ピックアップ
 
-![開催中の企画表示](/works/koreisai-ongoing.png)
+![開催中の企画表示](/works/koreisai-ongoing.webp)
 
 タイムテーブルの上部には、現在時刻に基づいて「現在開催中の企画」と「次に始まる企画」を自動抽出し、リアルタイムに提示するウィジェットを設置しました。イベント開催前や終了後はステータスが「終了」に切り替わり、来場者がスムーズに次の目的地を決められるように工夫しました。
 
@@ -135,7 +135,7 @@ useEffect(() => {
 
 ### テーマに寄り添ったローディング
 
-![ローディング演出](/works/koreisai-loading.png)
+![ローディング演出](/works/koreisai-loading.webp)
 
 サイトへの初回アクセス時には、テーマ「Infinite」にちなんで無限記号（∞）が滑らかに回転するカスタムローディングアニメーション（`react-loader-spinner` の InfinitySpin）を表示し、サイトへの期待感を高めました。
 

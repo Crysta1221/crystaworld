@@ -2,11 +2,11 @@
 title: 畳サーバー 報告プラグイン
 category: Game Plugin
 date: 2025-08
-image: /works/tatami-report.png
+image: /works/tatami-report.webp
 images:
-  - /works/tatami-report.png
-  - /works/tatami-report-2.png
-  - /works/tatami-report-3.png
+  - /works/tatami-report.webp
+  - /works/tatami-report-2.webp
+  - /works/tatami-report-3.webp
 tags:
   - Minecraft
   - Kotlin
@@ -43,19 +43,19 @@ Velocityプロキシと各Spigotサーバー間は、独自のPlugin Messaging C
 
 ### 1. プレイヤー選択GUI
 
-![プレイヤー選択GUI](/works/tatami-report.png)
+![プレイヤー選択GUI](/works/tatami-report.webp)
 
 `/report` コマンドを実行すると、Triumph GUIを活用した6行（45スロット）のページネーション付きインベントリ画面が開きます。ネットワーク内のオンラインプレイヤーがスキン頭部アイテム（`PLAYER_HEAD`）として並び、ツールチップ（Lore）で現在の接続サーバー名を確認できます。対象が特定できない状況を考慮し、「プレイヤーが不明な場合（エンダーアイ）」のボタンも用意しています。
 
 ### 2. 通報カテゴリ選択本
 
-![通報カテゴリ選択本](/works/tatami-report-2.png)
+![通報カテゴリ選択本](/works/tatami-report-2.webp)
 
 プレイヤーを選択すると、Adventure APIの `Book` を利用した本UIが開きます。「チート・ハッキング」「チャット上の暴言・スパム」「VCでの暴言・スパム」「サーバー内の荒らし行為」「嫌がらせ行為」「妨害行為・チーミング」「その他」などのカテゴリがクリック可能リンクとして並び、ワンクリックで次のステップへ進みます。
 
 ### 3. 金床UIによる通報理由入力
 
-![金床UIによる理由入力](/works/tatami-report-3.png)
+![金床UIによる理由入力](/works/tatami-report-3.webp)
 
 カテゴリ選択後、AnvilGUIを活用した金床の文字入力インターフェースが起動します。チャット欄を汚すことなく、GUI上で直接キーボードから詳細な通報理由を入力できます。
 
