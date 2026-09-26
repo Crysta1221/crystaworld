@@ -1,29 +1,29 @@
 import type { CSSProperties } from "react";
 
+import { bluePalette, type OgPalette } from "./palette";
 import { capsuleCluster, cornerCircle, roundedSquare } from "./shapes";
 
-const FRAME = "#c5d4ee";
 const CARD = "#f7f8fc";
 const INK = "#4c4f69";
 const MUTED = "#6c6f85";
-const PILL = "#d5e2f6";
 const TAG = "#e6e9ef";
 
 type CardProps = {
   title: string;
   avatarSrc: string;
-  /** Section name such as "Blogs". Omitted on the site card. */
+  /** Section name such as "Blogs" or "Memos". */
   label?: string;
   /** Date or category, shown under the title. */
   meta?: string;
   tags?: readonly string[];
+  palette?: OgPalette;
 };
 
 /**
  * Geometric social card. Stripe shapes sit on the outer frame, behind the sheet,
  * so the title never shares the inner surface with them.
  */
-export function OgCard({ title, avatarSrc, label, meta, tags = [] }: CardProps) {
+export function OgCard({ title, avatarSrc, label, meta, tags = [], palette = bluePalette }: CardProps) {
   return (
     <div
       style={{
@@ -32,14 +32,14 @@ export function OgCard({ title, avatarSrc, label, meta, tags = [] }: CardProps) 
         display: "flex",
         position: "relative",
         overflow: "hidden",
-        backgroundColor: FRAME,
+        backgroundColor: palette.frame,
         padding: 48,
         fontFamily: "Zen Maru Gothic",
       }}
     >
-      <Mark graphic={capsuleCluster()} style={{ top: -20, left: -36 }} />
-      <Mark graphic={roundedSquare()} style={{ top: -78, right: -72 }} />
-      <Mark graphic={cornerCircle()} style={{ right: -48, bottom: -40 }} />
+      <Mark graphic={capsuleCluster(palette)} style={{ top: -20, left: -36 }} />
+      <Mark graphic={roundedSquare(palette)} style={{ top: -78, right: -72 }} />
+      <Mark graphic={cornerCircle(palette)} style={{ right: -48, bottom: -40 }} />
 
       <div
         style={{
@@ -72,7 +72,7 @@ export function OgCard({ title, avatarSrc, label, meta, tags = [] }: CardProps) 
                 paddingLeft: 16,
                 paddingRight: 16,
                 borderRadius: 21,
-                backgroundColor: PILL,
+                backgroundColor: palette.pill,
                 color: INK,
                 fontSize: 22,
                 fontWeight: 700,

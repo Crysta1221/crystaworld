@@ -11,8 +11,7 @@ export type OgBlogPost = {
   tags: string[];
 };
 
-const SITE_DESCRIPTION =
-  "学生エンジニアの「くりすた」のポートフォリオ。Web から気になったものを気ままに作っています。";
+const SITE_DESCRIPTION = "くりすたのポートフォリオへようこそ！";
 
 export function siteDescription(): string {
   return SITE_DESCRIPTION;
@@ -49,9 +48,11 @@ function readContentPosts(root: string, folder: "blogs" | "memos"): OgBlogPost[]
 }
 
 export function formatOgDate(date: string): string {
-  const match = /^(\d{4})-(\d{2})$/.exec(date);
+  const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(date);
   if (!match?.[1] || !match[2]) return date;
-  return `${match[1]}年${Number(match[2])}月`;
+  const day = match[3] ? Number(match[3]) : undefined;
+  const monthLabel = `${match[1]}年${Number(match[2])}月`;
+  return day ? `${monthLabel}${day}日` : monthLabel;
 }
 
 function excerpt(body: string): string {
