@@ -39,7 +39,7 @@ export function getWork(id: string): Work | undefined {
 function loadWorks(): readonly Work[] {
   return Object.entries(sources)
     .map(([path, source]) => toWork(path, source))
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => b.date.localeCompare(a.date));
 }
 
 function toWork(path: string, source: string): Work {
