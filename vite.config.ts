@@ -4,8 +4,8 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
-import { cmsAdminMiddleware } from "./src/middleware/cms-admin";
-import { ogImages } from "./src/og/plugin";
+import { cmsAdminMiddleware } from "./workers/dev/cms-admin";
+import { ogImages } from "./workers/og/plugin";
 
 const config = defineConfig({
   fmt: {

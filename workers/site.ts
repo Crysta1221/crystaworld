@@ -1,5 +1,5 @@
 import { handleCmsAuth, isCmsAuthPath } from "./cms-auth.ts";
-import { withOgTags } from "./og.ts";
+import { withOgTags } from "./og/html.ts";
 
 type SiteEnv = {
   ASSETS: { fetch: (request: Request) => Promise<Response> };

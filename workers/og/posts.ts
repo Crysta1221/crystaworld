@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { parseMarkdownFile, splitList } from "../shared/lib/markdown";
+import { parseMarkdownFile, splitList } from "../../src/shared/lib/markdown";
 
 export type OgBlogPost = {
   id: string;

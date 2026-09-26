@@ -1,4 +1,4 @@
-import { applyOg, resolveOgEntry, type OgManifest } from "../src/og/head.ts";
+import { applyOg, resolveOgEntry, type OgManifest } from "./head.ts";
 
 type AssetFetcher = { fetch: (request: Request) => Promise<Response> };
 
