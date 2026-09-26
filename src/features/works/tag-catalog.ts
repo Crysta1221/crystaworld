@@ -9,7 +9,7 @@ export type WorkTag = {
   wide: boolean;
 };
 
-const sources = import.meta.glob("/src/contents/tags/*.md", {
+const sources = import.meta.glob("/src/contents/tech-tags/*.md", {
   eager: true,
   query: "?raw",
   import: "default",
@@ -18,8 +18,9 @@ const sources = import.meta.glob("/src/contents/tags/*.md", {
 const TAGS = loadTags();
 
 /**
- * Tags are registered in the CMS as Markdown under src/contents/tags.
+ * Tech tags are registered in the CMS as Markdown under src/contents/tech-tags.
  * A work stores the tag name; the icon lives on the tag entry.
+ * Blog and memo tags are a separate collection and are not resolved here.
  */
 export function tagFor(name: string): WorkTag | undefined {
   return TAGS.get(name);

@@ -28,10 +28,10 @@ collections:
         name: name
         widget: string
 
-  - name: tags
-    label: Tags
-    label_singular: Tag
-    folder: src/contents/tags
+  - name: tech-tags
+    label: Tech Tags
+    label_singular: Tech Tag
+    folder: src/contents/tech-tags
     create: true
     extension: md
     format: frontmatter
@@ -56,6 +56,20 @@ collections:
         widget: boolean
         required: false
         default: false
+
+  - name: tags
+    label: Tags
+    label_singular: Tag
+    folder: src/contents/tags
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    fields:
+      - label: Name
+        name: name
+        widget: string
+        hint: Text labels for blogs and memos. Separate from Tech Tags.
 
   - name: blogs
     label: Blogs
@@ -83,7 +97,7 @@ collections:
         display_fields: [name]
         search_fields: [name]
         options_length: 100
-        hint: Register a name and icon in the Tags collection. Icons are stored in public/.
+        hint: Register a name in the Tags collection. These are separate from Tech Tags.
       - label: Body
         name: body
         widget: markdown
@@ -114,7 +128,7 @@ collections:
         display_fields: [name]
         search_fields: [name]
         options_length: 100
-        hint: Register a name and icon in the Tags collection. Icons are stored in public/.
+        hint: Register a name in the Tags collection. These are separate from Tech Tags.
       - label: Body
         name: body
         widget: markdown
@@ -153,16 +167,16 @@ collections:
         multiple: true
         required: false
         hint: Gallery images, separate from the cover. Reorder them here.
-      - label: Tags
+      - label: Tech Tags
         name: tags
         widget: relation
-        collection: tags
+        collection: tech-tags
         multiple: true
         value_field: name
         display_fields: [name]
         search_fields: [name]
         options_length: 100
-        hint: Register a name and icon in the Tags collection. Icons are stored in public/.
+        hint: Register a name and icon in the Tech Tags collection. Icons are stored in public/.
       - label: URL
         name: url
         widget: string
