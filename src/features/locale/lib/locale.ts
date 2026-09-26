@@ -19,19 +19,12 @@ function isLocale(value: string | null): value is Locale {
   return value === "ja" || value === "en";
 }
 
-function detectLocale(): Locale {
-  try {
-    return navigator.language.toLowerCase().startsWith("en") ? "en" : "ja";
-  } catch {
-    return "ja";
-  }
-}
-
-// Read the persisted locale without throwing in restricted contexts.
+// The prerendered HTML is Japanese. The first client render must match it,
+// so a saved choice is the only thing that may differ from that default.
 export function getStoredLocale(storageKey: string): Locale {
   try {
     const stored = window.localStorage.getItem(storageKey);
-    return isLocale(stored) ? stored : detectLocale();
+    return isLocale(stored) ? stored : "ja";
   } catch {
     return "ja";
   }

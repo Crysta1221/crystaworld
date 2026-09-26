@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
 import { cmsAdminMiddleware } from "./workers/dev/cms-admin";
 import { linkPreviewMiddleware } from "./workers/dev/link-preview";
+import { prerenderPlugin } from "./scripts/prerender-plugin.ts";
 import { zenMaruSubsetPlugin } from "./scripts/subset-fonts.ts";
 import { ogImages } from "./workers/og/plugin";
 
@@ -35,6 +36,8 @@ const config = defineConfig({
     // Self-host the Google Fonts declared in index.html at build time.
     webfontDownload(undefined, { subsetsAllowed: ["latin"] }),
     zenMaruSubsetPlugin(),
+    // Uses its own dep cache so a production prerender cannot clobber the dev JSX runtime.
+    prerenderPlugin(),
     ogImages(),
     {
       name: "cms-admin",

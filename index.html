@@ -28,13 +28,7 @@
           (storedTheme !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
         if (wantsDark) document.documentElement.classList.add("dark");
         var storedLocale = localStorage.getItem("crystaworld-locale");
-        var locale =
-          storedLocale === "en" || storedLocale === "ja"
-            ? storedLocale
-            : (navigator.language || "").toLowerCase().indexOf("en") === 0
-              ? "en"
-              : "ja";
-        document.documentElement.lang = locale;
+        document.documentElement.lang = storedLocale === "en" || storedLocale === "ja" ? storedLocale : "ja";
       } catch (e) {}
     </script>
     <link
