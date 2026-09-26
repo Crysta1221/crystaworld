@@ -17,9 +17,9 @@ export function WorksPage() {
           className="slide-enter-content grid list-none items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-3"
           style={{ "--start": "60ms" } as React.CSSProperties}
         >
-          {WORKS.map((work) => (
+          {WORKS.map((work, index) => (
             <li key={work.id} className="min-w-0">
-              <WorkCard work={work} />
+              <WorkCard work={work} priority={index === 0} />
             </li>
           ))}
         </ul>

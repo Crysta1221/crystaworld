@@ -1,10 +1,13 @@
 import { CalendarBlankIcon } from "@phosphor-icons/react";
 
 import { formatYearMonth } from "@/features/locale";
+import { ContentImage } from "@/shared/components/content-image";
 
 type PostMediaCardProps = {
   imageSrc: string;
   title: string;
+  /** Load this picture immediately. Only the first card on the page should set it. */
+  priority?: boolean;
   /** `YYYY-MM` or `YYYY-MM-DD`. */
   date: string;
   tags: readonly string[];
@@ -14,15 +17,15 @@ type PostMediaCardProps = {
 /**
  * Vertical index card. The Open Graph image keeps its 1200×630 frame above the copy.
  */
-export function PostMediaCard({ imageSrc, title, date, tags, body }: PostMediaCardProps) {
+export function PostMediaCard({ imageSrc, title, date, tags, body, priority = false }: PostMediaCardProps) {
   const excerpt = firstParagraph(body);
 
   return (
     <>
       <div className="relative aspect-1200/630 w-full overflow-hidden rounded-lg bg-background">
-        <img
+        <ContentImage
           src={imageSrc}
-          alt=""
+          priority={priority}
           className="size-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
         />
       </div>

@@ -7,7 +7,7 @@ import type { BlogPost } from "./catalog";
 /**
  * Blog index card. The picture is the post's Open Graph image.
  */
-export function BlogCard({ post }: { post: BlogPost }) {
+export function BlogCard({ post, priority = false }: { post: BlogPost; priority?: boolean }) {
   return (
     <Link
       to="/blogs/$blogId"
@@ -16,6 +16,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
     >
       <PostMediaCard
         imageSrc={`/og/blogs/${post.id}.png`}
+        priority={priority}
         title={post.title}
         date={post.date}
         tags={post.tags}

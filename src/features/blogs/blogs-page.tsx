@@ -17,7 +17,7 @@ export function BlogsPage() {
         <PostIndex
           posts={BLOGS}
           emptyMessage="記事はまだありません。"
-          renderPost={(post) => <BlogCard post={post} />}
+          renderPost={(post, index) => <BlogCard post={post} priority={index === 0} />}
         />
       </div>
     </div>

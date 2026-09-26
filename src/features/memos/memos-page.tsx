@@ -17,7 +17,7 @@ export function MemosPage() {
         <PostIndex
           posts={MEMOS}
           emptyMessage="メモはまだありません。"
-          renderPost={(post) => <MemoCard post={post} />}
+          renderPost={(post, index) => <MemoCard post={post} priority={index === 0} />}
         />
       </div>
     </div>

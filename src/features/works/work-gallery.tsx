@@ -3,6 +3,8 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef, useState } from "react";
 
+import { ContentImage } from "@/shared/components/content-image";
+
 gsap.registerPlugin(useGSAP);
 
 /**
@@ -48,9 +50,13 @@ export function WorkGallery({ images }: { images: readonly string[] }) {
     <div className="min-w-0">
       <div ref={rootRef} className="relative overflow-hidden rounded-2xl border border-border/80 bg-muted">
         <div ref={trackRef} className="flex w-full">
-          {images.map((src) => (
-            <div key={src} className="w-full min-w-0 shrink-0">
-              <img src={src} alt="" className="block h-auto w-full" />
+          {images.map((src, imageIndex) => (
+            <div key={src} className="aspect-video w-full min-w-0 shrink-0">
+              <ContentImage
+                src={src}
+                priority={imageIndex === 0}
+                className="size-full object-cover"
+              />
             </div>
           ))}
         </div>

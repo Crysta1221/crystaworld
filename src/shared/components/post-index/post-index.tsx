@@ -7,7 +7,7 @@ import { PostIndexToolbar } from "./post-index-toolbar";
 type PostIndexProps<T extends IndexPost> = {
   posts: readonly T[];
   emptyMessage: string;
-  renderPost: (post: T) => ReactNode;
+  renderPost: (post: T, index: number) => ReactNode;
 };
 
 /**
@@ -36,9 +36,9 @@ export function PostIndex<T extends IndexPost>({ posts, emptyMessage, renderPost
         <p className="text-sm leading-relaxed text-muted-foreground">一致するものはありません。</p>
       ) : (
         <ul className="grid list-none grid-cols-1 items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {visible.map((post) => (
+          {visible.map((post, index) => (
             <li key={post.id} className="min-w-0">
-              {renderPost(post)}
+              {renderPost(post, index)}
             </li>
           ))}
         </ul>

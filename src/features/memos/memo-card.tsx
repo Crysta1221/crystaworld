@@ -7,7 +7,7 @@ import type { MemoPost } from "./catalog";
 /**
  * Memo index card. The picture is the note's Open Graph image.
  */
-export function MemoCard({ post }: { post: MemoPost }) {
+export function MemoCard({ post, priority = false }: { post: MemoPost; priority?: boolean }) {
   return (
     <Link
       to="/memos/$memoId"
@@ -16,6 +16,7 @@ export function MemoCard({ post }: { post: MemoPost }) {
     >
       <PostMediaCard
         imageSrc={`/og/memos/${post.id}.png`}
+        priority={priority}
         title={post.title}
         date={post.date}
         tags={post.tags}
