@@ -1,7 +1,7 @@
 import { loadBlogs, type BlogPost } from "@/features/blogs/catalog";
 import { loadMemos, type MemoPost } from "@/features/memos/catalog";
 import { loadWorks, type Work } from "@/features/works/catalog";
-import { highlightCode } from "@/shared/lib/highlighting/highlighter.server";
+import { highlightCode } from "@/shared/lib/highlighting/highlighter";
 import { parseCodeMeta } from "@/shared/lib/highlighting/parse-code-meta";
 import { parseShikiPre } from "@/shared/lib/highlighting/parse-shiki-pre";
 

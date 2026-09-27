@@ -1,35 +1,43 @@
-import { createHighlighter, type Highlighter } from "shiki";
+import { createHighlighterCore, type HighlighterCore } from "shiki/core";
+import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
+import darkPlus from "@shikijs/themes/dark-plus";
+import lightPlus from "@shikijs/themes/light-plus";
+
 import { codeBlockTransformer } from "./code-block-transformer";
 import { resolveLanguage } from "./languages";
 
 export { parseShikiPre } from "./parse-shiki-pre";
 
-let highlighterPromise: Promise<Highlighter> | undefined;
+let highlighterPromise: Promise<HighlighterCore> | undefined;
 
-const BUNDLED_LANGUAGES = [
-  "javascript",
-  "typescript",
-  "tsx",
-  "jsx",
-  "html",
-  "css",
-  "json",
-  "bash",
-  "shell",
-  "python",
-  "rust",
-  "kotlin",
-  "yaml",
-  "markdown",
-  "diff",
-  "toml",
-  "sql",
-] as const;
-
-export function getHighlighter(): Promise<Highlighter> {
-  highlighterPromise ??= createHighlighter({
-    themes: ["light-plus", "dark-plus"],
-    langs: [...BUNDLED_LANGUAGES],
+/**
+ * One highlighter for the Worker (article pages) and the browser (CMS preview), so both
+ * render the same languages. Workers disallow runtime WebAssembly compilation, so it uses
+ * Shiki's JavaScript regex engine instead of Oniguruma.
+ */
+function getHighlighter(): Promise<HighlighterCore> {
+  highlighterPromise ??= createHighlighterCore({
+    themes: [lightPlus, darkPlus],
+    // Dynamic imports keep each grammar in its own chunk.
+    langs: [
+      import("@shikijs/langs/javascript"),
+      import("@shikijs/langs/typescript"),
+      import("@shikijs/langs/tsx"),
+      import("@shikijs/langs/jsx"),
+      import("@shikijs/langs/html"),
+      import("@shikijs/langs/css"),
+      import("@shikijs/langs/json"),
+      import("@shikijs/langs/bash"),
+      import("@shikijs/langs/python"),
+      import("@shikijs/langs/rust"),
+      import("@shikijs/langs/kotlin"),
+      import("@shikijs/langs/yaml"),
+      import("@shikijs/langs/markdown"),
+      import("@shikijs/langs/diff"),
+      import("@shikijs/langs/toml"),
+      import("@shikijs/langs/sql"),
+    ],
+    engine: createJavaScriptRegexEngine({ forgiving: true }),
   });
   return highlighterPromise;
 }
@@ -37,20 +45,8 @@ export function getHighlighter(): Promise<Highlighter> {
 export async function highlightCode(code: string, language?: string, filename?: string): Promise<string> {
   const highlighter = await getHighlighter();
   const resolved = resolveLanguage(language);
-  const loadedLangs = highlighter.getLoadedLanguages();
-
-  let targetLang = "text";
-  if (loadedLangs.includes(resolved)) {
-    targetLang = resolved;
-  } else {
-    try {
-      await highlighter.loadLanguage(resolved as Parameters<typeof highlighter.loadLanguage>[0]);
-      targetLang = resolved;
-    } catch {
-      targetLang = "text";
-    }
-  }
-
+  const loaded = highlighter.getLoadedLanguages();
+  const targetLang = loaded.includes(resolved) ? resolved : "text";
   const source = code.replace(/\r?\n$/, "");
 
   return highlighter.codeToHtml(source, {
