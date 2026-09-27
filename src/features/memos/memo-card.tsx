@@ -15,7 +15,7 @@ export function MemoCard({ post, priority = false }: { post: MemoPost; priority?
       className="group flex h-full flex-col rounded-2xl bg-muted p-2.5 outline-none transition-colors hover:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_4%)] focus-visible:ring-[3px] focus-visible:ring-ring/50"
     >
       <PostMediaCard
-        imageSrc={`/og/memos/${post.id}.png`}
+        imageSrc={`/og/memos/${post.id}.webp`}
         priority={priority}
         title={post.title}
         date={post.date}

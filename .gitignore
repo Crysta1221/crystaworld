@@ -9,5 +9,3 @@ dist-ssr
 .tanstack
 .serena
 todos.json
-# Zen Maru Gothic subsets emitted by the production build.
-public/fonts/zen-maru-gothic-*.woff2

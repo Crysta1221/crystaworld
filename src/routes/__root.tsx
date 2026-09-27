@@ -9,7 +9,10 @@ import { cn } from "@/shared/lib/utils";
 
 import { AppProviders } from "@/app/providers";
 
+import fontPreloads from "virtual:crystaworld/font-preloads";
+
 import "@/app/styles.css";
+import "@/app/fonts.css";
 
 const THEME_BOOT = `try {
   var storedTheme = localStorage.getItem("crystaworld-theme");
@@ -50,24 +53,13 @@ export const Route = createRootRoute({
         type: "font/otf",
         crossOrigin: "anonymous" as const,
       },
-      ...(import.meta.env.PROD
-        ? [
-            {
-              rel: "preload",
-              href: "/fonts/zen-maru-gothic-500.woff2",
-              as: "font",
-              type: "font/woff2",
-              crossOrigin: "anonymous" as const,
-            },
-            {
-              rel: "preload",
-              href: "/fonts/zen-maru-gothic-700.woff2",
-              as: "font",
-              type: "font/woff2",
-              crossOrigin: "anonymous" as const,
-            },
-          ]
-        : []),
+      ...fontPreloads.map((href) => ({
+        rel: "preload",
+        href,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous" as const,
+      })),
     ],
     scripts: [{ children: THEME_BOOT }],
   }),
