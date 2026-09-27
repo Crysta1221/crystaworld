@@ -1,7 +1,7 @@
 import { LinkSimple } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import type { ComponentProps, ElementType, ReactNode } from "react";
-import { scrollToDocumentHash } from "@/shared/lib/markdown/scroll-to-hash";
+import { scrollToDocumentHash } from "@/shared/lib/scroll/scroll-to-hash";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4";
 
@@ -24,6 +24,7 @@ export function MarkdownHeading({
           <Link
             to="."
             hash={id}
+            hashScrollIntoView={false}
             onClick={() => scrollToDocumentHash(id)}
             aria-label="この見出しへのリンク"
             className="ms-1.5 inline-flex size-5 translate-y-px items-center justify-center align-text-bottom text-muted-foreground no-underline opacity-0 transition-opacity hover:text-primary group-hover/heading:opacity-100 group-focus-within/heading:opacity-100 focus-visible:opacity-100"

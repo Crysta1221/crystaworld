@@ -1,3 +1,7 @@
-/* Full Japanese faces for development. Production replaces this file with a subset. */
+/*
+ * Full Japanese faces for development.
+ * Production builds replace this module with subset faces (src/build/plugins/fonts).
+ * Imported from the root route, not styles.css, so the replacement goes through Vite.
+ */
 @import "@fontsource/zen-maru-gothic/japanese-500.css";
 @import "@fontsource/zen-maru-gothic/japanese-700.css";

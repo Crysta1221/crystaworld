@@ -1,16 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { articleMeta } from "@/features/content/article-head";
-import { fetchMemo } from "@/features/content/content-fns";
+import { articleMeta } from "@/features/articles/article-head";
+import { fetchMemo } from "@/features/articles/server-fns";
 import { MemoDetailPage } from "@/features/memos";
 
 export const Route = createFileRoute("/memos_/$memoId")({
-  loader: ({ params }) => fetchMemo({ data: params.memoId }),
+  loader: async ({ params }) => {
+    const article = await fetchMemo({ data: params.memoId });
+    if (!article) throw notFound();
+    return article;
+  },
   head: ({ loaderData }) =>
     loaderData
       ? articleMeta({
           title: loaderData.post.title,
           body: loaderData.post.body,
+          path: `/memos/${loaderData.post.id}`,
           imagePath: `/og/memos/${loaderData.post.id}.png`,
         })
       : { meta: [{ title: "Crystaworld" }] },

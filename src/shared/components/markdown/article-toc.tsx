@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { List } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import type { MarkdownHeadingItem } from "@/shared/lib/markdown/extract-headings";
-import { scrollToDocumentHash } from "@/shared/lib/markdown/scroll-to-hash";
+import { scrollToDocumentHash } from "@/shared/lib/scroll/scroll-to-hash";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { cn } from "@/shared/lib/utils";
 
@@ -221,6 +221,7 @@ export function ArticleToc({ headings, className, onNavigate }: ArticleTocProps)
                 key={item.id}
                 to="."
                 hash={item.id}
+                hashScrollIntoView={false}
                 data-toc-id={item.id}
                 onClick={() => {
                   scrollToDocumentHash(item.id);

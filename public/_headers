@@ -1,0 +1,14 @@
+# Cache rules for the Cloudflare asset layer.
+# Hashed build output never changes under the same URL.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Unhashed media: cache for a week, revalidate after that.
+/fonts/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/works/*.webp
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/og/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400

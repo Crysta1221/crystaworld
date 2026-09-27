@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { fetchBlogs } from "@/features/content/content-fns";
+import { fetchBlogs } from "@/features/articles/server-fns";
 import { BlogsPage } from "@/features/blogs";
 
 export const Route = createFileRoute("/blogs")({

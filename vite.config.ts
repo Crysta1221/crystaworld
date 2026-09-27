@@ -1,5 +1,3 @@
-import { readdirSync } from "node:fs";
-
 import { defineConfig, lazyPlugins } from "vite-plus";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
@@ -7,18 +5,8 @@ import { redact } from "@tanstack/redact/vite";
 
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import webfontDownload from "vite-plugin-webfont-dl";
-import { cmsAdminMiddleware } from "./workers/dev/cms-admin";
-import { linkPreviewMiddleware } from "./workers/dev/link-preview";
-import { stripModulePreloadPlugin } from "./scripts/strip-modulepreload.ts";
-import { zenMaruSubsetPlugin } from "./scripts/subset-fonts.ts";
-import { ogImages } from "./workers/og/plugin";
-
-function contentPages(folder: string, prefix: string) {
-  return readdirSync(`src/contents/${folder}`)
-    .filter((file) => file.endsWith(".md"))
-    .map((file) => ({ path: `${prefix}/${encodeURIComponent(file.slice(0, -3))}` }));
-}
+import { sitePlugins } from "./src/build/plugins/index.ts";
+import { prerenderPages } from "./src/build/prerender-pages.ts";
 
 const config = defineConfig({
   fmt: {
@@ -44,10 +32,6 @@ const config = defineConfig({
     cloudflare({ viteEnvironment: { name: "ssr" } }),
     tanstackStart({
       srcDirectory: "src",
-      // The published router input type omits this flag; the plugin still honors it.
-      router: {
-        autoCodeSplitting: true,
-      } as NonNullable<Parameters<typeof tanstackStart>[0]>["router"],
       server: {
         build: {
           inlineCss: true,
@@ -57,45 +41,16 @@ const config = defineConfig({
         enabled: true,
         crawlLinks: false,
         autoStaticPathsDiscovery: true,
+        // `/works` -> works.html so the asset layer serves it without a trailing-slash redirect.
+        autoSubfolderIndex: false,
         failOnError: true,
         filter: ({ path }) => path !== "/cms-preview",
       },
-      pages: [
-        { path: "/" },
-        { path: "/works" },
-        { path: "/blogs" },
-        { path: "/memos" },
-        ...contentPages("works", "/works"),
-        ...contentPages("blogs", "/blogs"),
-        ...contentPages("memos", "/memos"),
-      ],
+      pages: prerenderPages(),
     }),
     tailwindcss(),
     viteReact(),
-    // Self-host the Google Fonts declared in index.html at build time.
-    webfontDownload(undefined, { subsetsAllowed: ["latin"] }),
-    zenMaruSubsetPlugin(),
-    ogImages(),
-    stripModulePreloadPlugin(),
-    {
-      name: "cms-admin",
-      configureServer(server) {
-        return () => {
-          server.middlewares.stack.unshift(
-            { route: "", handle: cmsAdminMiddleware() },
-            { route: "", handle: linkPreviewMiddleware() },
-          );
-        };
-      },
-      configurePreviewServer(server) {
-        return () => {
-          server.middlewares.stack.unshift(
-            { route: "", handle: cmsAdminMiddleware() },
-            { route: "", handle: linkPreviewMiddleware() },
-          );
-        };
-      },
-    },
+    ...sitePlugins(),
   ]),
 });
 

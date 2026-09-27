@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-import { AppContainer } from "@/shared/components/layout";
+import { AppContainer } from "@/shared/components/layout/app-container";
 import { cn } from "@/shared/lib/utils";
 
 import { HERO_HEIGHT, HERO_HEIGHT_COMPACT } from "./frame";

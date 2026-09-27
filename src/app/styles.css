@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "./fonts.css";
 @import "@fontsource/jetbrains-mono/latin-400.css";
 @import "@fontsource/jetbrains-mono/latin-700.css";
 
@@ -13,7 +12,7 @@
   src: url("/fonts/Natadecoco-gothic.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
-  /* Preloaded in index.html so swap lands early without leaving optional forever. */
+  /* Preloaded by the root route head so swap lands early. */
   font-display: swap;
 }
 
@@ -25,6 +24,8 @@
 
 :root {
   color-scheme: light;
+  /* Anchor targets stop below the fixed header (5rem) with a small gap. */
+  --anchor-offset: 6.5rem;
   --background: #eff1f5;
   --foreground: #4c4f69;
   --card: #eff1f5;
@@ -154,7 +155,8 @@
     @apply font-sans;
     overflow-x: clip;
     scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
+    /* The only anchor offset. Do not add scroll-margin-top on targets, it would stack. */
+    scroll-padding-top: var(--anchor-offset);
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -231,6 +233,12 @@
 .slide-enter-content > *:nth-child(19) { --stagger: 19; }
 .slide-enter-content > *:nth-child(20) { --stagger: 20; }
 
+/* Off-screen blocks skip layout and font fetches until they approach the viewport. */
+.skip-offscreen {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 18rem;
+}
+
 /* Markdown & Prose Styling (inspired by commapedia / shadcn) */
 .wiki-prose {
   color: var(--foreground);
@@ -245,15 +253,15 @@
   }
 }
 
+.wiki-prose > :not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 6rem;
+}
+
 .wiki-prose :where(h1, h2, h3, h4) {
-  scroll-margin-top: 5.5rem;
   color: var(--foreground);
   font-weight: 700;
   text-wrap: balance;
-}
-
-.wiki-prose [id] {
-  scroll-margin-top: 5.5rem;
 }
 
 .wiki-prose h1 {

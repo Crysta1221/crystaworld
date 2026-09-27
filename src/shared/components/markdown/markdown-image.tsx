@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 
-import { ContentImage } from "@/shared/components/content-image";
-import { imageSize } from "@/shared/lib/image-sizes";
+import { ContentImage } from "@/shared/components/media/content-image";
+import { imageSize } from "@/shared/lib/images/sizes";
 
 type MarkdownImageProps = ComponentProps<"img"> & { node?: unknown };
 
@@ -19,7 +19,7 @@ export function MarkdownImage({ alt, title, node: _node, src, ...props }: Markdo
       alt={alt ?? ""}
       width={size?.width}
       height={size?.height}
-      deferUntilVisible={src.endsWith(".gif")}
+      deferUntilVisible
       pendingClassName="w-full"
       className="h-auto w-full max-w-full rounded-none shadow-xs"
     />

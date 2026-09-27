@@ -1,4 +1,4 @@
-import { parseMarkdownFile, splitList } from "@/shared/lib/markdown";
+import { parseMarkdownFile, splitList } from "@/shared/lib/markdown/frontmatter";
 
 export type MemoPost = {
   id: string;

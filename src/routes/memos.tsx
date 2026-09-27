@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { fetchMemos } from "@/features/content/content-fns";
+import { fetchMemos } from "@/features/articles/server-fns";
 import { MemosPage } from "@/features/memos";
 
 export const Route = createFileRoute("/memos")({

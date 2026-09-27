@@ -1,13 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "crystaworld",
-  "main": "workers/site.ts",
+  "main": "src/server/site.ts",
   "compatibility_date": "2026-09-25",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "not_found_handling": "single-page-application",
+    // Prerendered pages and files are served straight from the asset layer.
+    // Paths without an asset fall through to the Worker (TanStack Start SSR).
+    "not_found_handling": "none",
     "run_worker_first": [
       "/admin",
       "/admin/",
@@ -17,13 +19,6 @@
       "/oauth/redirect",
       "/api/link-preview",
       "/_serverFn/*",
-      "/",
-      "/works",
-      "/works/*",
-      "/blogs",
-      "/blogs/*",
-      "/memos",
-      "/memos/*",
       "/cms-preview"
     ]
   }
