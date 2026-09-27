@@ -11,8 +11,8 @@
   src: url("/fonts/Natadecoco-gothic.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
-  /* optional: a late swap of this display face was shifting the whole page. */
-  font-display: optional;
+  /* Preloaded in index.html so swap lands early without leaving optional forever. */
+  font-display: swap;
 }
 
 @theme {
