@@ -1,5 +1,7 @@
 import { createRouter } from "@tanstack/react-router";
 
+import { NotFoundPage } from "@/features/not-found";
+
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -9,6 +11,8 @@ export function getRouter() {
     defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
     defaultPendingMinMs: 0,
+    // Unknown URLs and missing articles render inside the site layout with a 404 status.
+    defaultNotFoundComponent: NotFoundPage,
   });
 
   return router;

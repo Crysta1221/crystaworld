@@ -1,11 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { articleMeta } from "@/features/articles/article-head";
 import { fetchWork } from "@/features/articles/server-fns";
 import { WorkDetailPage } from "@/features/works";
 
 export const Route = createFileRoute("/works_/$workId")({
-  loader: ({ params }) => fetchWork({ data: params.workId }),
+  loader: async ({ params }) => {
+    const article = await fetchWork({ data: params.workId });
+    if (!article) throw notFound();
+    return article;
+  },
   head: ({ loaderData }) =>
     loaderData
       ? articleMeta({
