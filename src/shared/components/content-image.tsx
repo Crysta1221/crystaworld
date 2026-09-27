@@ -1,4 +1,4 @@
-import { useState, type ImgHTMLAttributes } from "react";
+import { useEffect, useRef, useState, type ImgHTMLAttributes } from "react";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -9,6 +9,8 @@ type ContentImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"
   pendingClassName?: string;
   /** The largest image on the page. Loaded immediately; everything else waits. */
   priority?: boolean;
+  /** Omits the request until the frame is near the viewport. */
+  deferUntilVisible?: boolean;
 };
 
 /**
@@ -21,42 +23,77 @@ export function ContentImage({
   className,
   pendingClassName = "size-full",
   priority = false,
+  deferUntilVisible = false,
   onLoad,
   onError,
+  width,
+  height,
   ...props
 }: ContentImageProps) {
+  const frameRef = useRef<HTMLSpanElement>(null);
   const [seen, setSeen] = useState(src);
   const [ready, setReady] = useState(false);
+  const [visible, setVisible] = useState(!deferUntilVisible);
   if (src !== seen) {
     setSeen(src);
     setReady(false);
   }
 
+  useEffect(() => {
+    if (!deferUntilVisible || visible) return;
+    const node = frameRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) setVisible(true);
+      },
+      { rootMargin: "240px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [deferUntilVisible, visible]);
+
+  const reserved =
+    typeof width === "number" && typeof height === "number"
+      ? { aspectRatio: `${width} / ${height}` }
+      : undefined;
+
   return (
-    <span className={cn("relative block overflow-hidden", pendingClassName)}>
+    <span
+      ref={frameRef}
+      className={cn("relative block overflow-hidden", pendingClassName)}
+      style={visible ? undefined : reserved}
+    >
       {ready ? null : (
         <span aria-hidden className="pointer-events-none absolute inset-0 bg-foreground/10 motion-safe:animate-pulse" />
       )}
-      <img
-        {...props}
-        src={src}
-        alt={alt}
-        decoding="async"
-        loading={priority ? "eager" : "lazy"}
-        fetchPriority={priority ? "high" : "auto"}
-        className={cn("relative", className)}
-        ref={(node) => {
-          if (node?.complete && node.naturalWidth > 0) setReady(true);
-        }}
-        onLoad={(event) => {
-          if (event.currentTarget.naturalWidth > 0) setReady(true);
-          onLoad?.(event);
-        }}
-        onError={(event) => {
-          setReady(true);
-          onError?.(event);
-        }}
-      />
+      {visible ? (
+        <img
+          width={width}
+          height={height}
+          {...props}
+          src={src}
+          alt={alt}
+          decoding="async"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
+          className={cn("relative", className)}
+          ref={(node) => {
+            if (node?.complete && node.naturalWidth > 0) setReady(true);
+          }}
+          onLoad={(event) => {
+            if (event.currentTarget.naturalWidth > 0) setReady(true);
+            onLoad?.(event);
+          }}
+          onError={(event) => {
+            setReady(true);
+            onError?.(event);
+          }}
+        />
+      ) : null}
     </span>
   );
 }

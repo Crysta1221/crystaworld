@@ -1,21 +1,24 @@
 import { useMemo } from "react";
 import { formatYearMonth } from "@/features/locale";
 import { ArticleToc, ArticleTocSlide, MarkdownArticle } from "@/shared/components/markdown";
+import { HighlightProvider, type HighlightBlock } from "@/shared/lib/highlighting/highlight-context";
 import { extractHeadings } from "@/shared/lib/markdown/extract-headings";
 import type { BlogPost } from "./catalog";
 
 interface BlogPostViewProps {
   post: BlogPost;
+  highlights?: Readonly<Record<string, HighlightBlock>>;
 }
 
 /**
  * Renders an individual blog post with an optional sticky Table of Contents.
  */
-export function BlogPostView({ post }: BlogPostViewProps) {
+export function BlogPostView({ post, highlights = {} }: BlogPostViewProps) {
   const headings = useMemo(() => extractHeadings(post.body), [post.body]);
   const hasToc = headings.length > 0;
 
   return (
+    <HighlightProvider highlights={highlights}>
     <article>
       <header className="mb-6 space-y-2">
         <h1 className="text-2xl font-bold tracking-tight text-balance text-foreground sm:text-3xl">
@@ -52,5 +55,6 @@ export function BlogPostView({ post }: BlogPostViewProps) {
         <MarkdownArticle markdown={post.body} />
       )}
     </article>
+    </HighlightProvider>
   );
 }

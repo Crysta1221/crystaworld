@@ -9,24 +9,13 @@ export type BlogPost = {
   body: string;
 };
 
-const sources = import.meta.glob("/src/contents/blogs/*.md", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-}) as Record<string, string>;
-
 const REQUIRED_FIELDS = ["title", "date"] as const;
 
 /**
  * Blog posts are Japanese Markdown files under src/contents/blogs.
+ * The server bundle owns the file map so article text stays out of the client.
  */
-export const BLOGS = loadBlogs();
-
-export function getBlog(id: string): BlogPost | undefined {
-  return BLOGS.find((post) => post.id === id);
-}
-
-function loadBlogs(): readonly BlogPost[] {
+export function loadBlogs(sources: Record<string, string>): readonly BlogPost[] {
   return Object.entries(sources)
     .map(([path, source]) => toPost(path, source))
     .sort((a, b) => b.date.localeCompare(a.date));

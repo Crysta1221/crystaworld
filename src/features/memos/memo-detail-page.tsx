@@ -4,14 +4,20 @@ import { Link } from "@tanstack/react-router";
 
 import { BlogPostView } from "@/features/blogs/blog-post-view";
 import { Button } from "@/shared/components/ui/button";
+import type { HighlightBlock } from "@/shared/lib/highlighting/highlight-context";
 
-import { getMemo } from "./catalog";
+import type { MemoPost } from "./catalog";
 
 /**
  * Memo detail. Shares the article layout with blogs, including the table of contents.
  */
-export function MemoDetailPage({ memoId }: { memoId: string }) {
-  const post = getMemo(memoId);
+export function MemoDetailPage({
+  post,
+  highlights = {},
+}: {
+  post: MemoPost | null;
+  highlights?: Readonly<Record<string, HighlightBlock>>;
+}) {
 
   useEffect(() => {
     document.title = post ? `${post.title} | Crystaworld` : "Crystaworld";
@@ -37,7 +43,7 @@ export function MemoDetailPage({ memoId }: { memoId: string }) {
 
       {post ? (
         <div className="mt-6 sm:mt-8">
-          <BlogPostView post={post} />
+          <BlogPostView post={post} highlights={highlights} />
         </div>
       ) : (
         <p className="mt-8 text-sm text-muted-foreground">このメモは見つかりませんでした。</p>

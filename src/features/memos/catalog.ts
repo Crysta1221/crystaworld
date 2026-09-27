@@ -9,24 +9,13 @@ export type MemoPost = {
   body: string;
 };
 
-const sources = import.meta.glob("/src/contents/memos/*.md", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-}) as Record<string, string>;
-
 const REQUIRED_FIELDS = ["title", "date"] as const;
 
 /**
  * Memos are Japanese Markdown files under src/contents/memos.
+ * The server bundle owns the file map so article text stays out of the client.
  */
-export const MEMOS = loadMemos();
-
-export function getMemo(id: string): MemoPost | undefined {
-  return MEMOS.find((post) => post.id === id);
-}
-
-function loadMemos(): readonly MemoPost[] {
+export function loadMemos(sources: Record<string, string>): readonly MemoPost[] {
   return Object.entries(sources)
     .map(([path, source]) => toPost(path, source))
     .sort((a, b) => b.date.localeCompare(a.date));

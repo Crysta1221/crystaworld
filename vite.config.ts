@@ -1,14 +1,24 @@
+import { readdirSync } from "node:fs";
+
 import { defineConfig, lazyPlugins } from "vite-plus";
-import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import { cloudflare } from "@cloudflare/vite-plugin";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { redact } from "@tanstack/redact/vite";
 
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import webfontDownload from "vite-plugin-webfont-dl";
 import { cmsAdminMiddleware } from "./workers/dev/cms-admin";
 import { linkPreviewMiddleware } from "./workers/dev/link-preview";
-import { prerenderPlugin } from "./scripts/prerender-plugin.ts";
+import { stripModulePreloadPlugin } from "./scripts/strip-modulepreload.ts";
 import { zenMaruSubsetPlugin } from "./scripts/subset-fonts.ts";
 import { ogImages } from "./workers/og/plugin";
+
+function contentPages(folder: string, prefix: string) {
+  return readdirSync(`src/contents/${folder}`)
+    .filter((file) => file.endsWith(".md"))
+    .map((file) => ({ path: `${prefix}/${encodeURIComponent(file.slice(0, -3))}` }));
+}
 
 const config = defineConfig({
   fmt: {
@@ -30,15 +40,43 @@ const config = defineConfig({
   },
   resolve: { tsconfigPaths: true },
   plugins: lazyPlugins(() => [
-    tanstackRouter({ target: "react", autoCodeSplitting: true }),
+    redact({ preset: "full" }),
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    tanstackStart({
+      srcDirectory: "src",
+      // The published router input type omits this flag; the plugin still honors it.
+      router: {
+        autoCodeSplitting: true,
+      } as NonNullable<Parameters<typeof tanstackStart>[0]>["router"],
+      server: {
+        build: {
+          inlineCss: true,
+        },
+      },
+      prerender: {
+        enabled: true,
+        crawlLinks: false,
+        autoStaticPathsDiscovery: true,
+        failOnError: true,
+        filter: ({ path }) => path !== "/cms-preview",
+      },
+      pages: [
+        { path: "/" },
+        { path: "/works" },
+        { path: "/blogs" },
+        { path: "/memos" },
+        ...contentPages("works", "/works"),
+        ...contentPages("blogs", "/blogs"),
+        ...contentPages("memos", "/memos"),
+      ],
+    }),
     tailwindcss(),
     viteReact(),
     // Self-host the Google Fonts declared in index.html at build time.
     webfontDownload(undefined, { subsetsAllowed: ["latin"] }),
     zenMaruSubsetPlugin(),
-    // Uses its own dep cache so a production prerender cannot clobber the dev JSX runtime.
-    prerenderPlugin(),
     ogImages(),
+    stripModulePreloadPlugin(),
     {
       name: "cms-admin",
       configureServer(server) {

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type GSAP from "gsap";
 
 import { MoonIcon, SunIcon } from "@phosphor-icons/react";
@@ -63,7 +63,11 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
   const moonRef = useRef<HTMLSpanElement>(null);
   const animatingRef = useRef(false);
 
-  const isDark = typeof window === "undefined" ? false : resolveTheme(theme) === "dark";
+  const [systemDark, setSystemDark] = useState(false);
+  useEffect(() => {
+    setSystemDark(resolveTheme(theme) === "dark");
+  }, [theme]);
+  const isDark = theme === "dark" || (theme === "system" && systemDark);
 
   const toggle = () => {
     if (animatingRef.current) return;

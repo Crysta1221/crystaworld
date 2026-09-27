@@ -19,11 +19,14 @@ export function LocaleProvider({
   children,
   storageKey = "crystaworld-locale",
 }: LocaleProviderProps) {
-  const [locale, setLocaleState] = useState<Locale>(() => getStoredLocale(storageKey));
+  // Prerendered copy is Japanese. Apply a saved locale only after hydration.
+  const [locale, setLocaleState] = useState<Locale>("ja");
 
   useEffect(() => {
-    applyLocale(locale);
-  }, [locale]);
+    const stored = getStoredLocale(storageKey);
+    setLocaleState(stored);
+    applyLocale(stored);
+  }, [storageKey]);
 
   const setLocale = (next: Locale) => {
     try {
