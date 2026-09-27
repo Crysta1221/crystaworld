@@ -1,4 +1,4 @@
-import { parseMarkdownFile } from "@/shared/lib/markdown";
+import { parseMarkdownFile } from "@/shared/lib/markdown/frontmatter";
 
 export type WorkTag = {
   name: string;

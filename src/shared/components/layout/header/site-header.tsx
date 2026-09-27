@@ -3,7 +3,7 @@ import { flushSync } from "react-dom";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { LocaleToggle } from "@/features/locale";
 import { ThemeToggle } from "@/features/theme";
-import { AppContainer } from "@/shared/components/layout";
+import { AppContainer } from "../app-container";
 import { HeaderMenuFrame } from "./header-menu-frame";
 import { MenuToggleIcon } from "./menu-toggle-icon";
 import { TabsPill, type TabsPillItem } from "./tabs-pill";

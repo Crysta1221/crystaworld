@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 
 import { SOCIAL_LINKS } from "@/features/home/socials/links";
-import { AppContainer } from "@/shared/components/layout";
+import { AppContainer } from "../app-container";
 
 const FOOTER_LINKS = [
   { label: "Home", to: "/" },

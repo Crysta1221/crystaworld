@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { articleMeta } from "@/features/content/article-head";
-import { fetchWork } from "@/features/content/content-fns";
+import { articleMeta } from "@/features/articles/article-head";
+import { fetchWork } from "@/features/articles/server-fns";
 import { WorkDetailPage } from "@/features/works";
 
 export const Route = createFileRoute("/works_/$workId")({
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/works_/$workId")({
       ? articleMeta({
           title: loaderData.post.title,
           body: loaderData.post.body,
+          path: `/works/${loaderData.post.id}`,
           imagePath: loaderData.post.image || "/og/default.png",
         })
       : { meta: [{ title: "Crystaworld" }] },

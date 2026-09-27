@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { BlogDetailPage } from "@/features/blogs";
-import { articleMeta } from "@/features/content/article-head";
-import { fetchBlog } from "@/features/content/content-fns";
+import { articleMeta } from "@/features/articles/article-head";
+import { fetchBlog } from "@/features/articles/server-fns";
 
 export const Route = createFileRoute("/blogs_/$blogId")({
   loader: ({ params }) => fetchBlog({ data: params.blogId }),
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/blogs_/$blogId")({
       ? articleMeta({
           title: loaderData.post.title,
           body: loaderData.post.body,
+          path: `/blogs/${loaderData.post.id}`,
           imagePath: `/og/blogs/${loaderData.post.id}.png`,
         })
       : { meta: [{ title: "Crystaworld" }] },

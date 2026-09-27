@@ -1,27 +1,31 @@
-const ORIGIN = "https://crystaworld.dev";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN } from "@/shared/lib/site";
 
 type ArticleMetaInput = {
   title: string;
   body: string;
+  /** Page path, such as `/blogs/welcome`. */
+  path: string;
   imagePath: string;
 };
 
 /**
  * Head tags for one article. The shell still renders these during data-only SSR.
  */
-export function articleMeta({ title, body, imagePath }: ArticleMetaInput) {
-  const description = excerpt(body) || "くりすたのポートフォリオへようこそ！";
-  const pageTitle = `${title} | Crystaworld`;
-  const image = new URL(imagePath, ORIGIN).href;
+export function articleMeta({ title, body, path, imagePath }: ArticleMetaInput) {
+  const description = excerpt(body) || SITE_DESCRIPTION;
+  const pageTitle = `${title} | ${SITE_NAME}`;
+  const image = new URL(imagePath, SITE_ORIGIN).href;
+  const url = new URL(path, SITE_ORIGIN).href;
 
   return {
     meta: [
       { title: pageTitle },
       { name: "description", content: description },
-      { property: "og:site_name", content: "Crystaworld" },
+      { property: "og:site_name", content: SITE_NAME },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "article" },
+      { property: "og:url", content: url },
       { property: "og:image", content: image },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
