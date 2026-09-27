@@ -24,6 +24,8 @@
 
 :root {
   color-scheme: light;
+  /* Anchor targets stop below the fixed header (5rem) with a small gap. */
+  --anchor-offset: 6.5rem;
   --background: #eff1f5;
   --foreground: #4c4f69;
   --card: #eff1f5;
@@ -153,7 +155,8 @@
     @apply font-sans;
     overflow-x: clip;
     scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
+    /* The only anchor offset. Do not add scroll-margin-top on targets, it would stack. */
+    scroll-padding-top: var(--anchor-offset);
   }
   @media (prefers-reduced-motion: reduce) {
     html {
@@ -256,14 +259,9 @@
 }
 
 .wiki-prose :where(h1, h2, h3, h4) {
-  scroll-margin-top: 5.5rem;
   color: var(--foreground);
   font-weight: 700;
   text-wrap: balance;
-}
-
-.wiki-prose [id] {
-  scroll-margin-top: 5.5rem;
 }
 
 .wiki-prose h1 {

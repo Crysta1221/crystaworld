@@ -21,7 +21,7 @@ import {
 import { MarkdownHeading } from "./markdown-heading";
 import { MarkdownCodeBlock } from "./markdown-code-block";
 import { hashFromHref, isSameDocumentHref } from "@/shared/lib/markdown/hash-href";
-import { scrollToDocumentHash } from "@/shared/lib/markdown/scroll-to-hash";
+import { scrollToDocumentHash } from "@/shared/lib/scroll/scroll-to-hash";
 import { cn } from "@/shared/lib/utils";
 
 function MarkdownLink({
@@ -36,7 +36,7 @@ function MarkdownLink({
 
   if (hash && sameDocument) {
     return (
-      <Link to="." hash={hash} onClick={() => scrollToDocumentHash(hash)} {...props}>
+      <Link to="." hash={hash} hashScrollIntoView={false} onClick={() => scrollToDocumentHash(hash)} {...props}>
         {children}
       </Link>
     );
