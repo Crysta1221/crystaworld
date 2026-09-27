@@ -15,14 +15,20 @@ export async function withOgTags(request: Request, assets: AssetFetcher, respons
   const url = new URL(request.url);
   if (url.pathname.startsWith("/admin")) return response;
 
-  const manifest = await loadManifest(assets, url.origin);
-  if (!manifest) return response;
-
-  const html = applyOg(await response.text(), resolveOgEntry(manifest, url.pathname), url.href);
+  const html = await response.text();
   const headers = new Headers(response.headers);
   headers.delete("content-length");
   headers.delete("content-encoding");
-  return new Response(html, { status: response.status, statusText: response.statusText, headers });
+  if (!html.includes("<!-- og -->")) {
+    return new Response(html, { status: response.status, statusText: response.statusText, headers });
+  }
+
+  const manifest = await loadManifest(assets, url.origin);
+  if (!manifest) {
+    return new Response(html, { status: response.status, statusText: response.statusText, headers });
+  }
+  const next = applyOg(html, resolveOgEntry(manifest, url.pathname), url.href);
+  return new Response(next, { status: response.status, statusText: response.statusText, headers });
 }
 
 async function loadManifest(assets: AssetFetcher, origin: string): Promise<OgManifest | null> {

@@ -1,13 +1,13 @@
 import { PageHero } from "@/shared/components/page-hero";
 import { PostIndex } from "@/shared/components/post-index/post-index";
 
-import { MEMOS } from "./catalog";
+import type { MemoPost } from "./catalog";
 import { MemoCard } from "./memo-card";
 
 /**
  * Memos index. Cards link to each note; the note itself is a separate page.
  */
-export function MemosPage() {
+export function MemosPage({ posts }: { posts: readonly MemoPost[] }) {
   return (
     <div>
       <div className="slide-enter">
@@ -15,7 +15,7 @@ export function MemosPage() {
       </div>
       <div className="py-6 sm:py-8">
         <PostIndex
-          posts={MEMOS}
+          posts={posts}
           emptyMessage="メモはまだありません。"
           renderPost={(post, index) => <MemoCard post={post} priority={index === 0} />}
         />

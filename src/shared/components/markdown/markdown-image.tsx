@@ -1,6 +1,7 @@
 import type { ComponentProps } from "react";
 
 import { ContentImage } from "@/shared/components/content-image";
+import { imageSize } from "@/shared/lib/image-sizes";
 
 type MarkdownImageProps = ComponentProps<"img"> & { node?: unknown };
 
@@ -10,11 +11,15 @@ type MarkdownImageProps = ComponentProps<"img"> & { node?: unknown };
 export function MarkdownImage({ alt, title, node: _node, src, ...props }: MarkdownImageProps) {
   if (!src) return null;
 
+  const size = imageSize(src);
   const image = (
     <ContentImage
       {...props}
       src={src}
       alt={alt ?? ""}
+      width={size?.width}
+      height={size?.height}
+      deferUntilVisible={src.endsWith(".gif")}
       pendingClassName="w-full"
       className="h-auto w-full max-w-full rounded-none shadow-xs"
     />

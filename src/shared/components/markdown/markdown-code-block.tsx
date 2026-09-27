@@ -11,6 +11,7 @@ import {
 import { CodeFileIcon } from "@/shared/components/markdown/code-file-icon";
 import { Button } from "@/shared/components/ui/button";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
+import { useProvidedHighlight } from "@/shared/lib/highlighting/highlight-context";
 import { parseCodeMeta } from "@/shared/lib/highlighting/parse-code-meta";
 import { cn } from "@/shared/lib/utils";
 
@@ -123,11 +124,18 @@ export function MarkdownCodeBlock({
     "",
   );
   const cacheKey = `${language ?? ""}\0${filename ?? ""}\0${rawCode}`;
+  const provided = useProvidedHighlight(cacheKey);
 
-  const [highlighted, setHighlighted] = useState<{ className: string; innerHtml: string } | null>(null);
+  const [highlighted, setHighlighted] = useState<{ className: string; innerHtml: string } | null>(
+    provided,
+  );
   const preRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
+    if (provided) {
+      setHighlighted(provided);
+      return;
+    }
     const cached = highlightCache.get(cacheKey);
     if (cached) {
       setHighlighted(cached);
@@ -139,6 +147,7 @@ export function MarkdownCodeBlock({
 
     let cancelled = false;
     const run = () => {
+      if (import.meta.env.SSR) return;
       void import("@/shared/lib/highlighting/highlighter")
         .then(({ highlightCode, parseShikiPre }) =>
           highlightCode(rawCode, language, filename).then(parseShikiPre),
@@ -172,7 +181,7 @@ export function MarkdownCodeBlock({
       cancelled = true;
       observer.disconnect();
     };
-  }, [cacheKey, rawCode, filename, language]);
+  }, [cacheKey, rawCode, filename, language, provided]);
 
   return (
     <div className="md-code-block my-4 overflow-hidden rounded-xl ring-1 ring-foreground/10">

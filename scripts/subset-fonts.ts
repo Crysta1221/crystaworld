@@ -5,6 +5,7 @@ import subsetFont from "subset-font";
 
 const FONT_DIR = "node_modules/@fontsource/zen-maru-gothic/files";
 const CRITICAL_BOLD = "くりすた";
+const BOLD_SOURCE = /font-bold|font-weight:\s*700/;
 
 function walk(dir: string, acc: string[] = []): string[] {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -85,17 +86,42 @@ async function writeSubset(weight: 500 | 700, chars: string, filename: string, o
   writeFileSync(path.join(outDir, filename), subset);
 }
 
-function face(file: string, weight: 500 | 700, unicodeRange: string): string {
+function face(
+  file: string,
+  weight: 500 | 700,
+  unicodeRange: string,
+  display: "optional" | "swap",
+): string {
   if (unicodeRange.length === 0) return "";
   return `@font-face {
   font-family: "Zen Maru Gothic";
   src: url("/fonts/${file}") format("woff2");
   font-weight: ${weight};
   font-style: normal;
-  font-display: optional;
+  font-display: ${display};
   unicode-range: ${unicodeRange};
 }
 `;
+}
+
+/**
+ * Characters painted at weight 700. Article headings are not in the home
+ * sources, and the preloaded bold file used to contain only the site name.
+ */
+function boldText(file: string, source: string): string {
+  if (file.endsWith(".md")) return markdownBoldText(source);
+  if (BOLD_SOURCE.test(source)) return source;
+  return "";
+}
+
+function markdownBoldText(source: string): string {
+  let text = "";
+  const title = /^title:\s*(.+)$/m.exec(source);
+  if (title?.[1]) text += `${title[1]}\n`;
+  for (const match of source.matchAll(/^#{1,6}[ \t]+(.+)$/gm)) {
+    text += `${match[1] ?? ""}\n`;
+  }
+  return text;
 }
 
 /**
@@ -108,30 +134,32 @@ export async function buildZenMaruSubsets(outDir: string): Promise<string> {
   const files = [...walk("src"), "index.html"];
   let corpus = "";
   let homeCorpus = "";
+  let boldCorpus = CRITICAL_BOLD;
   for (const file of files) {
     const text = readFileSync(file, "utf8");
     corpus += text;
     if (isHomeSource(file)) homeCorpus += text;
+    boldCorpus += boldText(file, text);
   }
 
   const codes = collectCodes(corpus);
   const homeCodes = collectCodes(homeCorpus);
   const homeCodeSet = new Set(homeCodes);
   const restBodyCodes = codes.filter((code) => !homeCodeSet.has(code));
-  const criticalCodes = collectCodes(CRITICAL_BOLD);
+  const criticalCodes = collectCodes(boldCorpus);
   const criticalSet = new Set(criticalCodes);
   const restBoldCodes = codes.filter((code) => !criticalSet.has(code));
 
   await writeSubset(500, codesToString(homeCodes), "zen-maru-gothic-500.woff2", outDir);
   await writeSubset(500, codesToString(restBodyCodes), "zen-maru-gothic-500-rest.woff2", outDir);
-  await writeSubset(700, CRITICAL_BOLD, "zen-maru-gothic-700.woff2", outDir);
+  await writeSubset(700, codesToString(criticalCodes), "zen-maru-gothic-700.woff2", outDir);
   await writeSubset(700, codesToString(restBoldCodes), "zen-maru-gothic-700-rest.woff2", outDir);
 
   return [
-    face("zen-maru-gothic-500.woff2", 500, toUnicodeRange(homeCodes)),
-    face("zen-maru-gothic-500-rest.woff2", 500, toUnicodeRange(restBodyCodes)),
-    face("zen-maru-gothic-700.woff2", 700, toUnicodeRange(criticalCodes)),
-    face("zen-maru-gothic-700-rest.woff2", 700, toUnicodeRange(restBoldCodes)),
+    face("zen-maru-gothic-500.woff2", 500, toUnicodeRange(homeCodes), "swap"),
+    face("zen-maru-gothic-500-rest.woff2", 500, toUnicodeRange(restBodyCodes), "swap"),
+    face("zen-maru-gothic-700.woff2", 700, toUnicodeRange(criticalCodes), "swap"),
+    face("zen-maru-gothic-700-rest.woff2", 700, toUnicodeRange(restBoldCodes), "swap"),
   ].join("\n");
 }
 

@@ -18,25 +18,14 @@ export type Work = {
   body: string;
 };
 
-const sources = import.meta.glob("/src/contents/works/*.md", {
-  eager: true,
-  query: "?raw",
-  import: "default",
-}) as Record<string, string>;
-
 const REQUIRED_FIELDS = ["title", "category", "date", "image", "tags"] as const;
 
 /**
  * Works are authored as Japanese Markdown under src/contents/works.
  * Frontmatter drives the card; the body is the detail.
+ * The server bundle owns the file map so article text stays out of the client.
  */
-export const WORKS = loadWorks();
-
-export function getWork(id: string): Work | undefined {
-  return WORKS.find((work) => work.id === id);
-}
-
-function loadWorks(): readonly Work[] {
+export function loadWorks(sources: Record<string, string>): readonly Work[] {
   return Object.entries(sources)
     .map(([path, source]) => toWork(path, source))
     .sort((a, b) => b.date.localeCompare(a.date));

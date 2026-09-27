@@ -18,8 +18,13 @@ interface ArticleTocSlideProps {
  */
 export function ArticleTocSlide({ headings }: ArticleTocSlideProps) {
   const [open, setOpen] = useState(false);
+  const [host, setHost] = useState<HTMLElement | null>(null);
   const panelId = useId();
   const hasItems = headings.some((heading) => heading.depth >= 2 && heading.depth <= 3);
+
+  useEffect(() => {
+    setHost(document.body);
+  }, []);
 
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1024px)");
@@ -41,7 +46,7 @@ export function ArticleTocSlide({ headings }: ArticleTocSlideProps) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  if (!hasItems) return null;
+  if (!hasItems || !host) return null;
 
   return createPortal(
     <div
@@ -94,6 +99,6 @@ export function ArticleTocSlide({ headings }: ArticleTocSlideProps) {
         />
       </div>
     </div>,
-    document.body,
+    host,
   );
 }

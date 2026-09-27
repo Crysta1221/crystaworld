@@ -3,6 +3,7 @@
   "name": "crystaworld",
   "main": "workers/site.ts",
   "compatibility_date": "2026-09-25",
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
@@ -14,7 +15,16 @@
       "/callback",
       "/oauth/authorize",
       "/oauth/redirect",
-      "/api/link-preview"
+      "/api/link-preview",
+      "/_serverFn/*",
+      "/",
+      "/works",
+      "/works/*",
+      "/blogs",
+      "/blogs/*",
+      "/memos",
+      "/memos/*",
+      "/cms-preview"
     ]
   }
 }

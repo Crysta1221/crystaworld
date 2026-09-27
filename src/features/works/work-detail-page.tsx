@@ -4,8 +4,9 @@ import { Link } from "@tanstack/react-router";
 import { formatYearMonth } from "@/features/locale";
 import { MarkdownArticle } from "@/shared/components/markdown";
 import { Button } from "@/shared/components/ui/button";
+import { HighlightProvider, type HighlightBlock } from "@/shared/lib/highlighting/highlight-context";
 
-import { getWork } from "./catalog";
+import type { Work } from "./catalog";
 import { WorkGallery } from "./work-gallery";
 import { WorkLinks } from "./work-links";
 import { WorkTech } from "./work-tech";
@@ -13,8 +14,13 @@ import { WorkTech } from "./work-tech";
 /**
  * Work detail. No page hero: a back pill, then the title, carousel, and copy.
  */
-export function WorkDetailPage({ workId }: { workId: string }) {
-  const work = getWork(workId);
+export function WorkDetailPage({
+  work,
+  highlights = {},
+}: {
+  work: Work | null;
+  highlights?: Readonly<Record<string, HighlightBlock>>;
+}) {
 
   return (
     <div className="slide-enter-content py-6 sm:py-8">
@@ -59,7 +65,9 @@ export function WorkDetailPage({ workId }: { workId: string }) {
                     Description
                   </h2>
                   <div className="mt-4">
-                    <MarkdownArticle markdown={work.body} />
+                    <HighlightProvider highlights={highlights}>
+                      <MarkdownArticle markdown={work.body} />
+                    </HighlightProvider>
                   </div>
                 </section>
               </div>

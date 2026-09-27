@@ -1,5 +1,8 @@
 import { createHighlighter, type Highlighter } from "shiki";
 import { codeBlockTransformer } from "./code-block-transformer";
+import { resolveLanguage } from "./languages";
+
+export { parseShikiPre } from "./parse-shiki-pre";
 
 let highlighterPromise: Promise<Highlighter> | undefined;
 
@@ -22,24 +25,6 @@ const BUNDLED_LANGUAGES = [
   "toml",
   "sql",
 ] as const;
-
-const LANGUAGE_ALIASES: Record<string, string> = {
-  js: "javascript",
-  ts: "typescript",
-  py: "python",
-  sh: "bash",
-  shell: "bash",
-  yml: "yaml",
-  md: "markdown",
-  rs: "rust",
-  kt: "kotlin",
-};
-
-export function resolveLanguage(lang?: string): string {
-  if (!lang) return "text";
-  const normalized = lang.toLowerCase().trim();
-  return LANGUAGE_ALIASES[normalized] ?? normalized;
-}
 
 export function getHighlighter(): Promise<Highlighter> {
   highlighterPromise ??= createHighlighter({
@@ -78,15 +63,4 @@ export async function highlightCode(code: string, language?: string, filename?: 
     ...(filename ? { meta: { filename } } : {}),
     transformers: [codeBlockTransformer],
   });
-}
-
-export function parseShikiPre(html: string): { className: string; innerHtml: string } {
-  const match = /<pre([^>]*)>([\s\S]*)<\/pre>/.exec(html);
-  const attributes = match?.[1] ?? "";
-  const className = /class="([^"]*)"/.exec(attributes)?.[1] ?? "shiki";
-
-  return {
-    className,
-    innerHtml: match?.[2] ?? html,
-  };
 }

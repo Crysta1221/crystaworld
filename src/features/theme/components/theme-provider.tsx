@@ -28,11 +28,14 @@ export function ThemeProvider({
   storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => getStoredTheme(storageKey, defaultTheme));
+  // The prerendered tree is the default theme. Read storage after mount so hydration matches.
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
 
   useEffect(() => {
-    applyTheme(resolveTheme(theme));
-  }, [theme]);
+    const stored = getStoredTheme(storageKey, defaultTheme);
+    setThemeState(stored);
+    applyTheme(resolveTheme(stored));
+  }, [defaultTheme, storageKey]);
 
   const value = {
     theme,
@@ -42,7 +45,8 @@ export function ThemeProvider({
       } catch {
         // Storage may be unavailable; still apply the theme in memory.
       }
-      setTheme(next);
+      setThemeState(next);
+      applyTheme(resolveTheme(next));
     },
   };
 

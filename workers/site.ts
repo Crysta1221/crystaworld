@@ -1,8 +1,10 @@
 /**
- * Cloudflare Worker in front of the static SPA.
- * Page routes stay in src/routes. This file only serves what the browser bundle cannot:
+ * Cloudflare Worker in front of TanStack Start.
+ * Page routes stay in src/routes. This file only serves what the app router should not own:
  * CMS auth, the admin HTML, link previews, and crawler Open Graph tags.
  */
+import startServer from "@tanstack/react-start/server-entry";
+
 import { handleCmsAuth, isCmsAuthPath } from "./cms-auth.ts";
 import { linkPreviewResponse } from "./link-preview/response.ts";
 import { withOgTags } from "./og/html.ts";
@@ -24,11 +26,18 @@ export default {
     if (url.pathname === "/api/link-preview") return linkPreviewResponse(request);
     if (isCmsAuthPath(url.pathname)) return handleCmsAuth(request, env);
     if (url.pathname === "/admin" || url.pathname === "/admin/") {
-      // Ask assets for the directory. Fetching /admin/index.html makes the
-      // asset layer redirect back to /admin/, which loops with this Worker.
       url.pathname = "/admin/";
       return env.ASSETS.fetch(new Request(url, request));
     }
-    return withOgTags(request, env.ASSETS, await env.ASSETS.fetch(request));
+    // Page routes share prefixes with images (`/works/*.webp`). Files stay on the asset server.
+    if (isStaticAssetPath(url.pathname)) return env.ASSETS.fetch(request);
+    const response = await startServer.fetch(request);
+    return withOgTags(request, env.ASSETS, response);
   },
 };
+
+function isStaticAssetPath(pathname: string): boolean {
+  if (pathname.startsWith("/_serverFn")) return false;
+  const file = pathname.split("/").pop() ?? "";
+  return file.includes(".");
+}

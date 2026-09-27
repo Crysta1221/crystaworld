@@ -1,27 +1,31 @@
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ContentImage } from "@/shared/components/content-image";
-
-gsap.registerPlugin(useGSAP);
 
 /**
  * Steps through a work's screenshots. Each picture fills the frame, and the track slides between them.
  */
 export function WorkGallery({ images }: { images: readonly string[] }) {
   const [index, setIndex] = useState(0);
+  const [neighbors, setNeighbors] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const count = images.length;
 
-  useGSAP(
-    () => {
-      const track = trackRef.current;
-      const root = rootRef.current;
-      if (!track || !root || count === 0) return;
+  useEffect(() => {
+    setNeighbors(true);
+  }, []);
 
+  useEffect(() => {
+    const track = trackRef.current;
+    const root = rootRef.current;
+    if (!track || !root || count === 0) return;
+
+    let cancelled = false;
+    let removeResize = () => {};
+    void import("gsap").then(({ default: gsap }) => {
+      if (cancelled) return;
       const place = (animate: boolean) => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         gsap.to(track, {
@@ -31,14 +35,17 @@ export function WorkGallery({ images }: { images: readonly string[] }) {
           overwrite: "auto",
         });
       };
-
       place(true);
       const onResize = () => place(false);
       window.addEventListener("resize", onResize);
-      return () => window.removeEventListener("resize", onResize);
-    },
-    { dependencies: [index, count], scope: rootRef },
-  );
+      removeResize = () => window.removeEventListener("resize", onResize);
+    });
+
+    return () => {
+      cancelled = true;
+      removeResize();
+    };
+  }, [index, count]);
 
   if (count === 0) return null;
 
@@ -46,17 +53,23 @@ export function WorkGallery({ images }: { images: readonly string[] }) {
     setIndex((next + count) % count);
   };
 
+  // Off-screen slides stay empty so a large file is not requested with the cover.
+  const showImage = (imageIndex: number) =>
+    imageIndex === index || (neighbors && (imageIndex === index - 1 || imageIndex === index + 1));
+
   return (
     <div className="min-w-0">
       <div ref={rootRef} className="relative overflow-hidden rounded-2xl border border-border/80 bg-muted">
         <div ref={trackRef} className="flex w-full">
           {images.map((src, imageIndex) => (
             <div key={src} className="aspect-video w-full min-w-0 shrink-0">
-              <ContentImage
-                src={src}
-                priority={imageIndex === 0}
-                className="size-full object-cover"
-              />
+              {showImage(imageIndex) ? (
+                <ContentImage
+                  src={src}
+                  priority={imageIndex === 0}
+                  className="size-full object-cover"
+                />
+              ) : null}
             </div>
           ))}
         </div>
