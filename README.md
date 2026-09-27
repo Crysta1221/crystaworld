@@ -1,125 +1,85 @@
-Welcome to Crystaworld.
+# Crystaworld
 
-# Getting Started
+くりすたのポートフォリオサイトです。TanStack Start（React）でページを prerender し、Cloudflare Workers から配信します。記事は Markdown で書き、Sveltia CMS（`/admin`）から編集できます。
 
-To run this application:
+## コマンド
 
-```bash
-bun install
-bun --bun run dev
+| コマンド | 内容 |
+| --- | --- |
+| `bun install` | 依存パッケージを入れる |
+| `bun run dev` | 開発サーバー（http://localhost:3000） |
+| `bun run build` | 本番ビルド（`dist/` に出力。全ページを prerender） |
+| `bun run preview:cf` | ビルドして Cloudflare Workers と同じ環境で確認 |
+| `vp lint` / `bunx tsc --noEmit` | Lint と型チェック（変更後は必ず両方通す） |
+
+CMS のログインをローカルで試すときは `.dev.vars.example` を `.dev.vars` にコピーして値を入れます。
+
+## ディレクトリ構成
+
+```
+crystaworld/
+├─ src/
+│  ├─ routes/        URL と 1 対 1 のファイル。中身は薄く、features を呼ぶだけ
+│  ├─ features/      ページや機能ごとのコード（下の表を参照）
+│  ├─ shared/        複数の feature で使う部品
+│  │  ├─ components/
+│  │  │  ├─ layout/     ヘッダー・フッター・AppContainer・トップへ戻るボタン
+│  │  │  ├─ markdown/   記事本文の描画（見出し・目次・コード・リンクカード）
+│  │  │  ├─ media/      画像とカード（ContentImage, PostMediaCard）
+│  │  │  ├─ page-hero/  一覧ページ上部の大見出しと背景パターン
+│  │  │  ├─ post-index/ Blogs / Memos 一覧の検索・絞り込み
+│  │  │  └─ ui/         shadcn ベースの汎用 UI（Button など）
+│  │  └─ lib/
+│  │     ├─ highlighting/ コードのシンタックスハイライト（Shiki）
+│  │     ├─ images/       画像サイズ表とレスポンシブ画像
+│  │     ├─ link-preview/ リンクカードのデータ取得
+│  │     ├─ markdown/     frontmatter の読み取り・見出し抽出など
+│  │     ├─ scroll/       ページ先頭・アンカーへのスクロール
+│  │     ├─ site.ts       サイト名・URL などの定数
+│  │     └─ utils.ts      cn()（クラス名の結合）
+│  ├─ app/           アプリの土台
+│  │  ├─ root/          <html> の枠・共通レイアウト・<head> の設定
+│  │  ├─ providers.tsx  テーマと言語の Provider
+│  │  ├─ styles.css     全体のスタイル（Tailwind）
+│  │  └─ fonts.css      Zen Maru Gothic（本番ではビルド時にサブセットへ置き換え）
+│  ├─ contents/      記事などの Markdown（CMS がここを編集する）
+│  │  ├─ works/ blogs/ memos/   各記事
+│  │  └─ tech-tags/ tags/ categories/   タグやカテゴリの定義
+│  ├─ server/        Cloudflare Worker（本番のリクエスト処理）
+│  │  ├─ site.ts        Worker の入口
+│  │  ├─ cms-auth.ts    CMS の GitHub ログイン（/auth, /callback）
+│  │  ├─ link-preview/  /api/link-preview
+│  │  └─ html/          HTML の最適化（JS の読み込みを初回描画の後へ）
+│  ├─ build/         ビルド時だけ動くコード（ブラウザには届かない）
+│  │  ├─ plugins/fonts/          フォントをページごとにサブセット化
+│  │  ├─ plugins/og/             OG 画像（SNS 共有用カード）の生成
+│  │  ├─ plugins/dev-middleware/ 開発サーバーで /admin と /api を動かす
+│  │  └─ prerender-pages.ts      prerender するページの一覧
+│  ├─ router.tsx     ルーターの設定（404 ページの指定もここ）
+│  ├─ start.ts       TanStack Start の設定
+│  └─ routeTree.gen.ts  自動生成（編集しない）
+├─ public/           そのまま配信するファイル
+│  ├─ admin/         CMS（Sveltia）の画面と設定 config.yml
+│  ├─ works/ blogs/ memos/   記事の画像（CMS のアップロード先）
+│  ├─ images/        アバター・ロゴ
+│  ├─ logos/ socials/ flags/ gears/   アイコン類
+│  ├─ fonts/         Natadecoco（英字フォント）
+│  └─ _headers       キャッシュ設定
+├─ design/           デザインファイル（design.pen とその素材）
+├─ vite.config.ts    ビルド設定
+└─ wrangler.jsonc    Cloudflare Workers の設定
 ```
 
-# Building For Production
+### features の中身
 
-To build this application for production:
-
-```bash
-bun --bun run build
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-### Removing Tailwind CSS
-
-If you prefer not to use Tailwind CSS:
-
-1. Replace the Tailwind import in `src/styles.css` with your own styles
-2. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-3. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `<Outlet />`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute, Link } from "@tanstack/react-router";
-
-import "#/styles.css";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-    </>
-  ),
-});
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/people")({
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json();
-  },
-  component: PeopleComponent,
-});
-
-function PeopleComponent() {
-  const data = Route.useLoaderData();
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  );
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Router specific documentation, visit [TanStack Router](https://tanstack.com/router).
+| フォルダ | 内容 |
+| --- | --- |
+| `home/` | トップページ（自己紹介・スキル・経歴・SNS など） |
+| `works/` | Works 一覧と詳細 |
+| `blogs/` | Blogs 一覧と詳細 |
+| `memos/` | Memos 一覧と詳細 |
+| `articles/` | Works / Blogs / Memos の Markdown を読むサーバー関数と、記事ページの `<head>` |
+| `cms-preview/` | CMS の編集画面に出すプレビュー（`/cms-preview`） |
+| `not-found/` | 404 ページ |
+| `locale/` | 日本語 / 英語の切り替え |
+| `theme/` | ライト / ダークの切り替え |
