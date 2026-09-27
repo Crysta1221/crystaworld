@@ -4,7 +4,7 @@
 locale: ja
 app_title: CrystaWorld CMS
 logo:
-  src: /images/logo_futi.png
+  src: /images/logo_futi.webp
 
 backend:
   name: github
@@ -13,8 +13,9 @@ backend:
   # OAuth runs on this origin: {base_url}/auth and {base_url}/callback.
   base_url: https://crystaworld.dev
 
-media_folder: public
-public_folder: /
+# Fallback for collections without their own media folder.
+media_folder: public/images
+public_folder: /images
 
 collections:
   - name: categories
@@ -34,6 +35,9 @@ collections:
     label: Tech Tags
     label_singular: Tech Tag
     folder: src/contents/tech-tags
+    # Uploads land next to this collection's other files, not in public/.
+    media_folder: /public/logos
+    public_folder: /logos
     create: true
     extension: md
     format: frontmatter
@@ -77,6 +81,9 @@ collections:
     label: Blogs
     label_singular: Blog
     folder: src/contents/blogs
+    # Uploads land next to this collection's other files, not in public/.
+    media_folder: /public/blogs
+    public_folder: /blogs
     create: true
     extension: md
     format: frontmatter
@@ -109,6 +116,9 @@ collections:
     label: Memos
     label_singular: Memo
     folder: src/contents/memos
+    # Uploads land next to this collection's other files, not in public/.
+    media_folder: /public/memos
+    public_folder: /memos
     create: true
     extension: md
     format: frontmatter
@@ -141,6 +151,9 @@ collections:
     label: Works
     label_singular: Work
     folder: src/contents/works
+    # Uploads land next to this collection's other files, not in public/.
+    media_folder: /public/works
+    public_folder: /works
     create: true
     extension: md
     format: frontmatter
