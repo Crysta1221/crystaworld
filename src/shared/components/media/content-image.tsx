@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ImgHTMLAttributes } from "react";
 
 import { cn } from "@/shared/lib/utils";
+import { responsiveSources } from "@/shared/lib/images/sources";
 
 type ContentImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> & {
   src: string;
@@ -60,6 +61,7 @@ export function ContentImage({
     typeof width === "number" && typeof height === "number"
       ? { aspectRatio: `${width} / ${height}` }
       : undefined;
+  const responsive = responsiveSources(src);
 
   return (
     <span
@@ -75,11 +77,13 @@ export function ContentImage({
           width={width}
           height={height}
           {...props}
-          src={src}
+          src={responsive.src ?? src}
           alt={alt}
-          decoding="async"
+          decoding={priority ? "auto" : "async"}
           loading={priority ? "eager" : "lazy"}
           fetchPriority={priority ? "high" : "auto"}
+          srcSet={responsive.srcSet}
+          sizes={responsive.sizes}
           className={cn("relative", className)}
           ref={(node) => {
             if (node?.complete && node.naturalWidth > 0) setReady(true);

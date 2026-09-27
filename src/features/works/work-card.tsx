@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { ContentImage } from "@/shared/components/content-image";
+import { ContentImage } from "@/shared/components/media/content-image";
 
 import type { Work } from "./catalog";
 
@@ -17,6 +17,7 @@ export function WorkCard({ work, priority = false }: { work: Work; priority?: bo
       <ContentImage
         src={work.image}
         priority={priority}
+        deferUntilVisible={!priority}
         className="size-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.04]"
       />
       <span className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />

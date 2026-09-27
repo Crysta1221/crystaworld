@@ -9,7 +9,7 @@ images:
   - /works/koreisai-timetable-2.webp
   - /works/koreisai-theme.webp
   - /works/koreisai-timebar.webp
-  - /works/koreisai-scroll-demo.gif
+  - /works/koreisai-scroll-demo.webp
 tags:
   - React
   - Next.js
@@ -121,7 +121,7 @@ useEffect(() => {
 
 ### 5. スムーズな横スクロール操作
 
-![横スクロール操作のデモ](/works/koreisai-scroll-demo.gif)
+![横スクロール操作のデモ](/works/koreisai-scroll-demo.webp)
 
 会場列が多く画面幅を超える場合でも、マウスホイールでの横スクロールが難しいPC環境に配慮し、ヘッダーに左右のスクロールボタンを設置しました。`useRef` を用いてスムーズスクロール（`element.scrollTo({ behavior: "smooth" })`）を実行し、スクロール位置が端に達した際はボタンを無効化する細やかな配慮を行っています。
 

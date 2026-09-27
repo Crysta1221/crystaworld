@@ -18,7 +18,7 @@ export function WorksPage({ works }: { works: readonly Work[] }) {
           style={{ "--start": "60ms" } as React.CSSProperties}
         >
           {works.map((work, index) => (
-            <li key={work.id} className="min-w-0">
+            <li key={work.id} className={index === 0 ? "min-w-0" : "skip-offscreen min-w-0"}>
               <WorkCard work={work} priority={index === 0} />
             </li>
           ))}

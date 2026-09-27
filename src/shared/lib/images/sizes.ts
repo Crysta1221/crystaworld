@@ -9,7 +9,7 @@ export const IMAGE_SIZES: Readonly<Record<string, { width: number; height: numbe
   "/works/koreisai-loading.webp": { width: 1600, height: 867 },
   "/works/koreisai-ongoing.webp": { width: 1600, height: 372 },
   "/works/koreisai-prototype.webp": { width: 1600, height: 1112 },
-  "/works/koreisai-scroll-demo.gif": { width: 2156, height: 1170 },
+  "/works/koreisai-scroll-demo.webp": { width: 1280, height: 695 },
   "/works/koreisai-theme.webp": { width: 1600, height: 900 },
   "/works/koreisai-timebar.webp": { width: 1600, height: 900 },
   "/works/koreisai-timetable-1.webp": { width: 1600, height: 1010 },
@@ -21,6 +21,7 @@ export const IMAGE_SIZES: Readonly<Record<string, { width: number; height: numbe
   "/works/tatami-report-3.webp": { width: 1600, height: 924 },
   "/works/tatami-report.webp": { width: 1600, height: 924 },
   "/works/tauri-plugin-configurate.webp": { width: 1200, height: 600 },
+  "/blogs/cms-screenshot.webp": { width: 2174, height: 1169 },
 };
 
 export function imageSize(src: string): { width: number; height: number } | undefined {

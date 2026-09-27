@@ -1,29 +1,55 @@
+import { useEffect, useRef, useState } from "react";
+
 import { tagFor, type WorkTag } from "./tag-catalog";
 
 /**
  * Technology marks for a work. Names stay available to assistive tech.
+ * Icons wait until the section is near the viewport so they do not compete with the cover.
  */
 export function WorkTech({ tags }: { tags: readonly string[] }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) setShown(true);
+      },
+      { rootMargin: "200px 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   if (tags.length === 0) return null;
 
   return (
-    <section aria-labelledby="work-tech-heading">
+    <section ref={sectionRef} aria-labelledby="work-tech-heading" className="skip-offscreen">
       <h2
         id="work-tech-heading"
         className="inline-flex rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary"
       >
         Tech
       </h2>
-      <ul className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(6.75rem,6.75rem))] gap-x-3 gap-y-5">
-        {tags.map((name) => (
-          <li key={name} className="flex min-w-0 flex-col items-center gap-1.5 text-center">
-            <span className="flex size-11 items-center justify-center rounded-xl bg-muted">
-              <TechMark tag={tagFor(name)} />
-            </span>
-            <span className="w-full text-xs leading-tight text-balance text-muted-foreground">{name}</span>
-          </li>
-        ))}
-      </ul>
+      {shown ? (
+        <ul className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(6.75rem,6.75rem))] gap-x-3 gap-y-5">
+          {tags.map((name) => (
+            <li key={name} className="flex min-w-0 flex-col items-center gap-1.5 text-center">
+              <span className="flex size-11 items-center justify-center rounded-xl bg-muted">
+                <TechMark tag={tagFor(name)} />
+              </span>
+              <span className="w-full text-xs leading-tight text-balance text-muted-foreground">{name}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="mt-4 h-16" aria-hidden />
+      )}
     </section>
   );
 }

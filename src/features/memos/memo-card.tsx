@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-import { PostMediaCard } from "@/shared/components/post-media-card";
+import { PostMediaCard } from "@/shared/components/media/post-media-card";
 
 import type { MemoPost } from "./catalog";
 

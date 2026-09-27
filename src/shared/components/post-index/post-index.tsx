@@ -37,7 +37,7 @@ export function PostIndex<T extends IndexPost>({ posts, emptyMessage, renderPost
       ) : (
         <ul className="grid list-none grid-cols-1 items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((post, index) => (
-            <li key={post.id} className="min-w-0">
+            <li key={post.id} className={index === 0 ? "min-w-0" : "skip-offscreen min-w-0"}>
               {renderPost(post, index)}
             </li>
           ))}

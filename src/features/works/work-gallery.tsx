@@ -1,7 +1,7 @@
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 
-import { ContentImage } from "@/shared/components/content-image";
+import { ContentImage } from "@/shared/components/media/content-image";
 
 /**
  * Steps through a work's screenshots. Each picture fills the frame, and the track slides between them.
@@ -11,21 +11,20 @@ export function WorkGallery({ images }: { images: readonly string[] }) {
   const [neighbors, setNeighbors] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const slideMotion = useRef(false);
   const count = images.length;
-
-  useEffect(() => {
-    setNeighbors(true);
-  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     const root = rootRef.current;
     if (!track || !root || count === 0) return;
+    if (index === 0 && !slideMotion.current) return;
 
     let cancelled = false;
     let removeResize = () => {};
     void import("gsap").then(({ default: gsap }) => {
       if (cancelled) return;
+      slideMotion.current = true;
       const place = (animate: boolean) => {
         const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         gsap.to(track, {
@@ -50,6 +49,7 @@ export function WorkGallery({ images }: { images: readonly string[] }) {
   if (count === 0) return null;
 
   const go = (next: number) => {
+    setNeighbors(true);
     setIndex((next + count) % count);
   };
 

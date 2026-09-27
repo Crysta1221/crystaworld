@@ -231,6 +231,12 @@
 .slide-enter-content > *:nth-child(19) { --stagger: 19; }
 .slide-enter-content > *:nth-child(20) { --stagger: 20; }
 
+/* Off-screen blocks skip layout and font fetches until they approach the viewport. */
+.skip-offscreen {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 18rem;
+}
+
 /* Markdown & Prose Styling (inspired by commapedia / shadcn) */
 .wiki-prose {
   color: var(--foreground);
@@ -243,6 +249,11 @@
     font-size: 1rem;
     line-height: 1.85;
   }
+}
+
+.wiki-prose > :not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 6rem;
 }
 
 .wiki-prose :where(h1, h2, h3, h4) {
