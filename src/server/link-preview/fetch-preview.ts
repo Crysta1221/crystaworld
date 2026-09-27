@@ -1,6 +1,6 @@
 import { publicHttpUrl } from "./blocked-url.ts";
 import { parseDocument } from "./parse-document.ts";
-import type { LinkPreview } from "../../src/shared/lib/link-preview/types.ts";
+import type { LinkPreview } from "../../shared/lib/link-preview/types.ts";
 
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
