@@ -24,7 +24,7 @@ crystaworld/
 │  ├─ shared/        複数の feature で使う部品
 │  │  ├─ components/
 │  │  │  ├─ layout/     ヘッダー・フッター・AppContainer・トップへ戻るボタン
-│  │  │  ├─ markdown/   記事本文の描画（見出し・目次・コード・リンクカード）
+│  │  │  ├─ markdown/   記事本文の描画（見出し・目次・コード・リンクカード・X ポストの埋め込み）
 │  │  │  ├─ media/      画像とカード（ContentImage, PostMediaCard）
 │  │  │  ├─ page-hero/  一覧ページ上部の大見出しと背景パターン
 │  │  │  ├─ post-index/ Blogs / Memos 一覧の検索・絞り込み
@@ -36,7 +36,8 @@ crystaworld/
 │  │     ├─ markdown/     frontmatter の読み取り・見出し抽出など
 │  │     ├─ scroll/       ページ先頭・アンカーへのスクロール
 │  │     ├─ site.ts       サイト名・URL などの定数
-│  │     └─ utils.ts      cn()（クラス名の結合）
+│  │     ├─ utils.ts      cn()（クラス名の結合）
+│  │     └─ x-embed/      X のポスト URL の判定と、埋め込み用 widgets.js の読み込み
 │  ├─ app/           アプリの土台
 │  │  ├─ root/          <html> の枠・共通レイアウト・<head> の設定
 │  │  ├─ providers.tsx  テーマと言語の Provider

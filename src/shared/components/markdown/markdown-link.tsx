@@ -3,6 +3,7 @@ import { useState, type ComponentProps, type ReactElement, type ReactNode } from
 import { faviconUrl } from "@/shared/lib/link-preview/favicon";
 
 import { LinkCard } from "./link-card";
+import { XPostEmbed } from "./x-post-embed";
 
 type AnchorProps = ComponentProps<"a"> & { node?: unknown };
 
@@ -54,9 +55,12 @@ export function MarkdownAnchor({ href, children, node: _node, className, ...prop
 type ParagraphProps = ComponentProps<"p"> & {
   node?: unknown;
   "data-link-card"?: string;
+  "data-x-post"?: string;
 };
 
 export function MarkdownParagraph({ children, node: _node, ...props }: ParagraphProps) {
+  const postHref = props["data-x-post"];
+  if (postHref) return <XPostEmbed href={postHref} />;
   const href = props["data-link-card"];
   if (href) return <LinkCard href={href} fallbackTitle={nodeText(children)} />;
   return <p {...props}>{children}</p>;

@@ -422,6 +422,30 @@
   }
 }
 
+.wiki-prose .x-embed {
+  margin-block: 1.25rem;
+}
+
+.wiki-prose .x-embed-host {
+  display: flex;
+  justify-content: center;
+}
+
+.wiki-prose .x-embed-host:empty {
+  display: none;
+}
+
+/* The embed frame is opaque, so its square corners show against the page; clip them to the card radius. */
+.wiki-prose .x-embed-host .twitter-tweet {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* The fallback card sits in the same slot, so it needs no extra margin of its own. */
+.wiki-prose .x-embed a.link-card {
+  margin-block: 0;
+}
+
 .wiki-prose hr {
   margin-block: 2rem;
   border-color: var(--border);

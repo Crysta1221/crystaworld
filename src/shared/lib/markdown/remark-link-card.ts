@@ -1,3 +1,5 @@
+import { parseXPostUrl } from "../x-embed/post-url.ts";
+
 type MdNode = {
   type: string;
   url?: string;
@@ -7,7 +9,8 @@ type MdNode = {
 };
 
 /**
- * A root-level paragraph that is only an http(s) link becomes a link card.
+ * A root-level paragraph that is only an http(s) link becomes a link card,
+ * or an embedded post when the link points to an X post.
  * Inline links, and links inside lists, stay as text.
  */
 export function remarkLinkCard() {
@@ -21,7 +24,9 @@ function mark(node: MdNode) {
     if (child.type === "paragraph" && node.type === "root") {
       const href = loneHttpLink(child);
       if (href) {
-        child.data = { hProperties: { "data-link-card": href } };
+        // X posts get an embed; every other link becomes a bookmark card.
+        const key = parseXPostUrl(href) ? "data-x-post" : "data-link-card";
+        child.data = { hProperties: { [key]: href } };
       }
     }
     mark(child);
