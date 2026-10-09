@@ -15,6 +15,8 @@ export const IMAGE_SIZES: Readonly<Record<string, { width: number; height: numbe
   "/works/koreisai-timetable-1.webp": { width: 1600, height: 1010 },
   "/works/koreisai-timetable-2.webp": { width: 1600, height: 1011 },
   "/works/koreisai.webp": { width: 1600, height: 1009 },
+  "/works/meltype-dark.webp": { width: 1600, height: 900 },
+  "/works/meltype.webp": { width: 1600, height: 900 },
   "/works/mooncore-dashboard.webp": { width: 1600, height: 950 },
   "/works/mooncore.webp": { width: 1536, height: 1024 },
   "/works/niips-arch.webp": { width: 1200, height: 964 },
