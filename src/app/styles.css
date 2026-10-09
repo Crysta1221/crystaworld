@@ -347,7 +347,8 @@
 .wiki-prose a.link-card {
   display: flex;
   align-items: stretch;
-  min-height: 7.75rem;
+  /* Fixed so a tall OGP image or a square avatar cannot stretch the card; text is clamped to fit. */
+  height: 9.5rem;
   margin-block: 1.25rem;
   overflow: hidden;
   color: var(--foreground);
@@ -414,6 +415,7 @@
   .wiki-prose .link-card-image {
     display: block;
     width: min(42%, 16rem);
+    height: 100%;
     flex: none;
     object-fit: cover;
     background: var(--background);
