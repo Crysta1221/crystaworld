@@ -49,14 +49,16 @@ function MarkdownLink({
   );
 }
 
-const CALLOUT_MARKER = /^\[!(NOTE|TIP|IMPORTANT|WARNING|WARN|CAUTION)\][^\S\n]*([^\n]*)/i;
+const CALLOUT_MARKER = /^\[!(NOTE|TIP|IMPORTANT|WARNING|WARN|CAUTION)\][^\S\n]*/i;
 
 function MarkdownBlockquote({
   children,
   className,
   ...props
 }: React.ComponentProps<"blockquote">) {
-  // GitHub alert syntax: > [!NOTE] or > [!NOTE] Custom title.
+  // GitHub alert syntax: > [!NOTE]. A bold first line is the title; everything else is the body.
+  // Text on the marker's own line is body too, because editors and formatters often join
+  // "[!NOTE]" with the next line, and a title read from that line would swallow half a sentence.
   const cleanChildren = React.Children.toArray(children).filter(
     (child) => typeof child !== "string" || child.trim() !== "",
   );
@@ -71,10 +73,9 @@ function MarkdownBlockquote({
 
     if (alertMatch) {
       const type = alertMatch[1]?.toUpperCase() ?? "";
-      const inlineTitle = alertMatch[2]?.trim() ?? "";
       const remainingText = firstText.trimStart().slice(alertMatch[0].length).replace(/^\r?\n/, "");
       const restPChildren = remainingText.length > 0 ? [remainingText, ...pChildren.slice(1)] : pChildren.slice(1);
-      const lifted = inlineTitle ? { title: inlineTitle, nodes: restPChildren } : liftLeadingStrong(restPChildren);
+      const lifted = liftLeadingStrong(restPChildren);
       const paragraph = lifted.nodes.length > 0 ? React.cloneElement(firstChild, {}, ...lifted.nodes) : null;
       const content = [paragraph, ...cleanChildren.slice(1)].filter((node) => node != null);
       const alert = renderCallout(type, lifted.title, content);
