@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { ContentImage } from "@/shared/components/media/content-image";
 
 /**
- * Steps through a work's screenshots. Each picture fills the frame, and the track slides between them.
+ * Steps through a work's screenshots. Each picture is shown whole inside the frame (never cropped or zoomed),
+ * and the track slides between them.
  */
 export function WorkGallery({ images }: { images: readonly string[] }) {
   const [index, setIndex] = useState(0);
@@ -67,7 +68,7 @@ export function WorkGallery({ images }: { images: readonly string[] }) {
                 <ContentImage
                   src={src}
                   priority={imageIndex === 0}
-                  className="size-full object-cover"
+                  className="size-full object-contain"
                 />
               ) : null}
             </div>
