@@ -4,7 +4,7 @@
 locale: ja
 app_title: CrystaWorld CMS
 logo:
-  src: /images/logo_futi.webp
+  src: /images/logo_futi-large.webp
 
 backend:
   name: github
