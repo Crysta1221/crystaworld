@@ -69,7 +69,8 @@ async function highlightBody(body: string): Promise<Record<string, HighlightBloc
   const highlights: Record<string, HighlightBlock> = {};
   for (const match of body.matchAll(FENCE)) {
     const info = (match[1] ?? "").trim();
-    const code = (match[2] ?? "").replace(/\n$/, "");
+    // Same trailing-newline rule as the client, so CRLF checkouts produce the same cache key.
+    const code = (match[2] ?? "").replace(/\r?\n$/, "");
     const [languageToken, ...metaParts] = info.split(/\s+/);
     const language = languageToken || undefined;
     const { filename } = parseCodeMeta(metaParts.join(" "));
