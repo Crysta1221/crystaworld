@@ -13,6 +13,7 @@ import { Button } from "@/shared/components/ui/button";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import { useProvidedHighlight } from "@/shared/lib/highlighting/highlight-context";
 import { parseCodeMeta } from "@/shared/lib/highlighting/parse-code-meta";
+import { fenceMeta } from "@/shared/lib/markdown/fence-meta";
 import { cn } from "@/shared/lib/utils";
 
 const highlightCache = new Map<string, { className: string; innerHtml: string }>();
@@ -105,19 +106,17 @@ function PlainCodeLines({ code, language }: { code: string; language?: string })
 export function MarkdownCodeBlock({
   children,
   className,
-  node: _node,
+  node,
   ...props
 }: ComponentProps<"pre"> & { node?: unknown }) {
-  // Extract language and meta from child <code> if present
+  // Extract language from child <code> if present; the fence meta lives on the hast node
   const codeChild = isValidElement(children) ? children : null;
   const codeProps = (codeChild?.props ?? {}) as Record<string, unknown>;
   const childClassName = typeof codeProps.className === "string" ? codeProps.className : "";
   const langMatch = /language-(\w+)/.exec(childClassName);
   const language = langMatch?.[1];
 
-  const rawMeta = codeProps["meta"];
-  const metaString = typeof rawMeta === "string" ? rawMeta : "";
-  const { filename } = parseCodeMeta(metaString);
+  const { filename } = parseCodeMeta(fenceMeta(node));
 
   const rawCode = collectText(codeChild?.props ? (codeProps.children as ReactNode) : children).replace(
     /\r?\n$/,
