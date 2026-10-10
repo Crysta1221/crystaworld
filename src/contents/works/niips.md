@@ -4,11 +4,11 @@ category: Desktop Application
 date: 2026-07
 image: /works/niips.webp
 images:
-  - /works/niips.webp
-  - /works/niips-weather.webp
-  - /works/niips-arch.webp
-  - /works/niips-design-v1.webp
-  - /works/niips-design-v2.webp
+  - /works/niips-menu.webp
+  - /works/niips-forecast.webp
+  - /works/niips-nagaden.webp
+  - /works/niips-shinano.webp
+  - /works/niips-cancel.webp
 tags:
   - Tauri
   - Rust
