@@ -4,6 +4,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { Link, useRouterState } from "@tanstack/react-router";
 
+import { remarkAllowedHtml } from "@/shared/lib/markdown/remark-allowed-html";
 import { remarkLinkCard } from "@/shared/lib/markdown/remark-link-card";
 import { remarkUnwrapImages } from "@/shared/lib/markdown/remark-unwrap-images";
 import { MarkdownImage } from "./markdown-image";
@@ -192,7 +193,7 @@ export function MarkdownArticle({ markdown, className }: MarkdownArticleProps) {
   return (
     <div className={cn("wiki-prose", className)}>
       <Markdown
-        remarkPlugins={[remarkGfm, remarkUnwrapImages, remarkLinkCard]}
+        remarkPlugins={[remarkGfm, remarkAllowedHtml, remarkUnwrapImages, remarkLinkCard]}
         rehypePlugins={[rehypeSlug]}
         components={markdownComponents}
       >

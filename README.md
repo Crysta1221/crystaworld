@@ -33,7 +33,7 @@ crystaworld/
 │  │     ├─ highlighting/ コードのシンタックスハイライト（Shiki）
 │  │     ├─ images/       画像サイズ表とレスポンシブ画像
 │  │     ├─ link-preview/ リンクカードのデータ取得
-│  │     ├─ markdown/     frontmatter の読み取り・見出し抽出など
+│  │     ├─ markdown/     frontmatter の読み取り・見出し抽出・許可した HTML タグの描画など
 │  │     ├─ scroll/       ページ先頭・アンカーへのスクロール
 │  │     ├─ site.ts       サイト名・URL などの定数
 │  │     ├─ utils.ts      cn()（クラス名の結合）
