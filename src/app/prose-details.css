@@ -1,0 +1,81 @@
+/* Accordion for <details> in articles: a bordered box with a chevron, like Zenn's toggle. */
+.wiki-prose details {
+  margin-block: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+
+.wiki-prose summary {
+  position: relative;
+  display: block;
+  padding-block: 0.65rem;
+  padding-inline: 2.5rem 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.wiki-prose summary::-webkit-details-marker {
+  display: none;
+}
+
+.wiki-prose summary::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 1.1rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  /* Half of the height, so the chevron sits on the text's vertical center. */
+  margin-top: -0.225rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.22s ease;
+}
+
+/* `data-closing` is set while the close animation runs, so the chevron turns back right away. */
+.wiki-prose details[open]:not([data-closing]) > summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.wiki-prose details[open]:not([data-closing]) > summary::before {
+  transform: translateY(-0.15rem) rotate(45deg);
+}
+
+.wiki-prose summary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+/* Everything after the summary is the body. */
+.wiki-prose .md-details-body {
+  padding: 1rem;
+}
+
+.wiki-prose .md-details-body > :first-child {
+  margin-top: 0;
+}
+
+.wiki-prose .md-details-body > :last-child {
+  margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wiki-prose summary::before {
+    transition: none;
+  }
+}
+
+/* Backgrounds use color-mix, which the build wraps in @supports. Keep them in their own rules
+   so a browser that drops the wrapper cannot take the layout declarations with it. */
+.wiki-prose details {
+  background: color-mix(in srgb, var(--card) 60%, transparent);
+}
+
+.wiki-prose summary {
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+}

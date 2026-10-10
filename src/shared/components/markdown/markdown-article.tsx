@@ -21,6 +21,7 @@ import {
 } from "./markdown-alert";
 import { MarkdownHeading } from "./markdown-heading";
 import { MarkdownCodeBlock } from "./markdown-code-block";
+import { MarkdownDetails } from "./markdown-details";
 import { hashFromHref, isSameDocumentHref } from "@/shared/lib/markdown/hash-href";
 import { scrollToDocumentHash } from "@/shared/lib/scroll/scroll-to-hash";
 import { cn } from "@/shared/lib/utils";
@@ -153,6 +154,7 @@ const markdownComponents: Components & Record<string, React.ComponentType<any>> 
   h3: (props) => <MarkdownHeading as="h3" {...props} />,
   h4: (props) => <MarkdownHeading as="h4" {...props} />,
   pre: MarkdownCodeBlock,
+  details: MarkdownDetails,
   blockquote: MarkdownBlockquote,
   table({ children, ...props }) {
     return (

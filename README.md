@@ -42,6 +42,7 @@ crystaworld/
 │  │  ├─ root/          <html> の枠・共通レイアウト・<head> の設定
 │  │  ├─ providers.tsx  テーマと言語の Provider
 │  │  ├─ styles.css     全体のスタイル（Tailwind）
+│  │  ├─ prose-details.css   記事内 <details> のアコーディオン風スタイル
 │  │  └─ fonts.css      Zen Maru Gothic（本番ではビルド時にサブセットへ置き換え）
 │  ├─ contents/      記事などの Markdown（CMS がここを編集する）
 │  │  ├─ works/ blogs/ memos/   各記事
