@@ -23,8 +23,12 @@ const SECTIONS = [
 /**
  * Renders the site card and one card per blog or memo.
  * Posts get a PNG for crawlers and a WebP for the in-app cards.
+ * Drafts only get cards when `includeDrafts` is set (dev server).
  */
-export async function renderOgImages(root = process.cwd()): Promise<OgImages> {
+export async function renderOgImages(
+  root = process.cwd(),
+  includeDrafts = false,
+): Promise<OgImages> {
   const fonts = loadOgFonts(root);
   const avatarSrc = loadAvatar(root);
   const images: OgImages = new Map();
@@ -32,7 +36,7 @@ export async function renderOgImages(root = process.cwd()): Promise<OgImages> {
   images.set("og/default.png", await renderPng(<SiteCard avatarSrc={avatarSrc} palette={bluePalette} />, fonts));
 
   for (const section of SECTIONS) {
-    for (const post of readOgPosts(section.folder, root)) {
+    for (const post of readOgPosts(section.folder, root, includeDrafts)) {
       const card = (
         <OgCard
           title={post.title}

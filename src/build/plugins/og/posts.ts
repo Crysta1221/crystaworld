@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { parseMarkdownFile, splitList } from "../../../shared/lib/markdown/frontmatter.ts";
+import { isDraft, parseMarkdownFile, splitList } from "../../../shared/lib/markdown/frontmatter.ts";
 
 export type OgPost = {
   id: string;
@@ -14,22 +14,26 @@ export type OgFolder = "blogs" | "memos";
 
 /**
  * Reads post Markdown the same way the catalog does, without pulling the app bundle.
+ * Drafts are skipped unless `includeDrafts` is set.
  */
-export function readOgPosts(folder: OgFolder, root = process.cwd()): OgPost[] {
+export function readOgPosts(folder: OgFolder, root = process.cwd(), includeDrafts = false): OgPost[] {
   const dir = join(root, "src/contents", folder);
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((file) => file.endsWith(".md"))
-    .map((file) => {
+    .flatMap((file) => {
       const id = file.slice(0, -3);
       const source = readFileSync(join(dir, file), "utf8");
       const { meta } = parseMarkdownFile(source, file, ["title", "date"]);
-      return {
-        id,
-        title: meta.title ?? id,
-        date: meta.date ?? "",
-        tags: splitList(meta.tags ?? ""),
-      };
+      if (!includeDrafts && isDraft(meta)) return [];
+      return [
+        {
+          id,
+          title: meta.title ?? id,
+          date: meta.date ?? "",
+          tags: splitList(meta.tags ?? ""),
+        },
+      ];
     });
 }
 

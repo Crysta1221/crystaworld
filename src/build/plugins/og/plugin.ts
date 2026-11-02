@@ -11,10 +11,14 @@ const CONTENT_DIRS = ["/src/contents/blogs/", "/src/contents/memos/"];
  */
 export function ogImagesPlugin(): Plugin {
   let pending: Promise<OgImages> | null = null;
-  const images = () => (pending ??= renderOgImages());
+  let includeDrafts = false;
+  const images = () => (pending ??= renderOgImages(process.cwd(), includeDrafts));
 
   return {
     name: "crystaworld:og-images",
+    configResolved(config) {
+      includeDrafts = config.command === "serve";
+    },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         serveOgImage(req.url ?? "/", res, images).then((served) => {
