@@ -40,6 +40,7 @@ export function CmsPreviewView({ payload }: { payload: CmsPreviewPayload }) {
             date: payload.date,
             tags: payload.tags,
             body: payload.body,
+            draft: false,
           }}
         />
       </div>

@@ -1,4 +1,4 @@
-import { parseMarkdownFile, splitList } from "@/shared/lib/markdown/frontmatter";
+import { isDraft, parseMarkdownFile, splitList } from "@/shared/lib/markdown/frontmatter";
 
 export type BlogPost = {
   id: string;
@@ -7,6 +7,7 @@ export type BlogPost = {
   date: string;
   tags: readonly string[];
   body: string;
+  draft: boolean;
 };
 
 const REQUIRED_FIELDS = ["title", "date"] as const;
@@ -14,10 +15,15 @@ const REQUIRED_FIELDS = ["title", "date"] as const;
 /**
  * Blog posts are Japanese Markdown files under src/contents/blogs.
  * The server bundle owns the file map so article text stays out of the client.
+ * Drafts are dropped unless `includeDrafts` is set.
  */
-export function loadBlogs(sources: Record<string, string>): readonly BlogPost[] {
+export function loadBlogs(
+  sources: Record<string, string>,
+  includeDrafts = false,
+): readonly BlogPost[] {
   return Object.entries(sources)
     .map(([path, source]) => toPost(path, source))
+    .filter((post) => includeDrafts || !post.draft)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -34,5 +40,6 @@ function toPost(path: string, source: string): BlogPost {
     date: meta.date ?? "",
     tags: splitList(meta.tags ?? ""),
     body,
+    draft: isDraft(meta),
   };
 }

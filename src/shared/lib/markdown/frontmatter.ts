@@ -125,6 +125,11 @@ function unquote(value: string): string {
   return quoted ? value.slice(1, -1) : value;
 }
 
+/** `draft: true` keeps a file out of production builds. */
+export function isDraft(meta: Record<string, string>): boolean {
+  return meta.draft?.trim().toLowerCase() === "true";
+}
+
 export function splitList(value: string): string[] {
   return value
     .split(",")

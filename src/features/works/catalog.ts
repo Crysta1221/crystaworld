@@ -1,4 +1,4 @@
-import { parseMarkdownFile, splitList } from "@/shared/lib/markdown/frontmatter";
+import { isDraft, parseMarkdownFile, splitList } from "@/shared/lib/markdown/frontmatter";
 
 export type WorkLink = {
   label: string;
@@ -16,6 +16,7 @@ export type Work = {
   links: readonly WorkLink[];
   tags: readonly string[];
   body: string;
+  draft: boolean;
 };
 
 const REQUIRED_FIELDS = ["title", "category", "date", "image", "tags"] as const;
@@ -24,10 +25,15 @@ const REQUIRED_FIELDS = ["title", "category", "date", "image", "tags"] as const;
  * Works are authored as Japanese Markdown under src/contents/works.
  * Frontmatter drives the card; the body is the detail.
  * The server bundle owns the file map so article text stays out of the client.
+ * Drafts are dropped unless `includeDrafts` is set.
  */
-export function loadWorks(sources: Record<string, string>): readonly Work[] {
+export function loadWorks(
+  sources: Record<string, string>,
+  includeDrafts = false,
+): readonly Work[] {
   return Object.entries(sources)
     .map(([path, source]) => toWork(path, source))
+    .filter((work) => includeDrafts || !work.draft)
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 
@@ -48,6 +54,7 @@ function toWork(path: string, source: string): Work {
     links: toLinks(records.links ?? [], meta.url ?? ""),
     tags: splitList(meta.tags ?? ""),
     body,
+    draft: isDraft(meta),
   };
 }
 

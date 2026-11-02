@@ -30,16 +30,19 @@ const workSources = import.meta.glob("/src/contents/works/*.md", {
 
 const FENCE = /```([^\n]*)\n([\s\S]*?)```/g;
 
+// Drafts show up in `vp dev` for preview and never reach a production build.
+const INCLUDE_DRAFTS = import.meta.env.DEV;
+
 export function listBlogs(): readonly BlogPost[] {
-  return loadBlogs(blogSources);
+  return loadBlogs(blogSources, INCLUDE_DRAFTS);
 }
 
 export function listMemos(): readonly MemoPost[] {
-  return loadMemos(memoSources);
+  return loadMemos(memoSources, INCLUDE_DRAFTS);
 }
 
 export function listWorks(): readonly Work[] {
-  return loadWorks(workSources).map((work) => ({ ...work, body: "" }));
+  return loadWorks(workSources, INCLUDE_DRAFTS).map((work) => ({ ...work, body: "" }));
 }
 
 export async function readBlog(id: string): Promise<ArticleRecord<BlogPost> | null> {
@@ -55,7 +58,7 @@ export async function readMemo(id: string): Promise<ArticleRecord<MemoPost> | nu
 }
 
 export async function readWork(id: string): Promise<ArticleRecord<Work> | null> {
-  const work = loadWorks(workSources).find((item) => item.id === id);
+  const work = loadWorks(workSources, INCLUDE_DRAFTS).find((item) => item.id === id);
   if (!work) return null;
   return { post: work, highlights: await highlightBody(work.body) };
 }
