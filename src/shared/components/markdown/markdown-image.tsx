@@ -6,7 +6,7 @@ import { imageSize } from "@/shared/lib/images/sizes";
 type MarkdownImageProps = ComponentProps<"img"> & { node?: unknown };
 
 /**
- * A Markdown image title is shown as a small centered caption under the picture.
+ * A Markdown image title is shown as a centered caption under the picture.
  */
 export function MarkdownImage({ alt, title, node: _node, src, ...props }: MarkdownImageProps) {
   if (!src) return null;
@@ -30,7 +30,7 @@ export function MarkdownImage({ alt, title, node: _node, src, ...props }: Markdo
   return (
     <figure className="my-6 flex w-full max-w-full flex-col items-center">
       {image}
-      <figcaption className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">{title}</figcaption>
+      <figcaption className="mt-2 text-center text-sm leading-relaxed text-muted-foreground">{title}</figcaption>
     </figure>
   );
 }
