@@ -14,6 +14,10 @@
 
 CMS のログインをローカルで試すときは `.dev.vars.example` を `.dev.vars` にコピーして値を入れます。
 
+## 下書き
+
+Works・Blogs・Memos の frontmatter に `draft: true` を付ける（CMS では Draft のスイッチ）と、本番ビルドから外れます。一覧、記事ページ、prerender、OG 画像のどれにも出ません。`bun run dev` では確認用に表示されます。公開するときは `draft` を外すか `false` にします。
+
 ## ディレクトリ構成
 
 ```
