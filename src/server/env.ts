@@ -1,3 +1,8 @@
+/** The part of the Workers execution context the site Worker uses. */
+export type SiteContext = {
+  waitUntil: (promise: Promise<unknown>) => void;
+};
+
 /** Bindings and secrets available to the site Worker. */
 export type SiteEnv = {
   ASSETS: { fetch: (request: Request) => Promise<Response> };

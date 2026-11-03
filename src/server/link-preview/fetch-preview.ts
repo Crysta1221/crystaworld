@@ -4,39 +4,51 @@ import type { LinkPreview } from "../../shared/lib/link-preview/types.ts";
 
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
-const CACHE_MS = 12 * 60 * 60 * 1000;
-const FAILURE_MS = 60 * 1000;
+const SUCCESS_TTL = 12 * 60 * 60;
+const FAILURE_TTL = 5 * 60;
 const HTML_LIMIT = 480_000;
+// One Worker instance keeps this many previews; the oldest go first.
+const MEMORY_LIMIT = 500;
 
-const memory = new Map<string, { expires: number; preview: LinkPreview }>();
+export type PreviewResult = {
+  preview: LinkPreview;
+  /** Seconds the result may be cached. Failures are kept for a short time only. */
+  ttl: number;
+};
+
+const memory = new Map<string, { expires: number; result: PreviewResult }>();
 
 /**
- * Loads Open Graph fields for a public page. Returns undefined when the URL
- * is not a public http(s) address.
+ * Loads Open Graph fields for a public page. The caller passes a URL that already
+ * went through `publicHttpUrl`. An unreachable page gets a title-only preview.
  */
-export async function fetchLinkPreview(rawUrl: string): Promise<LinkPreview | undefined> {
-  const url = publicHttpUrl(rawUrl);
-  if (!url) return undefined;
+export async function fetchLinkPreview(input: URL): Promise<PreviewResult> {
+  const url = new URL(input);
   url.hash = "";
   const key = url.href;
 
   const cached = memory.get(key);
-  if (cached && cached.expires > Date.now()) return cached.preview;
+  if (cached && cached.expires > Date.now()) return cached.result;
 
+  let result: PreviewResult;
   try {
-    const preview = await load(url);
-    memory.set(key, { preview, expires: Date.now() + CACHE_MS });
-    return preview;
+    result = { preview: await load(url), ttl: SUCCESS_TTL };
   } catch {
-    const preview = fallbackPreview(url);
-    memory.set(key, { preview, expires: Date.now() + FAILURE_MS });
-    return preview;
+    result = { preview: fallbackPreview(url), ttl: FAILURE_TTL };
   }
+
+  memory.delete(key);
+  memory.set(key, { result, expires: Date.now() + result.ttl * 1000 });
+  if (memory.size > MEMORY_LIMIT) {
+    const oldest = memory.keys().next().value;
+    if (oldest !== undefined) memory.delete(oldest);
+  }
+  return result;
 }
 
 async function load(url: URL): Promise<LinkPreview> {
   const response = await fetchPublic(url);
-  if (!response) return fallbackPreview(url);
+  if (!response) throw new Error("Link preview page is not reachable");
 
   const finalUrl = publicHttpUrl(response.url) ?? url;
   const html = await readHtml(response);

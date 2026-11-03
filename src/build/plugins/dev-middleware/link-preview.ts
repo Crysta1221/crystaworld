@@ -14,7 +14,7 @@ export function linkPreviewMiddleware(): Connect.NextHandleFunction {
       return;
     }
 
-    void linkPreviewResponse(new Request(new URL(raw, "http://localhost")))
+    void linkPreviewResponse(new Request(new URL(raw, "http://localhost")), { allowCrossOrigin: true })
       .then(async (response) => {
         res.statusCode = response.status;
         response.headers.forEach((value, name) => {

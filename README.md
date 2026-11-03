@@ -34,7 +34,7 @@ crystaworld/
 │  │  │  ├─ post-index/ Blogs / Memos 一覧の検索・絞り込み
 │  │  │  └─ ui/         shadcn ベースの汎用 UI（Button など）
 │  │  └─ lib/
-│  │     ├─ highlighting/ コードのシンタックスハイライト（Shiki）
+│  │     ├─ highlighting/ コードのシンタックスハイライト（Shiki）。記事のコードはビルド時に変換し、ブラウザ側は未変換のブロックだけ変換する
 │  │     ├─ images/       画像サイズ表とレスポンシブ画像
 │  │     ├─ link-preview/ リンクカードのデータ取得
 │  │     ├─ markdown/     frontmatter の読み取り・見出し抽出・許可した HTML タグの描画など
@@ -54,10 +54,12 @@ crystaworld/
 │  ├─ server/        Cloudflare Worker（本番のリクエスト処理）
 │  │  ├─ site.ts        Worker の入口
 │  │  ├─ cms-auth.ts    CMS の GitHub ログイン（/auth, /callback）
-│  │  ├─ link-preview/  /api/link-preview
+│  │  ├─ link-preview/  /api/link-preview（同じサイトのページからだけ呼べる。結果はエッジキャッシュに共有）
 │  │  └─ html/          HTML の最適化（JS の読み込みを初回描画の後へ）
 │  ├─ build/         ビルド時だけ動くコード（ブラウザには届かない）
 │  │  ├─ plugins/fonts/          フォントをページごとにサブセット化
+│  │  ├─ plugins/highlights/     記事のコードブロックをビルド時にハイライト（virtual:crystaworld/code-highlights）
+│  │  ├─ plugins/not-found-page/ prerender の後にデプロイ用の設定を 404.html 配信へ切り替える
 │  │  ├─ plugins/og/             OG 画像（SNS 共有用カード）の生成
 │  │  ├─ plugins/dev-middleware/ 開発サーバーで /admin と /api を動かす
 │  │  └─ prerender-pages.ts      prerender するページの一覧
@@ -70,6 +72,7 @@ crystaworld/
 │  ├─ images/        アバター・ロゴ
 │  ├─ logos/ socials/ flags/ gears/   アイコン類
 │  ├─ fonts/         Natadecoco（英字フォント）
+│  ├─ 404.html       存在しない URL に返す静的ページ（Worker を動かさず 404 で返す）
 │  └─ _headers       キャッシュ設定
 ├─ design/           デザインファイル（design.pen とその素材）
 ├─ vite.config.ts    ビルド設定

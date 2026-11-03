@@ -7,14 +7,16 @@
 import startServer from "@tanstack/react-start/server-entry";
 
 import { handleCmsAuth, isCmsAuthPath } from "./cms-auth.ts";
-import type { SiteEnv } from "./env.ts";
+import type { SiteContext, SiteEnv } from "./env.ts";
 import { withCriticalHtml } from "./html/critical-html.ts";
 import { linkPreviewResponse } from "./link-preview/response.ts";
 
 export default {
-  async fetch(request: Request, env: SiteEnv): Promise<Response> {
+  async fetch(request: Request, env: SiteEnv, ctx: SiteContext): Promise<Response> {
     const url = new URL(request.url);
-    if (url.pathname === "/api/link-preview") return linkPreviewResponse(request);
+    if (url.pathname === "/api/link-preview") {
+      return linkPreviewResponse(request, { waitUntil: (promise) => ctx.waitUntil(promise) });
+    }
     if (isCmsAuthPath(url.pathname)) return handleCmsAuth(request, env);
     if (url.pathname === "/admin" || url.pathname === "/admin/") {
       url.pathname = "/admin/";

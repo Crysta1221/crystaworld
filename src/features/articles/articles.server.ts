@@ -1,14 +1,12 @@
 import { loadBlogs, type BlogPost } from "@/features/blogs/catalog";
 import { loadMemos, type MemoPost } from "@/features/memos/catalog";
 import { loadWorks, type Work } from "@/features/works/catalog";
-import { highlightCode } from "@/shared/lib/highlighting/highlighter";
-import { parseCodeMeta } from "@/shared/lib/highlighting/parse-code-meta";
-import { parseShikiPre } from "@/shared/lib/highlighting/parse-shiki-pre";
+import codeHighlights from "virtual:crystaworld/code-highlights";
 
-export type HighlightBlock = {
-  className: string;
-  innerHtml: string;
-};
+import { pickHighlights } from "@/shared/lib/highlighting/fences";
+import type { HighlightBlock } from "@/shared/lib/highlighting/highlight-context";
+
+export type { HighlightBlock };
 
 const blogSources = import.meta.glob("/src/contents/blogs/*.md", {
   eager: true,
@@ -28,39 +26,46 @@ const workSources = import.meta.glob("/src/contents/works/*.md", {
   import: "default",
 }) as Record<string, string>;
 
-const FENCE = /```([^\n]*)\n([\s\S]*?)```/g;
-
 // Drafts show up in `vp dev` for preview and never reach a production build.
 const INCLUDE_DRAFTS = import.meta.env.DEV;
 
+// Parsing every Markdown file is the same work on each call, so one Worker instance does it once.
+let blogs: readonly BlogPost[] | undefined;
+let memos: readonly MemoPost[] | undefined;
+let works: readonly Work[] | undefined;
+
 export function listBlogs(): readonly BlogPost[] {
-  return loadBlogs(blogSources, INCLUDE_DRAFTS);
+  return (blogs ??= loadBlogs(blogSources, INCLUDE_DRAFTS));
 }
 
 export function listMemos(): readonly MemoPost[] {
-  return loadMemos(memoSources, INCLUDE_DRAFTS);
+  return (memos ??= loadMemos(memoSources, INCLUDE_DRAFTS));
+}
+
+function allWorks(): readonly Work[] {
+  return (works ??= loadWorks(workSources, INCLUDE_DRAFTS));
 }
 
 export function listWorks(): readonly Work[] {
-  return loadWorks(workSources, INCLUDE_DRAFTS).map((work) => ({ ...work, body: "" }));
+  return allWorks().map((work) => ({ ...work, body: "" }));
 }
 
-export async function readBlog(id: string): Promise<ArticleRecord<BlogPost> | null> {
+export function readBlog(id: string): ArticleRecord<BlogPost> | null {
   const post = listBlogs().find((item) => item.id === id);
   if (!post) return null;
-  return { post, highlights: await highlightBody(post.body) };
+  return { post, highlights: highlightBody(post.body) };
 }
 
-export async function readMemo(id: string): Promise<ArticleRecord<MemoPost> | null> {
+export function readMemo(id: string): ArticleRecord<MemoPost> | null {
   const post = listMemos().find((item) => item.id === id);
   if (!post) return null;
-  return { post, highlights: await highlightBody(post.body) };
+  return { post, highlights: highlightBody(post.body) };
 }
 
-export async function readWork(id: string): Promise<ArticleRecord<Work> | null> {
-  const work = loadWorks(workSources, INCLUDE_DRAFTS).find((item) => item.id === id);
+export function readWork(id: string): ArticleRecord<Work> | null {
+  const work = allWorks().find((item) => item.id === id);
   if (!work) return null;
-  return { post: work, highlights: await highlightBody(work.body) };
+  return { post: work, highlights: highlightBody(work.body) };
 }
 
 type ArticleRecord<T> = {
@@ -68,19 +73,6 @@ type ArticleRecord<T> = {
   highlights: Record<string, HighlightBlock>;
 };
 
-async function highlightBody(body: string): Promise<Record<string, HighlightBlock>> {
-  const highlights: Record<string, HighlightBlock> = {};
-  for (const match of body.matchAll(FENCE)) {
-    const info = (match[1] ?? "").trim();
-    // Same trailing-newline rule as the client, so CRLF checkouts produce the same cache key.
-    const code = (match[2] ?? "").replace(/\r?\n$/, "");
-    const [languageToken, ...metaParts] = info.split(/\s+/);
-    const language = languageToken || undefined;
-    const { filename } = parseCodeMeta(metaParts.join(" "));
-    const cacheKey = `${language ?? ""}\0${filename ?? ""}\0${code}`;
-    if (highlights[cacheKey]) continue;
-    const html = await highlightCode(code, language, filename);
-    highlights[cacheKey] = parseShikiPre(html);
-  }
-  return highlights;
+function highlightBody(body: string): Record<string, HighlightBlock> {
+  return pickHighlights(body, codeHighlights);
 }
