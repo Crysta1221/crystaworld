@@ -1,3 +1,5 @@
+import { defaultUrlTransform, type UrlTransform } from "react-markdown";
+
 import { formatYearMonth } from "@/features/locale";
 import { MarkdownArticle } from "@/shared/components/markdown";
 
@@ -19,6 +21,13 @@ export type CmsPreviewPayload = {
   links: WorkLink[];
   body: string;
 };
+
+/**
+ * Unsaved uploads reach the preview as blob: URLs, which the default sanitizer drops.
+ * Only image sources get the exception; every other URL keeps the default rules.
+ */
+const previewUrlTransform: UrlTransform = (url, key) =>
+  key === "src" && url.startsWith("blob:") ? url : defaultUrlTransform(url);
 
 export function isPreviewPayload(value: unknown): value is CmsPreviewPayload {
   if (!value || typeof value !== "object") return false;
@@ -42,6 +51,7 @@ export function CmsPreviewView({ payload }: { payload: CmsPreviewPayload }) {
             body: payload.body,
             draft: false,
           }}
+          urlTransform={previewUrlTransform}
         />
       </div>
     );
@@ -81,7 +91,7 @@ export function CmsPreviewView({ payload }: { payload: CmsPreviewPayload }) {
                 Description
               </h2>
               <div className="mt-4">
-                <MarkdownArticle markdown={payload.body} />
+                <MarkdownArticle markdown={payload.body} urlTransform={previewUrlTransform} />
               </div>
             </section>
           </div>
