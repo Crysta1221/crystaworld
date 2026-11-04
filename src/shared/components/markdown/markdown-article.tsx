@@ -1,5 +1,5 @@
 import * as React from "react";
-import Markdown, { type Components } from "react-markdown";
+import Markdown, { type Components, type UrlTransform } from "react-markdown";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { Link, useRouterState } from "@tanstack/react-router";
@@ -186,15 +186,18 @@ const markdownComponents: Components & Record<string, React.ComponentType<any>> 
 export interface MarkdownArticleProps {
   markdown: string;
   className?: string;
+  /** Overrides URL sanitizing. The CMS preview uses it to let unsaved uploads (blob: URLs) through. */
+  urlTransform?: UrlTransform;
 }
 
 /**
  * Main Markdown renderer with GitHub styling, Shiki code highlight, and heading permalinks.
  */
-export function MarkdownArticle({ markdown, className }: MarkdownArticleProps) {
+export function MarkdownArticle({ markdown, className, urlTransform }: MarkdownArticleProps) {
   return (
     <div className={cn("wiki-prose", className)}>
       <Markdown
+        urlTransform={urlTransform}
         remarkPlugins={[remarkGfm, remarkAllowedHtml, remarkUnwrapImages, remarkLinkCard]}
         rehypePlugins={[rehypeSlug]}
         components={markdownComponents}

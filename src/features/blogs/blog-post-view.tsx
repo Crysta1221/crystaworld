@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import type { UrlTransform } from "react-markdown";
 import { formatYearMonth } from "@/features/locale";
 import { ArticleToc, ArticleTocSlide, MarkdownArticle } from "@/shared/components/markdown";
 import { HighlightProvider, type HighlightBlock } from "@/shared/lib/highlighting/highlight-context";
@@ -8,12 +9,13 @@ import type { BlogPost } from "./catalog";
 interface BlogPostViewProps {
   post: BlogPost;
   highlights?: Readonly<Record<string, HighlightBlock>>;
+  urlTransform?: UrlTransform;
 }
 
 /**
  * Renders an individual blog post with an optional sticky Table of Contents.
  */
-export function BlogPostView({ post, highlights = {} }: BlogPostViewProps) {
+export function BlogPostView({ post, highlights = {}, urlTransform }: BlogPostViewProps) {
   const headings = useMemo(() => extractHeadings(post.body), [post.body]);
   const hasToc = headings.length > 0;
 
@@ -44,7 +46,7 @@ export function BlogPostView({ post, highlights = {} }: BlogPostViewProps) {
       {hasToc ? (
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:items-start lg:gap-10">
           <div className="min-w-0">
-            <MarkdownArticle markdown={post.body} />
+            <MarkdownArticle markdown={post.body} urlTransform={urlTransform} />
           </div>
           <aside className="sticky top-24 hidden h-[calc(100dvh-8rem)] flex-col self-start lg:flex">
             <ArticleToc headings={headings} className="h-full" />
@@ -52,7 +54,7 @@ export function BlogPostView({ post, highlights = {} }: BlogPostViewProps) {
           <ArticleTocSlide headings={headings} />
         </div>
       ) : (
-        <MarkdownArticle markdown={post.body} />
+        <MarkdownArticle markdown={post.body} urlTransform={urlTransform} />
       )}
     </article>
     </HighlightProvider>
