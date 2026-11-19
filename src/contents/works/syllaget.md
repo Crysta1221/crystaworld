@@ -23,10 +23,6 @@ tags:
 links:
   - label: サイトを見る
     url: https://syllaget.crystaworld.dev
-  - label: フロントエンド (GitHub)
-    url: https://github.com/Syllaget-Development/kosen-syllaget
-  - label: API (GitHub)
-    url: https://github.com/Syllaget-Development/kosen-syllaget-api
 ---
 
 **Syllaget** は、全国の高専（高等専門学校）のシラバスを横断して検索・閲覧できる Web アプリケーションです。学校・年度・学科・科目ごとに分散しがちな公式シラバスの情報を統一されたモダンな UI に集約し、授業計画や評価割合の確認、履修の検討をスムーズに行えるように設計しました。
